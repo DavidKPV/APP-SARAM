@@ -1,4 +1,4 @@
-package com.ivonne.saram;
+package com.saram.app;
 
 import org.junit.Test;
 
