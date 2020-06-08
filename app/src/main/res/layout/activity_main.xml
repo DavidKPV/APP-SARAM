@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity" >
 
-    <!-- En cuanto se pueda cambiar las imagenes que se tienen por las de colores negro
-     o ver en  https://material.io/ -->
+    <!-- En cuanto se pueda cambiar las imagenes que se tienen por
+    las de colores negro o ver en  https://material.io/ -->
 
     <ImageView
         android:id="@+id/ivLogo"
@@ -124,7 +124,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Restrarme"
+        android:text="Registrarme"
         android:layout_marginTop="8dp"
         android:textColor="@color/negro"
         android:textSize="18dp"
