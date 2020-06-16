@@ -102,7 +102,7 @@
         android:layout_gravity="right"
         android:text="Olvide mi contraseña"
         android:layout_marginTop="5dp"
-        android:layout_marginRight="20sp"
+        android:layout_marginRight="60sp"
         android:textColor="@color/negro"
         android:textSize="18dp"
         />
