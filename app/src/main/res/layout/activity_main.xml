@@ -113,7 +113,7 @@
         android:id="@+id/btnIngreso"
         android:text="Ingresar"
         android:background="@drawable/boton"
-        android:textSize="20sp"
+        android:textSize="20dp"
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
         android:textStyle="bold"
