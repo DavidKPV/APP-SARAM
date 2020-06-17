@@ -8,25 +8,47 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
-    TextView tvOlvido;
+
+    // SE DECLARAN LOS OBJETOS UTILIZADOS
+    TextView tvOlvido, tvRegistro;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // SE ENLANZAN LOS CONTROLADORES CON LA VISTA
         tvOlvido = (TextView) findViewById(R.id.tvOlvido);
+        tvRegistro = (TextView) findViewById(R.id.tvRegistro);
 
+        // OYENTE DEL TEXTO DE RECUPERAR LA CONTRASEÑA
         tvOlvido.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                nuevaContraseña();
+            public void onClick(View view) {
+                nuevaContrasena();
+            }
+        });
+
+        // OYENTE PARA UN NUEVO REGISTRO
+        tvRegistro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nuevoRegistro();
             }
         });
     }
 
-    private void nuevaContraseña(){
-        Intent intent = new Intent(this, recuperarContra.class);
-        startActivity(intent);
+    // MÉTODO DE LA ACCIÓN DEL OYENTE PARA LA RECUPERACIÓN DE LA CONTRASEÑA
+    private void nuevaContrasena(){
+        Intent intentcontra = new Intent(this, recuperarContra.class);
+        startActivity(intentcontra);
+    }
+
+    // MÉTODO DE LA ACCIÓN DEL OYENTE PARA UN NUEVO REGISTRO
+    private void nuevoRegistro(){
+        // SE INTANCIA EL INTENT
+        Intent intentregistro = new Intent(this, registroActivity.class);
+        // SE INICIA LA NUEVA ACTIVITY
+        startActivity(intentregistro);
     }
 }
