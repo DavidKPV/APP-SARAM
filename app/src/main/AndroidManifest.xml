@@ -9,8 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".agregarMotoActivity"></activity>
-        <activity android:name=".motoInfoActivity" />
+        <activity
+            android:name=".inicioActivity"
+            android:label="@string/title_activity_inicio"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <!--
          LAS SIGUIENTES DOS LÍNEAS Y LA DE ARRIBA SON INDISPENSABLES PARA QUE LA FLECHA DE RETORNO
         FUNCIONE CORRECTAMENTE CON LAS ACTIVITYS DE LAS LINEAS SIGUIENTES DE LO CONTRARIOM LA APP SE CRASHEA

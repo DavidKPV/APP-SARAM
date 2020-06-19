@@ -11,8 +11,99 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- para no confundir pero se ve igual no se qu hice XD -->
-        <include layout="@layout/tarjetas" />
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="380dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/tarjeta"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:id="@+id/imgMoto"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        app:srcCompat="@drawable/saram"
+                        />
+                    <LinearLayout
+                        android:layout_width="230dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/tvModelo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Modelo"
+                            android:gravity="left"
+                            android:textColor="@color/negro"
+                            android:textSize="20dp"
+                            android:textStyle="bold"
+                            android:layout_marginTop="5dp"
+                            />
+                        <TextView
+                            android:id="@+id/tvMarca"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Marca"
+                            android:gravity="left"
+                            android:textColor="@color/negro"
+                            android:textSize="20dp"
+                            android:textStyle="bold"
+                            />
+                        <TextView
+                            android:id="@+id/tvCilindraje"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Cilindraje"
+                            android:gravity="left"
+                            android:textColor="@color/negro"
+                            android:textSize="20dp"
+                            android:textStyle="bold"
+                            />
+                        <TextView
+                            android:id="@+id/tvPlaca"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Placa"
+                            android:gravity="left"
+                            android:textColor="@color/negro"
+                            android:textSize="20dp"
+                            android:textStyle="bold"
+                            />
+                        <TextView
+                            android:id="@+id/tvSaram"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="SARAM"
+                            android:gravity="left"
+                            android:textColor="@color/negro"
+                            android:textSize="20dp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="5dp"
+                            />
+                    </LinearLayout>
+                    <ImageView
+                        android:id="@+id/imgEditar"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="bottom"
+                        android:layout_marginLeft="20dp"
+                        app:srcCompat="@drawable/lapiz"
+                        />
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
     </ScrollView>
 
