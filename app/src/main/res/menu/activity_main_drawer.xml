@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/navegador"
+            android:title="@string/menu_home" />
+        <item
+            android:id="@+id/nav_contactos"
+            android:icon="@drawable/equipo"
+            android:title="@string/menu_contactos" />
+        <item
+            android:id="@+id/nav_info"
+            android:icon="@drawable/paper"
+            android:title="@string/menu_info" />
+        <item
+            android:id="@+id/nav_pprivacidad"
+            android:icon="@drawable/proteger"
+            android:title="@string/menu_PPrivacidad" />
+        <item
+            android:id="@+id/nav_ubicacion"
+            android:icon="@drawable/gps"
+            android:title="@string/menu_ubicacion" />
+
+        <item
+            android:title=""
+            />
+
+        <item
+            android:id="@+id/cerrarSesion"
+            android:title="Cerrar Sesión"
+            android:icon="@drawable/cerrarsesion" />
+
+    </group>
+</menu>

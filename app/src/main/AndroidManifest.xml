@@ -9,11 +9,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <!-- LAS SIGUIENTES DOS LÍNEAS Y LA DE ARRIBA SON INDISPENSABLES PARA QUE LA FLECHA DE RETORNO
-        FUNCIONE CORRECTAMENTE CON LAS ACTIVITYS DE LAS LINEAS SIGUIENTES DE LO CONTRARIOM LA APP SE CRASHEA -->
-        <activity android:name=".registroActivity"></activity>
-        <activity android:name=".recuperarContra"></activity>
-        <!-- android:theme="@style/AppTheme" -->
+        <activity
+            android:name=".inicioActivity"
+            android:label="@string/title_activity_inicio"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <!--
+         LAS SIGUIENTES DOS LÍNEAS Y LA DE ARRIBA SON INDISPENSABLES PARA QUE LA FLECHA DE RETORNO
+        FUNCIONE CORRECTAMENTE CON LAS ACTIVITYS DE LAS LINEAS SIGUIENTES DE LO CONTRARIOM LA APP SE CRASHEA
+        -->
+        <activity android:name=".registroActivity" />
+        <activity android:name=".recuperarContra" /> <!-- android:theme="@style/AppTheme" -->
         <activity
             android:name=".MainActivity"
             android:configChanges="uiMode"
