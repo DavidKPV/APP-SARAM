@@ -25,14 +25,17 @@
             android:icon="@drawable/gps"
             android:title="@string/menu_ubicacion" />
 
+        <!-- SECCIÓN DE CONFIGURACIÓN -->
         <item
-            android:title=""
-            />
-
-        <item
-            android:id="@+id/cerrarSesion"
-            android:title="Cerrar Sesión"
-            android:icon="@drawable/cerrarsesion" />
+            android:id="@+id/seccion_close"
+            android:title="">
+            <menu>
+                <item
+                    android:id="@+id/nav_cerrarS"
+                    android:icon="@drawable/cerrarsesion"
+                    android:title="Cerrar Sesión" />
+            </menu>
+        </item>
 
     </group>
 </menu>

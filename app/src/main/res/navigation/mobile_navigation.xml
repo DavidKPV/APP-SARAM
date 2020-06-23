@@ -35,4 +35,11 @@
         android:label="fragment_nav_pprivacidad"
         tools:layout="@layout/fragment_pprivacidad" />
 
+    <fragment
+        android:id="@+id/nav_cerrarS"
+        android:name="com.saram.app.nav_cerrarS"
+        android:label="fragment_nav_cerrar_s"
+        tools:layout="@layout/fragment_nav_cerrar_s" />
+
+
 </navigation>
