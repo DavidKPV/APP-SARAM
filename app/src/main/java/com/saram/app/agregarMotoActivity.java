@@ -13,6 +13,7 @@ public class agregarMotoActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();

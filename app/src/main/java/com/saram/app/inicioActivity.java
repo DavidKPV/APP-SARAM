@@ -45,14 +45,7 @@ public class inicioActivity extends AppCompatActivity {
         activa_inicio();
         verifica();
 
-        /*FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
+        // SE ENLAZA DRAWER LAYOUT Y EL NAVIGATION VIEW PARA EL MENÚ DESPLEGABLE
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
 
@@ -111,6 +104,19 @@ public class inicioActivity extends AppCompatActivity {
             // SE MANDA A EJECUTAR EL ACTIVITY DE INICIO DE LA APP
             startActivity(intent1);
         }
+    }
+
+    // PARA DARLE EL COMPORTAMIENTO A CADA ITEM QUE SE TIENE EN EL MENÚ SUPERIOR IZQUIERDO
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        // HAY QUE HACER UN SWITCH PARA LOS ITEMS
+        switch(item.getItemId()){
+            case R.id.accion_salir:
+                // ESTA FUNCIÓN HACE QUE SALGAS DE LA APP (SE FINALICE SIN CERRAR SESION);
+                finishAffinity();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 

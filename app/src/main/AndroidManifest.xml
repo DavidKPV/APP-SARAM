@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.saram.app">
-
+    <!-- SE LE DAN PERMISOS DE VIBRACIÓN DE HARDWARE DEL DISPOSITIVO -->
+    <uses-permission android:name="android.permission.VIBRATE" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -29,6 +30,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- SE IMPLEMENTA EL RECEIVER PARA LA ALARMA -->
+        <receiver android:name=".alarma"/>
     </application>
 
 </manifest>
