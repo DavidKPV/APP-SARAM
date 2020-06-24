@@ -20,7 +20,7 @@ public class alarma extends BroadcastReceiver {
 
         // SE ACTIVA LA VIBRACIÓN DEL CELULAR
         Vibrator v = (Vibrator) context.getSystemService(context.VIBRATOR_SERVICE);
-        v.vibrate(20000);
+        v.vibrate(5000);
 
         // SE CONSTRUYE EL MEDIA PLAYER Y SE LE DA EL SONIDO
         mediaPlayer = MediaPlayer.create(context, R.raw.sportsbike);

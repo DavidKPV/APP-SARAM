@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.saram.app">
+
+    <!--
+         PERMISO PARA UTILIZAR LA LOCALIZACIÓN DEL CELULAR
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <!-- SE LE DAN PERMISOS DE VIBRACIÓN DE HARDWARE DEL DISPOSITIVO -->
     <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,10 +17,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!--
+             META DATA UTILIZADO PARA ACTIVAR LA API DE GOOGLE
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".MapsActivity"
+            android:label="@string/title_activity_maps"></activity>
         <activity
             android:name=".inicioActivity"
             android:label="@string/title_activity_inicio"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <!--
          LAS SIGUIENTES DOS LÍNEAS Y LA DE ARRIBA SON INDISPENSABLES PARA QUE LA FLECHA DE RETORNO
         FUNCIONE CORRECTAMENTE CON LAS ACTIVITYS DE LAS LINEAS SIGUIENTES DE LO CONTRARIOM LA APP SE CRASHEA
@@ -29,10 +47,8 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- SE IMPLEMENTA EL RECEIVER PARA LA ALARMA -->
-        <receiver android:name=".alarma"/>
+        </activity> <!-- SE IMPLEMENTA EL RECEIVER PARA LA ALARMA -->
+        <receiver android:name=".alarma" />
     </application>
 
 </manifest>

@@ -15,6 +15,6 @@
         android:gravity="center"
         android:text="SECCIÓN DE INFORMACIÓN" />
     -->
-    <include layout="@layout/activity_moto_info" />
 
+    <include layout="@layout/activity_moto_info" />
 </FrameLayout>

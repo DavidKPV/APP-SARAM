@@ -14,25 +14,25 @@
     <fragment
         android:id="@+id/nav_ubicacion"
         android:name="com.saram.app.nav_ubicacion"
-        android:label="fragment_nav_ubicacion"
+        android:label="Ubicación"
         tools:layout="@layout/fragment_ubicacion" />
 
     <fragment
         android:id="@+id/nav_contactos"
         android:name="com.saram.app.nav_contactos"
-        android:label="fragment_nav_contactos"
+        android:label="Contactos"
         tools:layout="@layout/fragment_contactos" />
 
     <fragment
         android:id="@+id/nav_info"
         android:name="com.saram.app.nav_info"
-        android:label="fragment_nav_info"
+        android:label="Información"
         tools:layout="@layout/fragment_info" />
 
     <fragment
         android:id="@+id/nav_pprivacidad"
         android:name="com.saram.app.nav_pprivacidad"
-        android:label="fragment_nav_pprivacidad"
+        android:label="Políticas de Pribacidad"
         tools:layout="@layout/fragment_pprivacidad" />
 
     <fragment

@@ -3,16 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".nav_ubicacion">
+    tools:context=".nav_ubicacion"
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_marginTop="100dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/negro"
-        android:textSize="30dp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:text="SECCIÓN DE UBICACIÓN" />
+    <!-- SE INCLUYE LA VISTA DE MAPS QUE FUNCIONA CON LA API
+        MODIFICANDO SOLAMENTE EL FICHERO JAVA DEL FRAGMENTO UBICACIÓN
+    -->
 
 </LinearLayout>
