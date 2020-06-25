@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
 
     // CREAMOS UNA CADENA LA CUAL CONTENDRÁ LA CADENA DE NUESTRO WEB SERVICE
-    String HttpUri = "http://192.168.43.200:8080/SARAM-WEB/SARAM/public/api-login";
+    String HttpUri = "http://192.168.1.118/SARAM-WEB/SARAM/public/api-login";
 
     // ESTE MÉTODO EVITA QUE SE REGRESE CON LA FLECHA DE RETORNO QUE TODOS TENEMOS
     @Override
@@ -175,11 +175,11 @@ public class MainActivity extends AppCompatActivity {
                                     // CREAR UN OBJETO DE TIPO JSON PARA OBTENER EL ARCHIVO QUE MANDARÁ EL WEB SERVICE
                                     JSONObject obj = new JSONObject(serverresponse);
                                     // INTERPRETAR EL VALOR DEL JSON OBTENIDO DEL WEB SERVICE
-                                    Boolean status = obj.getBoolean("status");
+                                    String status = obj.getString("status");
                                     // OBTENER EL MENSAJE
                                     String mensaje = obj.getString("mensaje");
                                     // INTERPRETAR LOS VALORES
-                                    if(status = false){
+                                    if(status.contentEquals("false")){
                                         Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_LONG).show();
                                     }
                                     else{
