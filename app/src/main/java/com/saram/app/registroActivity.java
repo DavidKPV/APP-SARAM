@@ -44,7 +44,7 @@ public class registroActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
 
     // CREAMOS UNA CADENA LA CUAL CONTENDRÁ LA CADENA DE NUESTRO WEB SERVICE
-    String HttpUri = "http://192.168.43.200:8080/SARAM-WEB/SARAM/public/api-registerUser";
+    String HttpUri = "http://192.168.1.118/SARAM-WEB/SARAM/public/api-registerUser";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -216,20 +216,17 @@ public class registroActivity extends AppCompatActivity {
                                         // CREAR UN OBJETO DE TIPO JSON PARA OBTENER EL ARCHIVO QUE MANDARÁ EL WEB SERVICE
                                         JSONObject obj = new JSONObject(serverresponse);
                                         // INTERPRETAR EL VALOR DEL JSON OBTENIDO DEL WEB SERVICE
-                                        Boolean status = obj.getBoolean("status");
+                                        String status = obj.getString("status");
                                         // OBTENER EL MENSAJE
                                         String mensaje = obj.getString("mensaje");
-                                        // OBTENER EL ERROR
-                                        String error = obj.getString("errores");
                                         // INTERPRETAR LOS VALORES
-                                        if (status = false) {
+                                        if (status.contentEquals("false")){
                                             Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_LONG).show();
-                                            Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();
+                                            Toast.makeText(getApplicationContext(), "El correo ya fue registrado", Toast.LENGTH_LONG).show();
                                         } else {
                                             Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_LONG).show();
                                             // REDIRIGE AL INICIO DE LA APP
-                                            Intent intent_login = new Intent(getApplicationContext(), MainActivity.class);
-                                            startActivity(intent_login);
+                                            finish();
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();
@@ -277,9 +274,8 @@ public class registroActivity extends AppCompatActivity {
             tilNombre.setError("Nombre no válido, Intentalo de nuevo");
             return false;
         }else{
-            tilNombre.setError(null);
+            return true;
         }
-        return true;
     }
 
     private boolean validaapellidos(String apellidos){
@@ -287,12 +283,11 @@ public class registroActivity extends AppCompatActivity {
         Pattern patron = Pattern.compile("^[a-zA-Z ]+$");
         // Y NO PASE DEL LÍMTE PERMITIDO
         if (!patron.matcher(apellidos).matches() || apellidos.length() > 30) {
-            tilNombre.setError("Apellidos no válidos, Intentalo de nuevo");
+            tilApellidos.setError("Apellidos no válidos, Intentalo de nuevo");
             return false;
         }else{
-            tilNombre.setError(null);
+            return true;
         }
-        return true;
     }
 
     private boolean validaemail(String noe){
@@ -301,13 +296,11 @@ public class registroActivity extends AppCompatActivity {
 
         // Y NO PASE DEL LÍMTE PERMITIDO
         if(!patronEmail.matcher(noe).matches() || noe.length() > 50 ) {
-            tilNombre.setError("Correo no válido, Intentalo de nuevo");
+            tilCorreo.setError("Correo no válido, Intentalo de nuevo");
             return false;
         }else{
-            tilNombre.setError(null);
+            return true;
         }
-
-        return true;
     }
 
     private boolean validapasswordyRpassword(String password, String Rpassword){
