@@ -56,11 +56,13 @@
                     android:id="@+id/tilNombre"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="50dp"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="30"
                     android:layout_marginLeft="50dp">
 
                     <EditText
                         android:layout_width="match_parent"
-                        android:layout_marginRight="50dp"
                         android:layout_height="50dp"
                         android:id="@+id/etNombre"
                         android:hint="Nombre"
@@ -79,18 +81,48 @@
                 android:layout_gravity="center">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilEmail"
+                    android:id="@+id/tilApellidos"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="50dp"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="30"
                     android:layout_marginLeft="50dp">
 
                     <EditText
                         android:layout_width="match_parent"
-                        android:layout_marginRight="50dp"
                         android:layout_height="50dp"
-                        android:id="@+id/etEmail"
+                        android:id="@+id/etApellidos"
+                        android:hint="Apellidos"
+                        android:inputType="text"
+                        android:textSize="22dp"
+                        android:focusableInTouchMode="true"
+                        />
+                    <!--android:background="@drawable/contorno"-->
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:layout_gravity="center">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilCorreo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="50dp"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="50"
+                    android:layout_marginLeft="50dp">
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:id="@+id/etCorreo"
                         android:hint="Correo Electrónico"
-                        android:inputType="textEmailAddress"
+                        android:inputType="text"
                         android:textSize="22dp"
                         android:focusableInTouchMode="true"
                         />
@@ -108,11 +140,13 @@
                     android:id="@+id/tilPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="50dp"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="16"
                     android:layout_marginLeft="50dp">
 
                     <EditText
                         android:layout_width="match_parent"
-                        android:layout_marginRight="50dp"
                         android:layout_height="50dp"
                         android:id="@+id/etPassword"
                         android:hint="Contraseña"
@@ -134,11 +168,13 @@
                     android:id="@+id/tilRPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="50dp"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="16"
                     android:layout_marginLeft="50dp">
 
                     <EditText
                         android:layout_width="match_parent"
-                        android:layout_marginRight="50dp"
                         android:layout_height="50dp"
                         android:id="@+id/etRPassword"
                         android:hint="Repetir Contraseña"
@@ -148,75 +184,6 @@
                         />
                     <!--android:background="@drawable/contorno"-->
                 </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
-                android:layout_gravity="center"
-                android:orientation="horizontal">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilEdad"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp">
-
-                    <EditText
-                        android:layout_width="100dp"
-                        android:layout_marginRight="50dp"
-                        android:layout_height="50dp"
-                        android:id="@+id/etEdad"
-                        android:hint="Edad"
-                        android:inputType="number"
-                        android:textSize="22dp"
-                        android:focusableInTouchMode="true"
-                        />
-                    <!--android:background="@drawable/contorno"-->
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <TextView
-                    android:layout_width="45dp"
-                    android:layout_height="wrap_content"
-                    android:text="SEXO"
-                    android:layout_marginTop="22dp"
-                    android:textColor="@color/negro"
-                    android:layout_marginLeft="23dp"
-                    android:textStyle="bold"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <RadioGroup
-                        android:id="@+id/rgSexo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <RadioButton
-                            android:id="@+id/rbFemenino"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Femenino"
-                            android:textColor="@color/negro"
-                            android:layout_marginLeft="10dp"
-                            android:textSize="18dp"
-                            android:layout_marginTop="5dp"/>
-                        <RadioButton
-                            android:id="@+id/rbMasculino"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Maculino"
-                            android:textColor="@color/negro"
-                            android:layout_marginLeft="10dp"
-                            android:textSize="18dp"/>
-
-                    </RadioGroup>
-
-                </LinearLayout>
-
             </LinearLayout>
 
             <TextView
@@ -239,6 +206,7 @@
                 android:background="@color/negro" />
 
             <CheckBox
+                android:id="@+id/chbTerminos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Acepto términos y condiciones"
@@ -250,6 +218,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/btnRegistro"
                 android:text="Registrarme"
+                android:textColor="@color/blanco"
                 android:background="@drawable/boton"
                 android:textSize="20dp"
                 android:layout_gravity="center"
