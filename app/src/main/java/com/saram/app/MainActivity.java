@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
 
     // CREAMOS UNA CADENA LA CUAL CONTENDRÁ LA CADENA DE NUESTRO WEB SERVICE
-    String HttpUri = "http://192.168.1.118/SARAM-WEB/SARAM/public/api-login";
+    String HttpUri = "http://192.168.43.200:8080/SARAM-API/public/api-login";
 
     // ESTE MÉTODO EVITA QUE SE REGRESE CON LA FLECHA DE RETORNO QUE TODOS TENEMOS
     @Override
@@ -55,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // ELIMINA EL TOOL BAR DE LA ACTIVITY
+        getSupportActionBar().hide();
 
         // VERIFICA SI EXISTE O NO UNA SESION INICIADA
         verifica();

@@ -44,7 +44,7 @@ public class registroActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
 
     // CREAMOS UNA CADENA LA CUAL CONTENDRÁ LA CADENA DE NUESTRO WEB SERVICE
-    String HttpUri = "http://192.168.1.118/SARAM-WEB/SARAM/public/api-registerUser";
+    String HttpUri = "http://192.168.43.200:8080/SARAM-API/public/api-registerUser";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -316,6 +316,7 @@ public class registroActivity extends AppCompatActivity {
             return true;
         }else{
             tilPassword.setError("Las Contraseñas no coinciden");
+            tilRPassword.setError("Las Contraseñas no coinciden");
             return false;
         }
     }
