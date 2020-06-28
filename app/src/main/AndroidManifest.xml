@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.saram.app">
     <!-- PEIMITIR EL USO DE EL GPS DEL DISPOSITIVO -->
-    <uses-feature android:name="android.hardware.location.gps"/>
-    <!-- PERMISO PARA UTILIZAR LA LOCALIZACIÓN DEL CELULAR -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <!-- PERMISO PARA PERMITIR EL USO DE INTERNET -->
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <!-- SE LE DAN PERMISOS DE VIBRACIÓN DE HARDWARE DEL DISPOSITIVO -->
+    <uses-feature android:name="android.hardware.location.gps" /> <!-- PERMISO PARA UTILIZAR LA LOCALIZACIÓN DEL CELULAR -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- PERMISO PARA PERMITIR EL USO DE INTERNET -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- SE LE DAN PERMISOS DE VIBRACIÓN DE HARDWARE DEL DISPOSITIVO -->
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
@@ -18,30 +16,43 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
-        <!-- META DATA UTILIZADO PARA ACTIVAR LA API DE GOOGLE -->
+        <activity
+            android:name=".addmotoActivity"
+            android:label="Nueva Motocicleta"/>
+        <activity
+            android:name=".editmotoActivity"
+            android:label="Información de Motocicleta" />
+        <activity
+            android:name=".infomotoActivity"
+            android:label="Información de Motocicletas" />
+        <activity
+            android:name=".contactosActivity"
+            android:label="Contactos" /> <!-- META DATA UTILIZADO PARA ACTIVAR LA API DE GOOGLE -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
-        <!-- META DATA PARA LA CONEXIÓN WEB CON VOLLEY -->
+            android:value="@string/google_maps_key" /> <!-- META DATA PARA LA CONEXIÓN WEB CON VOLLEY -->
         <meta-data
             android:name="com.google.android.actions"
             android:resource="@xml/network_security_config" />
 
         <activity
             android:name=".MapsActivity"
-            android:label="Mapa SARAM"></activity>
-
+            android:label="Mapa SARAM" />
         <activity
             android:name=".inicioActivity"
             android:label="@string/title_activity_inicio"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <!--
          LAS SIGUIENTES DOS LÍNEAS Y LA DE ARRIBA SON INDISPENSABLES PARA QUE LA FLECHA DE RETORNO
         FUNCIONE CORRECTAMENTE CON LAS ACTIVITYS DE LAS LINEAS SIGUIENTES DE LO CONTRARIOM LA APP SE CRASHEA
         -->
-        <activity android:name=".registroActivity" />
-        <activity android:name=".recuperarContra" />
+        <activity
+            android:name=".registroActivity"
+            android:label="Nuevo Usuario - Registro"
+            />
+        <activity
+            android:name=".recuperarContra"
+            android:label="Recuperar mi Contraseña"/>
         <activity
             android:name=".MainActivity"
             android:configChanges="uiMode"
@@ -51,8 +62,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <!-- SE IMPLEMENTA EL RECEIVER PARA LA ALARMA -->
+        </activity> <!-- SE IMPLEMENTA EL RECEIVER PARA LA ALARMA -->
         <receiver android:name=".alarma" />
     </application>
 

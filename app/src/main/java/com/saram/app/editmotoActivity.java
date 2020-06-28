@@ -1,19 +1,20 @@
 package com.saram.app;
 
-import android.os.Bundle;
-
 import androidx.appcompat.app.AppCompatActivity;
 
-public class agregarMotoActivity extends AppCompatActivity {
+import android.os.Bundle;
+
+public class editmotoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_agregar_moto);
+        setContentView(R.layout.activity_editmoto);
+        // PARA ACTIVAR LA FLECHA DE RETORNO
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
     }
 
+    // PARA ACTIVAR LA FUNCIONALIDAD DE LA FLECHA DE RETORNO
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();

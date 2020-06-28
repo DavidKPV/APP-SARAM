@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".nav_contactos">
 
+    <!--
     <TextView
         android:layout_marginTop="100dp"
         android:layout_width="match_parent"
@@ -14,5 +15,6 @@
         android:textStyle="bold"
         android:gravity="center"
         android:text="SECCIÓN DE CONTACTOS" />
+    -->
 
 </FrameLayout>

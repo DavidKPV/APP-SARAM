@@ -35,7 +35,7 @@
                 android:layout_gravity="center"
                 app:srcCompat="@drawable/name" />
 
-
+            <!--
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -46,19 +46,30 @@
                 android:textSize="20dp"
                 android:layout_marginTop="20dp"
                 android:gravity="center"
-                />
+                /> -->
 
-
-            <EditText
-                android:id="@+id/etRecuperarPass"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="300dp"
-                android:layout_height="50dp"
+                android:layout_height="80dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="50dp"
-                />
+                app:counterEnabled="true"
+                app:counterMaxLength="50">
+
+                <EditText
+                    android:id="@+id/etRecuperarPass"
+                    android:layout_width="300dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="50dp"
+                    android:inputType="textEmailAddress"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
                 android:id="@+id/tvRecuperarPass"
                 android:text="Ingresa el correo electrónico de la cuenta"
                 android:textColor="@color/negro"
@@ -76,7 +87,7 @@
                 android:textColor="@color/blanco"
                 android:textSize="15dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="70dp"
+                android:layout_marginTop="50dp"
                 android:textStyle="bold"
                 android:layout_marginBottom="50dp"
                 />
