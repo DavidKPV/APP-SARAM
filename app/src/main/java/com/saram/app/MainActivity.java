@@ -180,12 +180,19 @@ public class MainActivity extends AppCompatActivity {
                                     String status = obj.getString("status");
                                     // OBTENER EL MENSAJE
                                     String mensaje = obj.getString("mensaje");
+                                    // SE OBTIENE EL NOMBRE
+                                    String nombre = obj.getString("nombre");
                                     // INTERPRETAR LOS VALORES
                                     if(status.contentEquals("false")){
                                         Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_LONG).show();
                                     }
                                     else{
-                                        Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getApplicationContext(), mensaje+" "+nombre, Toast.LENGTH_LONG).show();
+                                        // ACTIVAMOS EL EDITOR DEL SHARED
+                                        SharedPreferences sp1 = getSharedPreferences("MisDatos", Context.MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = sp1.edit();
+                                        editor.putString("nombre", nombre);
+                                        editor.commit();
                                         // REDIRIGE AL INICIO DE LA APP
                                         Intent intent_inicio = new Intent(getApplicationContext(), inicioActivity.class);
                                         startActivity(intent_inicio);
@@ -245,6 +252,7 @@ public class MainActivity extends AppCompatActivity {
         // SE MANDAN LOS VALORES QUE QUEREMOS ALMACENAR
         // Nombre de la variable, valor de la variable
         editor.putBoolean("sesion", false);
+        editor.putString("nombre", "");
 
         // SE MANDA UNA INSTRUCCIÓN COMMIT PARA QUE SE GUARDEN LOS CAMBIOS
         editor.commit();

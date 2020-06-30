@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/gris"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_contactsblack_24"/>
+
+    <LinearLayout
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        >
+
+        <TextView
+            android:id="@+id/tvNombreContacto"
+            android:layout_marginLeft="20dp"
+            android:layout_width="200dp"
+            android:textColor="@color/negro"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/tvNumeroContacto"
+            android:layout_marginLeft="20dp"
+            android:textColor="@color/negro"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <!--
+    <CheckBox
+        android:id="@+id/chbcontactoCel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="0dp"/>
+    -->
+
+</LinearLayout>
