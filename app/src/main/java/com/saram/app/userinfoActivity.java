@@ -13,7 +13,7 @@ public class userinfoActivity extends AppCompatActivity {
 
     // SE DECLARAN LOS OBJETOS UTILIZADOS
     Spinner spSexo;
-    TextInputLayout til
+    TextInputLayout tilNombre;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
