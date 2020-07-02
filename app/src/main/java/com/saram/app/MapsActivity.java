@@ -1,8 +1,17 @@
 package com.saram.app;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -34,22 +43,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        // COLOCA EL TIPO DE MAPA QUE SE MOSTRARÁ
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        // PARA ACTIVAR LA POSICÓN DEL DISPOSITIVO MÓVIL PRIMERO SE ASEGURA DE QUE SE TENGAN LOS PERMISOS
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        // SE ACTIVA EL BOTÓN PARA DIRIGIRSE A LA UBICACIÓN
+        mMap.setMyLocationEnabled(true);
+        // PARA QUE AUTOMÁTICAMENTE SE ACTIVE LA UBICACIÓN DEL MÓVIL
+        // mMap.getUiSettings().setMyLocationButtonEnabled(false);
 
         // ESTA ES UNA POSICIÓN ESTÁTICA QUE SE ACABA DE AGREGAR PARA VER FUNCIONALIDAD DE LA API
-        LatLng sydney = new LatLng(-94, 251);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Mi posición"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng SARAM = new LatLng(19.42847, -99.12766);
+        mMap.addMarker(new MarkerOptions().position(SARAM).title("Mi Moto :3"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(SARAM, 18f));
     }
 }

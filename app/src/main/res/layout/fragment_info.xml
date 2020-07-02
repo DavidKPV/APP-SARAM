@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".nav_info">
-<!--
+    tools:context=".nav_contactos">
+
+    <!--
     <TextView
         android:layout_marginTop="100dp"
         android:layout_width="match_parent"
@@ -13,8 +14,7 @@
         android:textSize="30dp"
         android:textStyle="bold"
         android:gravity="center"
-        android:text="SECCIÓN DE INFORMACIÓN" />
+        android:text="SECCIÓN DE INFORMACION" />
     -->
 
-    <include layout="@layout/activity_moto_info" />
 </FrameLayout>

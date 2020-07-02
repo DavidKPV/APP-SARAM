@@ -60,13 +60,13 @@
                     android:layout_marginLeft="15dp">
 
                     <EditText
-                        android:layout_width="270dp"
+                        android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:id="@+id/etNombre"
                         android:hint="Correo Electrónico"
                         android:inputType="textEmailAddress"
                         android:textSize="22dp"
-                        android:focusableInTouchMode="true"
+                        android:layout_marginRight="50dp"
                         />
                     <!--android:background="@drawable/contorno"-->
                 </com.google.android.material.textfield.TextInputLayout>
@@ -96,13 +96,13 @@
                     app:passwordToggleEnabled="true">
 
                     <EditText
-                        android:layout_width="270dp"
+                        android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:id="@+id/etPass"
                         android:hint="Contraseña"
                         android:inputType="textPassword"
                         android:textSize="22sp"
-                        android:focusableInTouchMode="true"
+                        android:layout_marginRight="50dp"
                         />
                     <!--android:background="@drawable/contorno"-->
                 </com.google.android.material.textfield.TextInputLayout>

@@ -1,19 +1,25 @@
 package com.saram.app;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
@@ -27,6 +33,7 @@ import androidx.appcompat.widget.Toolbar;
 public class inicioActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
+    TextView tvNombreMenu;
 
     // ESTE MÉTODO EVITA QUE SE REGRESE CON LA FLECHA DE RETORNO QUE TODOS TENEMOS
     @Override
@@ -68,9 +75,20 @@ public class inicioActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.inicio, menu);
+
+        tvNombreMenu = (TextView) findViewById(R.id.tvNombreMenu);
+
+        SharedPreferences sp1 = getSharedPreferences("MisDatos", Context.MODE_PRIVATE);
+
+        tvNombreMenu.setText(sp1.getString("nombre", ""));
 
         return true;
     }
@@ -92,10 +110,10 @@ public class inicioActivity extends AppCompatActivity {
 
     private void verifica(){
         // ACTIVAMOS EL EDITOR DEL SHARED
-        SharedPreferences sp1 = getSharedPreferences("MisDatos", Context.MODE_PRIVATE);
+        SharedPreferences shared = PreferenceManager.getDefaultSharedPreferences(this);
 
         // TRAEMOS EL VALOR DE LA SESION
-        boolean val = sp1.getBoolean("sesion", false);
+        boolean val = shared.getBoolean("sesion", false);
 
         // SE INSTANCIA EL ACTIVITY DEL LOGIN DE LA APP    contexto, nombre de la clase compilada
         Intent intent1 = new Intent(this, MainActivity.class);
@@ -103,6 +121,31 @@ public class inicioActivity extends AppCompatActivity {
         if(val == false) {
             // SE MANDA A EJECUTAR EL ACTIVITY DE INICIO DE LA APP
             startActivity(intent1);
+        }
+
+        // VERIFICA QUE TENGA LA APP LOS PERMISOS NECESARIOS PARA LA UTILIZACIÓN DE LOS CONTACTOS
+        int permissionCheckContactos = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS);
+        // SE VERIFICA CON LA CONDICIONAL QUE SE TENGAN LOS PERMISOS INSTALADOS
+        if (permissionCheckContactos == PackageManager.PERMISSION_DENIED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_CONTACTS)) {
+                // AQUI SE COLOCA MENSAJES EXTRAS QUE SE QUIERAN COLOCAR SOBRE LA EXPLICACIÓN DE LOS PERMISOS
+            } else {
+                // PEDIRÁ LA ACTIVACIÓN DEL SERVICIO
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, 1);
+            }
+        }
+
+        // VERIFICA QUE TENGA LA APP LOS PERMISOS NECESARIOS PARA LA UTILIZACIÓN DE LA UBICACIÓN
+        int permissionCheckUbicacion = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
+
+        // SE VERIFICA CON LA CONDICIONAL QUE SE TENGAN LOS PERMISOS INSTALADOS
+        if (permissionCheckUbicacion == PackageManager.PERMISSION_DENIED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                // AQUI SE COLOCA MENSAJES EXTRAS QUE SE QUIERAN COLOCAR SOBRE LA EXPLICACIÓN DE LOS PERMISOS
+            } else {
+                // PEDIRÁ LA ACTIVACIÓN DEL SERVICIO
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            }
         }
     }
 
@@ -118,6 +161,5 @@ public class inicioActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 
 }
