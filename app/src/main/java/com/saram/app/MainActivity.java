@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Patterns;
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
 
     // CREAMOS UNA CADENA LA CUAL CONTENDRÁ LA CADENA DE NUESTRO WEB SERVICE
-    String HttpUri = "http://192.168.43.200:8080/SARAM-API/public/api-login";
+    String HttpUri = "http://192.168.43.200:8080/SARAM-API/public/api/login";
 
     // ESTE MÉTODO EVITA QUE SE REGRESE CON LA FLECHA DE RETORNO QUE TODOS TENEMOS
     @Override
@@ -180,19 +181,26 @@ public class MainActivity extends AppCompatActivity {
                                     String status = obj.getString("status");
                                     // OBTENER EL MENSAJE
                                     String mensaje = obj.getString("mensaje");
-                                    // SE OBTIENE EL NOMBRE
-                                    String nombre = obj.getString("nombre");
-                                    // INTERPRETAR LOS VALORES
+
+                                    // INTERPRETAR VALORES
                                     if(status.contentEquals("false")){
                                         Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_LONG).show();
                                     }
                                     else{
+                                        // SE OBTIENE EL TOKEN
+                                        String token = obj.getString("Token");
+                                        // SE OBTIENE EL NOMBRE
+                                        String nombre = obj.getString("Nombre");
+                                        // SE OBTIENE EL NOMBRE
+                                        String apellidos = obj.getString("Apellidos");
+
                                         Toast.makeText(getApplicationContext(), mensaje+" "+nombre, Toast.LENGTH_LONG).show();
                                         // ACTIVAMOS EL EDITOR DEL SHARED
                                         SharedPreferences sp1 = getSharedPreferences("MisDatos", Context.MODE_PRIVATE);
                                         SharedPreferences.Editor editor = sp1.edit();
                                         editor.putString("nombre", nombre);
-                                        editor.commit();
+                                        editor.putString("token", token);
+                                        editor.apply();
                                         // REDIRIGE AL INICIO DE LA APP
                                         Intent intent_inicio = new Intent(getApplicationContext(), inicioActivity.class);
                                         startActivity(intent_inicio);
@@ -244,18 +252,19 @@ public class MainActivity extends AppCompatActivity {
     // SE CREA LA FUNCIÓN DEL SHARED PREFERENCES
     private void CrearSharedPreferences(){
         // SE INSTANCIA EL SHARED                   Nombre del archivo,   forma en como se abrirá
-        SharedPreferences prefer1 = getSharedPreferences("MisDatos", Context.MODE_PRIVATE);
+        SharedPreferences sp1 = getSharedPreferences("MisDatos", Context.MODE_PRIVATE);
 
         // SE ACTIVA LA EDICIÓN DEL ARCHIVO
-        SharedPreferences.Editor editor = prefer1.edit();
+        SharedPreferences.Editor editor = sp1.edit();
 
         // SE MANDAN LOS VALORES QUE QUEREMOS ALMACENAR
         // Nombre de la variable, valor de la variable
         editor.putBoolean("sesion", false);
         editor.putString("nombre", "");
+        editor.putString("token", "");
 
         // SE MANDA UNA INSTRUCCIÓN COMMIT PARA QUE SE GUARDEN LOS CAMBIOS
-        editor.commit();
+        editor.apply();
     }
 
     private void verifica(){

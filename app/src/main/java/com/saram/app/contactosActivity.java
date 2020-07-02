@@ -49,35 +49,34 @@ public class contactosActivity extends AppCompatActivity {
         listaContactos = (ListView) findViewById(R.id.listaContactos);
 
         // SE EJECUTA EL MÉTODO QUE OBTIENE EL CONTENIDO DE LOS CONTACTOS
-        Cursor cursor = getContentResolver().query(
+        Cursor contactosN = getContentResolver().query(
                 // EL CONTEN_URI ES UNA DIRECCIÓN QUE PUEDE INGRESAR A LA RUTA DE LOS CONTACTOS
-                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                ContactsContract.Contacts.CONTENT_URI,
                 null,
                 null,
                 null,
                 ContactsContract.Data.DISPLAY_NAME + " ASC"
         );
         // SE INICIA EL CURSOR
-        startManagingCursor(cursor);
+        startManagingCursor(contactosN);
 
-        // SE OBTIENEN LOS DATOS DEL NOMBRE Y NÚMERO DE LOS CONTACTOS ASÍ COMO SU ID
-        String[] desde = {
-                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
-                ContactsContract.CommonDataKinds.Phone.NUMBER,
-                ContactsContract.CommonDataKinds.Phone._ID
-        };
+        if(contactosN.getCount() > 0) {
+            while(contactosN.moveToNext()){
+                // SE OBTIENEN LOS DATOS DEL NOMBRE Y NÚMERO DE LOS CONTACTOS ASÍ COMO SU ID
+                String[] desde = {
+                        ContactsContract.Contacts.DISPLAY_NAME,
+                };
 
-        // SE CREA UN ARREGLO ENCONTRANDO LOS TEXTVIEW DE CADA ITERACIÓN DEL ARCHIVO XML (ITEM_CONTACTOS.XML)
-        int[] a = {
-                R.id.tvNombreContacto,
-                R.id.tvNumeroContacto,
-        };
+                // SE CREA UN ARREGLO ENCONTRANDO LOS TEXTVIEW DE CADA ITERACIÓN DEL ARCHIVO XML (ITEM_CONTACTOS.XML)
+                int[] a = {
+                        R.id.tvNombreContacto
+                };
 
-        // SE CREA EL ADAPTER PARA INSERTAR LOS NOMBRE Y NÚMEROS DE CADA CONTACTO
-        final SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(this,R.layout.item_contactos,cursor,desde,a);
-        listaContactos.setAdapter(simpleCursorAdapter);
-        listaContactos.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
-
+                // SE CREA EL ADAPTER PARA INSERTAR LOS NOMBRE Y NÚMEROS DE CADA CONTACTO
+                final SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(this, R.layout.item_contactos, contactosN, desde, a);
+                listaContactos.setAdapter(simpleCursorAdapter);
+            }
+        }
     }
 
     private void obtenerContactos(){

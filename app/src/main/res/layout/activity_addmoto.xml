@@ -52,7 +52,8 @@
                     android:layout_marginRight="50dp">
 
                     <EditText
-                        android:id="@+id/Modelo"
+                        android:id="@+id/etModelo"
+                        android:hint="ejem: GSXR"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text"
@@ -87,7 +88,8 @@
                     android:layout_marginRight="80dp">
 
                     <EditText
-                        android:id="@+id/Marca"
+                        android:id="@+id/etMarca"
+                        android:hint="ejem: Susuki"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text"
@@ -123,9 +125,10 @@
 
                     <EditText
                         android:id="@+id/etCilindraje"
+                        android:hint="ejem: 150"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="text"
+                        android:inputType="number"
                         />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
@@ -157,7 +160,8 @@
                     android:layout_marginRight="80dp">
 
                     <EditText
-                        android:id="@+id/Placa"
+                        android:id="@+id/etPlaca"
+                        android:hint="XXXXX"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text"
@@ -193,9 +197,10 @@
 
                     <EditText
                         android:id="@+id/etSARAM"
+                        android:hint="Número SARAM"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="text"
+                        android:inputType="number"
                         />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>

@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
@@ -74,8 +75,8 @@ public class inicioActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -109,10 +110,10 @@ public class inicioActivity extends AppCompatActivity {
 
     private void verifica(){
         // ACTIVAMOS EL EDITOR DEL SHARED
-        SharedPreferences sp1 = getSharedPreferences("MisDatos", Context.MODE_PRIVATE);
+        SharedPreferences shared = PreferenceManager.getDefaultSharedPreferences(this);
 
         // TRAEMOS EL VALOR DE LA SESION
-        boolean val = sp1.getBoolean("sesion", false);
+        boolean val = shared.getBoolean("sesion", false);
 
         // SE INSTANCIA EL ACTIVITY DEL LOGIN DE LA APP    contexto, nombre de la clase compilada
         Intent intent1 = new Intent(this, MainActivity.class);

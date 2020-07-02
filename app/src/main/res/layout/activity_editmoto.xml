@@ -52,7 +52,7 @@
                     android:layout_marginRight="50dp">
 
                     <EditText
-                        android:id="@+id/Modelo"
+                        android:id="@+id/etModelo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text"
@@ -87,7 +87,7 @@
                 android:layout_marginRight="80dp">
 
                 <EditText
-                    android:id="@+id/Marca"
+                    android:id="@+id/etMarca"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
@@ -157,7 +157,7 @@
                     android:layout_marginRight="80dp">
 
                     <EditText
-                        android:id="@+id/Placa"
+                        android:id="@+id/etPlaca"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text"
@@ -203,7 +203,7 @@
             <Button
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/btnRegistro"
+                android:id="@+id/btnActualiza"
                 android:text="Actualizar"
                 android:textColor="@color/blanco"
                 android:background="@drawable/boton"

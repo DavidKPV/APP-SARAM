@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ public class home extends Fragment {
     // SE DECLARAN LOS OBJETOS UTILIZADOS
     Button btnAlarma;
     TextView tvNombre;
+    String nombre;
 
     public home() {
         // Required empty public constructor
@@ -33,13 +35,32 @@ public class home extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
         tvNombre = (TextView) getActivity().findViewById(R.id.tvNombre);
 
         SharedPreferences sp1 = getActivity().getSharedPreferences("MisDatos", Context.MODE_PRIVATE);
-        String nombre = sp1.getString("nombre", "");
+        nombre = sp1.getString("nombre", "Se reseteó el shared");
 
         tvNombre.setText(nombre);
+
+        // ALERT DIALOG PARA INDICAR QUE DEBE DE CONTINUAR LLENANDO SU INFORMACIÓN DESPUÉS DE HABER HECHO LOGIN
+        AlertDialog.Builder VerificaAlerta = new AlertDialog.Builder(getContext());
+        VerificaAlerta.setIcon(R.drawable.ic_baseline_info_24);
+        VerificaAlerta.setTitle("VE AL ÍCONO DE SARAM DEL MENÚ DESPLEGABLE");
+        VerificaAlerta.setMessage("Para continuar llenando tu información de usuario");
+        VerificaAlerta.setPositiveButton("CONTINUAR", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent infouser = new Intent(getContext(), userinfoActivity.class);
+                startActivity(infouser);
+            }
+        });
+        VerificaAlerta.setNegativeButton("MAS TARDE", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        VerificaAlerta.show();
     }
 
     @Override
@@ -62,6 +83,8 @@ public class home extends Fragment {
                 ejecutar_alarma();
             }
         });
+
+
 
         return view;
     }
