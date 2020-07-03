@@ -30,7 +30,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-public class inicioActivity extends AppCompatActivity {
+public class        inicioActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     TextView tvNombreMenu;
@@ -110,7 +110,7 @@ public class inicioActivity extends AppCompatActivity {
 
     private void verifica(){
         // ACTIVAMOS EL EDITOR DEL SHARED
-        SharedPreferences shared = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences shared = getSharedPreferences("MisDatos", Context.MODE_PRIVATE);
 
         // TRAEMOS EL VALOR DE LA SESION
         boolean val = shared.getBoolean("sesion", false);
