@@ -36,15 +36,15 @@ public class editmotoActivity extends AppCompatActivity {
     TextInputLayout tilModelo, tilMarca, tilCilindraje, tilPlaca, tilSARAM;
     EditText etModelo, etMarca, etCilindraje, etPlaca, etSARAM;
     Button btnActualiza;
-    String id_moto;
+    int id_moto;
 
     // OBJETOS PARA LA CONEXIÓN AL SERVIDOR UTILIZANDO VOLLEY
     RequestQueue requestQueue;
     ProgressDialog progressDialog;
 
     // CREAMOS UNA CADENA LA CUAL CONTENDRÁ LA CADENA DE NUESTRO WEB SERVICE
-    String HttpUriUpdate = "http://192.168.43.200:8080/SARAM-API/public/api/updatemoto";
-    String HttpUriGetMoto = "http://192.168.43.200:8080/SARAM-API/public/api/getmotos";
+    String HttpUriUpdate = "http://192.168.1.118/SARAM-API/public/api/updatemoto";
+    String HttpUriGetMoto = "http://192.168.1.118/SARAM-API/public/api/getmotos";
     String vtoken;
 
     @Override
@@ -104,14 +104,16 @@ public class editmotoActivity extends AppCompatActivity {
                             } else {
                                 // OBTENER SE OBTIENEN LOS DATOS DEL ARRAY
                                 JSONArray infomotos = obj.getJSONArray("motos");
-                                id_moto = infomotos.getJSONObject(0).getString("ID_Motocicleta");
-
+                                Intent viejo = getIntent();
+                                id_moto = viejo.getIntExtra("ID", -1);
                                 for(int i=0; i<infomotos.length();i++) {
-                                    etModelo.append(infomotos.getJSONObject(i).getString("Modelo"));
-                                    etMarca.append(infomotos.getJSONObject(i).getString("Marca"));
-                                    etCilindraje.append(String.valueOf(infomotos.getJSONObject(i).get("Cilindraje")));
-                                    etPlaca.append(infomotos.getJSONObject(i).getString("Placa"));
-                                    etSARAM.append(infomotos.getJSONObject(i).getString("ID_saram"));
+                                    if(infomotos.getJSONObject(i).getInt("ID_Motocicleta")==id_moto) {
+                                        etModelo.append(infomotos.getJSONObject(i).getString("Modelo"));
+                                        etMarca.append(infomotos.getJSONObject(i).getString("Marca"));
+                                        etCilindraje.append(String.valueOf(infomotos.getJSONObject(i).get("Cilindraje")));
+                                        etPlaca.append(infomotos.getJSONObject(i).getString("Placa"));
+                                        etSARAM.append(infomotos.getJSONObject(i).getString("ID_saram"));
+                                    }
                                 }
                             }
                         } catch (JSONException e) {
@@ -326,7 +328,7 @@ public class editmotoActivity extends AppCompatActivity {
                         parametros.put("Cilindraje", cilindraje);
                         parametros.put("SARAM", saram);
                         parametros.put("Placa", placa);
-                        parametros.put("ID_Moto", id_moto);
+                        parametros.put("ID_Moto", String.valueOf(id_moto));
                         return parametros;
                     }
                     @Override

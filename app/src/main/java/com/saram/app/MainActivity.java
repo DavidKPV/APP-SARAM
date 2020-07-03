@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
 
     // CREAMOS UNA CADENA LA CUAL CONTENDRÁ LA CADENA DE NUESTRO WEB SERVICE
-    String HttpUri = "http://192.168.43.200:8080/SARAM-API/public/api/login";
+    String HttpUri = "http://192.168.1.118/SARAM-API/public/api/login";
 
     // ESTE MÉTODO EVITA QUE SE REGRESE CON LA FLECHA DE RETORNO QUE TODOS TENEMOS
     @Override
@@ -255,16 +255,20 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sp1 = getSharedPreferences("MisDatos", Context.MODE_PRIVATE);
 
         // SE ACTIVA LA EDICIÓN DEL ARCHIVO
+
         SharedPreferences.Editor editor = sp1.edit();
 
-        // SE MANDAN LOS VALORES QUE QUEREMOS ALMACENAR
-        // Nombre de la variable, valor de la variable
-        editor.putBoolean("sesion", false);
-        editor.putString("nombre", "");
-        editor.putString("token", "");
+        boolean sesion = sp1.getBoolean("sesion", false);
+        if(!sesion) {
+            // SE MANDAN LOS VALORES QUE QUEREMOS ALMACENAR
+            // Nombre de la variable, valor de la variable
+            editor.putBoolean("sesion", false);
+            editor.putString("nombre", "");
+            editor.putString("token", "");
 
-        // SE MANDA UNA INSTRUCCIÓN COMMIT PARA QUE SE GUARDEN LOS CAMBIOS
-        editor.apply();
+            // SE MANDA UNA INSTRUCCIÓN COMMIT PARA QUE SE GUARDEN LOS CAMBIOS
+            editor.commit();
+        }
     }
 
     private void verifica(){

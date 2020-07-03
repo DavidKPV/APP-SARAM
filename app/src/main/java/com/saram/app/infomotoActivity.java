@@ -1,6 +1,8 @@
 package com.saram.app;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -10,6 +12,7 @@ import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.view.Display;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -25,12 +28,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.saram.app.ui.adapter.MotosAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,14 +48,15 @@ public class infomotoActivity extends AppCompatActivity {
     // ESTOS SON DE LA ETIQUETA QUE CREO NO SE OCUPAN
     FloatingActionButton fabMas;
     ImageView imgEdita;
+    RecyclerView rvContenedorMotos;
     TextView tvModelo, tvMarca, tvCilindraje, tvPlaca, tvSaram;
-
+    MotosAdapter Motocicletas;
     // OBJETOS PARA LA CONEXIÓN AL SERVIDOR UTILIZANDO VOLLEY
     RequestQueue requestQueue;
     ProgressDialog progressDialog;
 
     // CREAMOS UNA CADENA LA CUAL CONTENDRÁ LA CADENA DE NUESTRO WEB SERVICE
-    String HttpUri = "http://192.168.43.200:8080/SARAM-API/public/api/getmotos";
+    String HttpUri = "http://192.168.1.118/SARAM-API/public/api/getmotos";
     String vtoken;
 
     // ESTE MÉTODO EVITA QUE SE REGRESE CON LA FLECHA DE RETORNO QUE TODOS TENEMOS
@@ -70,14 +76,12 @@ public class infomotoActivity extends AppCompatActivity {
 
         // SE ENLAZAN LOS OBJETOS CON LA VISTA
         fabMas = (FloatingActionButton) findViewById(R.id.fabMas);
-        imgEdita = (ImageView) findViewById(R.id.imgEditar);
-        tvModelo = (TextView) findViewById(R.id.tvModelo);
-        tvMarca = (TextView) findViewById(R.id.tvMarca);
-        tvCilindraje = (TextView) findViewById(R.id.tvCilindraje);
-        tvPlaca = (TextView) findViewById(R.id.tvPlaca);
-        tvSaram = (TextView) findViewById(R.id.tvSaram);
+        rvContenedorMotos = (RecyclerView) findViewById(R.id.rvContenedorMotos);
+        rvContenedorMotos.setHasFixedSize(true);
 
-        //lvMotos = (ListView) findViewById(R.id.lvMotos);
+        //Asociar el RV a un LinearLayoutManager
+        LinearLayoutManager LLManager= new LinearLayoutManager(this);
+        rvContenedorMotos.setLayoutManager(LLManager);
 
         // SE ACTIVAN LOS OBJETOS DE REQUEST QUEUE Y PROGRESS DIALOG
         requestQueue = Volley.newRequestQueue(infomotoActivity.this);
@@ -86,16 +90,6 @@ public class infomotoActivity extends AppCompatActivity {
         // OBTENEMOS EL TOKEN DEL SHARED
         SharedPreferences sp1 = getSharedPreferences("MisDatos", Context.MODE_PRIVATE);
         vtoken = sp1.getString("token", "");
-
-
-        imgEdita.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //en esta se debe mandar a llamar para la sig pantalla
-                Intent agregar2 =  new Intent(infomotoActivity.this, editmotoActivity.class);
-                startActivity(agregar2);
-            }
-        });
 
 
         fabMas.setOnClickListener(new View.OnClickListener() {
@@ -134,54 +128,31 @@ public class infomotoActivity extends AppCompatActivity {
                                 startActivity(inicio2);
                             } else {
                                 // OBTENER SE OBTIENEN LOS DATOS DEL ARRAY
-                                JSONArray infomotos = obj.getJSONArray("motos");
-
-                                if(infomotos.getJSONObject(0).getString("Modelo")==null){
-                                    Toast.makeText(getApplicationContext(), "Ingresa una motocicleta :D", Toast.LENGTH_LONG).show();
-                                }else{
-                                    for(int i=0; i<infomotos.length();i++) {
-                                        tvModelo.append(infomotos.getJSONObject(i).getString("Modelo"));
-                                        tvMarca.append(infomotos.getJSONObject(i).getString("Marca"));
-                                        tvCilindraje.append(String.valueOf(infomotos.getJSONObject(i).get("Cilindraje")));
-                                        tvPlaca.append(infomotos.getJSONObject(i).getString("Placa"));
-                                        tvSaram.append(infomotos.getJSONObject(i).getString("ID_saram"));
-                                    }
-                                    // OCULTAMOS EL BOTÓN PARA QUE NO PUEDAN AGREGAR MÁS MOTOCICLETAS
-                                    fabMas.hide();
+                                JSONArray MotosInfo = obj.getJSONArray("motos");
+                                String[] Modelos = new String[MotosInfo.length()];
+                                String[] Marcas = new String[MotosInfo.length()];
+                                String[] Placas = new String[MotosInfo.length()];
+                                String[] SARAM = new String[MotosInfo.length()];
+                                final int[] ID_Motocicleta = new int[MotosInfo.length()];
+                                for (int i=0; i<MotosInfo.length(); i++){
+                                    Modelos[i]=MotosInfo.getJSONObject(i).getString("Modelo");
+                                    Marcas[i]=MotosInfo.getJSONObject(i).getString("Marca");
+                                    SARAM[i]=MotosInfo.getJSONObject(i).getString("ID_saram");
+                                    Placas[i]=MotosInfo.getJSONObject(i).getString("Placa");
+                                    ID_Motocicleta[i]=MotosInfo.getJSONObject(i).getInt("ID_Motocicleta");
                                 }
-                                /*
-                                TODOS ESTOS CÓDIGOS COMENTADOS FUE MI ÚLTIMO INTENTO POR CONSEGUIR REPETIR LA PLANTILLA
-                                POR CADA MOTOCICLETA, SIN EMBARGO EL DETALLE SE ENCUENTRA EN QUE DEBO DE PASAR EL
-                                JSONARRAY (PARTE DE ARRIBA) A UN OBJETO DE TIPO CURSOR PARA PODER COMPLETAR
-                                EL SET ADAPTER DEL FINAL
-                                // SE OBTIENEN LOS DATOS DEL NOMBRE Y NÚMERO DE LOS CONTACTOS ASÍ COMO SU ID
-                                String[] desde = {
-                                        "Modelo",
-                                        "Marca",
-                                        "Cilindraje",
-                                        "Placa",
-                                        "ID_saram"
-                                };
+                                Motocicletas = new MotosAdapter(Modelos, Marcas, Placas, SARAM, ID_Motocicleta, getApplication());
+                                rvContenedorMotos.setAdapter(Motocicletas);
 
-                                // SE CREA UN ARREGLO ENCONTRANDO LOS TEXTVIEW DE CADA ITERACIÓN DEL ARCHIVO XML (ITEM_CONTACTOS.XML)
-                                int[] a = {
-                                        R.id.tvModelo,
-                                        R.id.tvMarca,
-                                        R.id.tvCilindraje,
-                                        R.id.tvPlaca,
-                                        R.id.tvSaram
-                                };
-
-                                // SE CREA EL ADAPTER PARA INSERTAR LOS NOMBRE Y NÚMEROS DE CADA CONTACTO
-                                final SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(
-                                        getApplicationContext(),
-                                        R.layout.tarjeta_info_moto,
-                                        (Cursor) list,
-                                        desde,
-                                        a);
-                                lvMotos.setAdapter(simpleCursorAdapter);
-                                 */
-                            }
+                                Motocicletas.setOnItemClickListener(new MotosAdapter.OnItemClickListener() {
+                                    @Override
+                                    public void onEditClick(int position) {
+                                        Intent editmoto = new Intent(infomotoActivity.this, editmotoActivity.class);
+                                        editmoto.putExtra("ID", ID_Motocicleta[position]);
+                                        startActivity(editmoto);
+                                    }
+                                });
+                                }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
