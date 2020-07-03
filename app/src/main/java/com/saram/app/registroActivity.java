@@ -289,12 +289,12 @@ public class registroActivity extends AppCompatActivity {
         }
     }
 
-    private boolean validaemail(String noe){
+    private boolean validaemail(String correo){
         // O SE ASEGURA QUE TENGA DATOS ESPECÍFICOS DE UN EMAIL
         Pattern patronEmail = Patterns.EMAIL_ADDRESS;
 
         // Y NO PASE DEL LÍMTE PERMITIDO
-        if(!patronEmail.matcher(noe).matches() || noe.length() > 50 ) {
+        if(!patronEmail.matcher(correo).matches() || correo.length() > 50 ) {
             tilCorreo.setError("Correo no válido, Intentalo de nuevo");
             return false;
         }else{

@@ -43,8 +43,8 @@ public class editmotoActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
 
     // CREAMOS UNA CADENA LA CUAL CONTENDRÁ LA CADENA DE NUESTRO WEB SERVICE
-    String HttpUriUpdate = "http://192.168.1.118/SARAM-API/public/api/updatemoto";
-    String HttpUriGetMoto = "http://192.168.1.118/SARAM-API/public/api/getmotos";
+    String HttpUriUpdate = "http://192.168.43.200:8080/SARAM-API/public/api/updatemoto";
+    String HttpUriGetMoto = "http://192.168.43.200:8080/SARAM-API/public/api/getmotos";
     String vtoken;
 
     @Override
@@ -76,7 +76,6 @@ public class editmotoActivity extends AppCompatActivity {
         vtoken = sp1.getString("token", "");
 
         // SE ACTIVA TODO PARA TRAER INFORMACIÓN DE LA MOTOCICLETA
-        // AQUÍ SE REALIZA EL PROCESO PARA REALIZAR LA INSERCIÓN EN LA BASE DE DATOS
         // MOSTRAMOS EL PROGRESS DIALOG ---- AQUÍ SE COMIENZA EL ARMADO Y LA EJECUCIÓN DEL WEB SERVICE
         progressDialog.setMessage("CARGANDO...");
         progressDialog.show();

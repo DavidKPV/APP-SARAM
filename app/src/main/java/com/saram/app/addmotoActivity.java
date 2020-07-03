@@ -41,7 +41,7 @@ public class addmotoActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
 
     // CREAMOS UNA CADENA LA CUAL CONTENDRÁ LA CADENA DE NUESTRO WEB SERVICE
-    String HttpUri = "http://192.168.1.118/SARAM-API/public/api/addmoto";
+    String HttpUri = "http://192.168.43.200:8080/SARAM-API/public/api/addmoto";
     String vtoken;
 
     @Override

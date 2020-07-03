@@ -1,7 +1,10 @@
 package com.saram.app;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -11,8 +14,18 @@ import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -30,10 +43,17 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-public class        inicioActivity extends AppCompatActivity {
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class  inicioActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     TextView tvNombreMenu;
+    ImageView ivUser;
 
     // ESTE MÉTODO EVITA QUE SE REGRESE CON LA FLECHA DE RETORNO QUE TODOS TENEMOS
     @Override
@@ -72,6 +92,7 @@ public class        inicioActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
     }
 
     @Override
@@ -85,10 +106,20 @@ public class        inicioActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.inicio, menu);
 
         tvNombreMenu = (TextView) findViewById(R.id.tvNombreMenu);
+        ivUser = (ImageView) findViewById(R.id.ivUser);
 
         SharedPreferences sp1 = getSharedPreferences("MisDatos", Context.MODE_PRIVATE);
 
         tvNombreMenu.setText(sp1.getString("nombre", ""));
+
+        ivUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // REDIRIGIRÁ A LA OPCIÓN DE EDITAR INFORMACIÓN DE USUARIO
+                Intent infoUser = new Intent(getApplicationContext(), userinfoActivity.class);
+                startActivity(infoUser);
+            }
+        });
 
         return true;
     }

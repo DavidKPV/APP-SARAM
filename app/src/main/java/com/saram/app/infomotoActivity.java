@@ -56,7 +56,7 @@ public class infomotoActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
 
     // CREAMOS UNA CADENA LA CUAL CONTENDRÁ LA CADENA DE NUESTRO WEB SERVICE
-    String HttpUri = "http://192.168.1.118/SARAM-API/public/api/getmotos";
+    String HttpUri = "http://192.168.43.200:8080/SARAM-API/public/api/getmotos";
     String vtoken;
 
     // ESTE MÉTODO EVITA QUE SE REGRESE CON LA FLECHA DE RETORNO QUE TODOS TENEMOS
@@ -131,17 +131,19 @@ public class infomotoActivity extends AppCompatActivity {
                                 JSONArray MotosInfo = obj.getJSONArray("motos");
                                 String[] Modelos = new String[MotosInfo.length()];
                                 String[] Marcas = new String[MotosInfo.length()];
+                                String[] Cilindraje = new String[MotosInfo.length()];
                                 String[] Placas = new String[MotosInfo.length()];
                                 String[] SARAM = new String[MotosInfo.length()];
                                 final int[] ID_Motocicleta = new int[MotosInfo.length()];
                                 for (int i=0; i<MotosInfo.length(); i++){
                                     Modelos[i]=MotosInfo.getJSONObject(i).getString("Modelo");
                                     Marcas[i]=MotosInfo.getJSONObject(i).getString("Marca");
+                                    Cilindraje[i]=MotosInfo.getJSONObject(i).getString("Cilindraje");
                                     SARAM[i]=MotosInfo.getJSONObject(i).getString("ID_saram");
                                     Placas[i]=MotosInfo.getJSONObject(i).getString("Placa");
                                     ID_Motocicleta[i]=MotosInfo.getJSONObject(i).getInt("ID_Motocicleta");
                                 }
-                                Motocicletas = new MotosAdapter(Modelos, Marcas, Placas, SARAM, ID_Motocicleta, getApplication());
+                                Motocicletas = new MotosAdapter(Modelos, Marcas, Cilindraje, Placas, SARAM, ID_Motocicleta, getApplication());
                                 rvContenedorMotos.setAdapter(Motocicletas);
 
                                 Motocicletas.setOnItemClickListener(new MotosAdapter.OnItemClickListener() {
