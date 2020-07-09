@@ -6,6 +6,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -15,13 +17,16 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.Adapter;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.saram.app.ui.adapter.MotosAdapter;
 
 import java.util.ArrayList;
 
@@ -48,10 +53,11 @@ public class contactosActivity extends AppCompatActivity {
         // SE ENLAZAN LOS OBJETOS CON LA VISTA
         listaContactos = (ListView) findViewById(R.id.listaContactos);
 
+
         // SE EJECUTA EL MÉTODO QUE OBTIENE EL CONTENIDO DE LOS CONTACTOS
-        Cursor contactosN = getContentResolver().query(
+        final Cursor contactosN = getContentResolver().query(
                 // EL CONTEN_URI ES UNA DIRECCIÓN QUE PUEDE INGRESAR A LA RUTA DE LOS CONTACTOS
-                ContactsContract.Contacts.CONTENT_URI,
+                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                 null,
                 null,
                 null,
@@ -60,24 +66,68 @@ public class contactosActivity extends AppCompatActivity {
         // SE INICIA EL CURSOR
         startManagingCursor(contactosN);
 
-        if(contactosN.getCount() > 0) {
-            while(contactosN.moveToNext()){
-                // SE OBTIENEN LOS DATOS DEL NOMBRE Y NÚMERO DE LOS CONTACTOS ASÍ COMO SU ID
-                String[] desde = {
-                        ContactsContract.Contacts.DISPLAY_NAME,
-                };
 
-                // SE CREA UN ARREGLO ENCONTRANDO LOS TEXTVIEW DE CADA ITERACIÓN DEL ARCHIVO XML (ITEM_CONTACTOS.XML)
-                int[] a = {
-                        R.id.tvNombreContacto
-                };
+        while(contactosN.moveToNext()){
+            // SE OBTIENEN LOS DATOS DEL NOMBRE Y NÚMERO DE LOS CONTACTOS ASÍ COMO SU ID
+            final String[] desde = {
+                        ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+                        ContactsContract.CommonDataKinds.Phone.NUMBER,
+                        ContactsContract.CommonDataKinds.Phone._ID
+            };
 
-                // SE CREA EL ADAPTER PARA INSERTAR LOS NOMBRE Y NÚMEROS DE CADA CONTACTO
-                final SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(this, R.layout.item_contactos, contactosN, desde, a);
-                listaContactos.setAdapter(simpleCursorAdapter);
-            }
+            // SE CREA UN ARREGLO ENCONTRANDO LOS TEXTVIEW DE CADA ITERACIÓN DEL ARCHIVO XML (ITEM_CONTACTOS.XML)
+            int[] a = {
+                    R.id.tvNombreContacto,
+                    R.id.tvNumeroContacto,
+                    R.id.tvIdContacto
+            };
+
+            // SE CREA EL ADAPTER PARA INSERTAR LOS NOMBRE Y NÚMEROS DE CADA CONTACTO
+            final SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(this, R.layout.item_contactos, contactosN, desde, a);
+            listaContactos.setAdapter(simpleCursorAdapter);
+
+            listaContactos.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, final View view, int position, long id) {
+
+                    // SE BUSCA LA REFERENCIA DEL TEXTVIEW EN LA VISTA.
+                    TextView tvNombre = (TextView) view.findViewById(R.id.tvNombreContacto);
+                    TextView tvNumero = (TextView) view.findViewById(R.id.tvNombreContacto);
+                    // SE OBTIENE EL TEXTO DENTRO DEL CAMPO.
+                    final String nombre  = tvNombre.getText().toString();
+                    String numero  = tvNumero.getText().toString();
+
+                    // DECLARAMOS LAS OPCIONES U OPCIÓN QUE REALIZARÁ LA APP AL MOSTRAR EL ALERT DIALOG
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which){
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    Toast.makeText(getApplicationContext(), "CONTACTO AGREGADO "+nombre, Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    };
+
+                    // SE CREA EL MENSAJE DE CONFIRMACIÓN
+                    AlertDialog.Builder mensaje = new AlertDialog.Builder(contactosActivity.this);
+                    mensaje.setTitle("¿SE AGREGARÁ ESTE CONTACTO A SARAM?").setPositiveButton("ACEPTAR", dialogClickListener)
+                            .setNegativeButton("CANCELAR", dialogClickListener).setIcon(R.drawable.saram)
+                            .setMessage("Desde ahora "+nombre+" recibirá los mensajes de alerta por parte de SARAM").show();
+                }
+            });
         }
+
     }
+
+    // NUEVO CÓDIGO PARA OBTENER LOS CONTACTOS DE MANERA MÁS PRÁCTICAS
+    // METODO PARA OBTENER LOS CONTACTOS DEL TELEFONO
+    public class contactos_android{
+        public String nombre_contacto ="";
+        public String numero_contacto ="";
+        public int id_contacto=0;
+    }
+
+    //-----------------FIN DEL NUEVO CÓDIGO------------------------
 
     private void obtenerContactos(){
         /* ESTA PARTE ES UN CÓDIGO EN EL CUÁL INTENTÉ FILTRAR LOS RESULTADOS DE LOS CONTACTOS PERO AÚN LO

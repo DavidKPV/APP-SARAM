@@ -55,6 +55,10 @@ public class  inicioActivity extends AppCompatActivity {
     TextView tvNombreMenu;
     ImageView ivUser;
 
+    // OBJETOS PARA LA CONEXIÓN AL SERVIDOR UTILIZANDO VOLLEY
+    RequestQueue requestQueue;
+    ProgressDialog progressDialog;
+
     // ESTE MÉTODO EVITA QUE SE REGRESE CON LA FLECHA DE RETORNO QUE TODOS TENEMOS
     @Override
     public void onBackPressed() {

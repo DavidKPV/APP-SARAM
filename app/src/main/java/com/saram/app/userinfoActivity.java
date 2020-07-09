@@ -50,8 +50,8 @@ public class userinfoActivity extends AppCompatActivity {
 
     // PAARA VALIDAR QUE EL SSEXO SOLO SE INTRODUZCA UNA VEZ
     String sexo;
-    String nada=" ";
-    String vsexo;
+    String nada="";
+    String vsexo=null;
 
     // CREAMOS UNA CADENA LA CUAL CONTENDRÁ LA CADENA DE NUESTRO WEB SERVICE
     String HttpUriUpdate = "http://192.168.43.200:8080/SARAM-API/public/api/updateUser";
@@ -513,8 +513,9 @@ public class userinfoActivity extends AppCompatActivity {
                         parametros.put("Alergias", alergias);
                         parametros.put("Religion", religion);
                         parametros.put("Extras", extra);
-                        parametros.put("Sexo", vsexo);
-
+                        if(vsexo != null){
+                            parametros.put("Sexo", vsexo);
+                        }
                         return parametros;
                     }
                     @Override

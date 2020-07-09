@@ -262,6 +262,8 @@ public class MainActivity extends AppCompatActivity {
             editor.putBoolean("sesion", false);
             editor.putString("nombre", "");
             editor.putString("token", "");
+            editor.putString("moto","");
+            editor.putString("modelo","Nada que monitorear");
 
             // SE MANDA UNA INSTRUCCIÓN COMMIT PARA QUE SE GUARDEN LOS CAMBIOS
             editor.commit();
