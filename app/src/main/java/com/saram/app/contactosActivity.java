@@ -103,6 +103,7 @@ public class contactosActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             switch (which){
                                 case DialogInterface.BUTTON_POSITIVE:
+
                                     Toast.makeText(getApplicationContext(), "CONTACTO AGREGADO "+nombre, Toast.LENGTH_LONG).show();
                             }
                         }

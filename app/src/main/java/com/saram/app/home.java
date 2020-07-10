@@ -43,7 +43,7 @@ public class home extends Fragment {
     // SE DECLARAN LOS OBJETOS UTILIZADOS
     Button btnAlarma;
     TextView tvNombre, tvEstado, tvModelo;
-    ImageView imgEstadoX, imgEstadoB;
+    ImageView imgEstado;
     String nombre;
     int vAlarma;
 
@@ -74,15 +74,20 @@ public class home extends Fragment {
 
         tvNombre.setText(nombre);
 
-        handler = new Handler();
-        runnable = new Runnable(){
-            @Override
-            public void run(){
-                checaEstado();
-                handler.postDelayed(this, PERIODO_MONI);
-            }
-        };
-        handler.postDelayed(runnable, PERIODO_MONI);
+        if(modelo.equals("Nada que monitorear")) {
+            // SI NO HAY NADA QUE MONITOREAR NO REALIZARÁ EL PROCESO DE LLAMADA CONTINUA AL SERVIDOR
+        }
+        else{
+            handler = new Handler();
+            runnable = new Runnable() {
+                @Override
+                public void run() {
+                    checaEstado();
+                    handler.postDelayed(this, PERIODO_MONI);
+                }
+            };
+            handler.postDelayed(runnable, PERIODO_MONI);
+        }
     }
 
     @Override
@@ -95,19 +100,12 @@ public class home extends Fragment {
         // ENLAZAR LOS OBJETOS CON LA VISTA
         btnAlarma = (Button) view.findViewById(R.id.btnAlarma);
         tvEstado = (TextView) view.findViewById(R.id.tvEstado);
-        imgEstadoB = (ImageView) view.findViewById(R.id.imgEstadoB);
-        imgEstadoX = (ImageView) view.findViewById(R.id.imgEstadoX);
+        imgEstado = (ImageView) view.findViewById(R.id.imgEstado);
         tvModelo = (TextView) view.findViewById(R.id.tvModeloMoto);
 
         // SE ACTIVAN LOS OBJETOS DE REQUEST QUEUE Y PROGRESS DIALOG
         requestQueue = Volley.newRequestQueue(getActivity());
         progressDialog = new ProgressDialog(getActivity());
-
-        // OCULTAMOS EL TACHE Y SE MUESTRA LA PALOMA DESDE UN INICIO SI FALLA LA CONSULTA A LA BD
-        imgEstadoX.setVisibility(view.GONE);
-
-        // COLOCAMOS EL VALOR DE MOTOCICLETA EN BUEN ESTADO
-        tvEstado.setText("EXCELENTE");
 
         btnAlarma.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,13 +121,21 @@ public class home extends Fragment {
         modelo = sp1.getString("modelo","");
         vAlarma = sp1.getInt("alarma",0);
 
-        tvModelo.setText(modelo);
-
         // SE ACTIVAN LOS OBJETOS DE REQUEST QUEUE Y PROGRESS DIALOG
         requestQueue = Volley.newRequestQueue(getActivity());
         progressDialog = new ProgressDialog(getActivity());
 
-        checaEstado();
+        if(modelo.equals("Nada que monitorear")){
+            // MOSTRAMOS LA IMAGEN ADECUADA
+            imgEstado.setImageDrawable(getResources().getDrawable(R.drawable.nada));
+
+            // COLOCAMOS EL VALOR DE MOTOCICLETA EN BUEN ESTADO
+            tvEstado.setText("");
+            tvModelo.setText(modelo);
+        }
+        else{
+            checaEstado();
+        }
 
         return view;
     }
@@ -186,10 +192,10 @@ public class home extends Fragment {
                             // INTERPRETAR LOS VALORES
                             if(vAlarma==0) {
                                 if (status == 0) {
-                                    // OCULTAMOS LA PALOMA VERDE Y SE MUESTRA TACHE
-                                    imgEstadoB.setVisibility(getView().GONE);
-                                    imgEstadoX.setVisibility(getView().VISIBLE);
+                                    // MOSTRAMOS LA IMAGEN ADECUADA
+                                    imgEstado.setImageDrawable(getResources().getDrawable(R.drawable.tache));
 
+                                    tvModelo.setText(modelo);
                                     // COLOCAMOS EN EL TEXT VIEW QUE EXISTE UN ERROR
                                     tvEstado.setText("¡MOTOCICLETA CAÍDA!");
 
@@ -229,11 +235,12 @@ public class home extends Fragment {
                                     VerificaAlerta.show();
 
 
-                                } else {
-                                    // OCULTAMOS EL TACHE Y SE MUESTRA LA PALOMA
-                                    imgEstadoB.setVisibility(getView().VISIBLE);
-                                    imgEstadoX.setVisibility(getView().GONE);
+                                }
+                                if(status==1){
+                                    // MOSTRAMOS LA IMAGEN ADECUADA
+                                    imgEstado.setImageDrawable(getResources().getDrawable(R.drawable.palomaverde));
 
+                                    tvModelo.setText(modelo);
                                     tvEstado.setText("EXCELENTE");
                                 }
                             }

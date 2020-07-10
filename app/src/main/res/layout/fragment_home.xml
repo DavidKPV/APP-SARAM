@@ -62,18 +62,11 @@
                     android:text="ESTADO" />
 
                 <ImageView
-                    android:id="@+id/imgEstadoB"
+                    android:id="@+id/imgEstado"
                     android:layout_marginTop="20dp"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
-                    android:src="@drawable/palomaverde"
-                    android:layout_gravity="center"/>
-                <ImageView
-                    android:id="@+id/imgEstadoX"
-                    android:layout_marginTop="20dp"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:src="@drawable/tache"
+                    android:src="@drawable/nada"
                     android:layout_gravity="center"/>
 
                 <TextView
