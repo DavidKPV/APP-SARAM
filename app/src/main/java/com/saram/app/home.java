@@ -45,8 +45,10 @@ public class home extends Fragment {
     TextView tvNombre, tvEstado, tvModelo;
     ImageView imgEstadoX, imgEstadoB;
     String nombre;
+    int vAlarma;
 
-    public static final long PERIODO = 30000; // 60 segundos (60 * 1000 millisegundos)
+    public static final long PERIODO_MONI = 30000; // 30 segundos (60 * 1000 millisegundos)
+    public static final long PERIODO_ALARMA = 120000; // 30 segundos (60 * 1000 millisegundos)
     private Handler handler;
     private Runnable runnable;
 
@@ -77,10 +79,10 @@ public class home extends Fragment {
             @Override
             public void run(){
                 checaEstado();
-                handler.postDelayed(this, PERIODO);
+                handler.postDelayed(this, PERIODO_MONI);
             }
         };
-        handler.postDelayed(runnable, PERIODO);
+        handler.postDelayed(runnable, PERIODO_MONI);
     }
 
     @Override
@@ -119,6 +121,7 @@ public class home extends Fragment {
         vtoken = sp1.getString("token", "");
         idmoto = sp1.getString("moto","");
         modelo = sp1.getString("modelo","");
+        vAlarma = sp1.getInt("alarma",0);
 
         tvModelo.setText(modelo);
 
@@ -162,8 +165,8 @@ public class home extends Fragment {
     private void checaEstado(){
         // SE VERIFICA CON LA BASE DE DATOS SI LOS DATOS ESENCIALES DEL USUARIO ESTAN COMPLETOS
         // MOSTRAMOS EL PROGRESS DIALOG ---- AQUÍ SE COMIENZA EL ARMADO Y LA EJECUCIÓN DEL WEB SERVICE
-        progressDialog.setMessage("CARGANDO...");
-        progressDialog.show();
+        //progressDialog.setMessage("CARGANDO...");
+        //progressDialog.show();
         // CREACIÓN DE LA CADENA A EJECUTAR EN EL WEB SERVICE MEDIANTE VOLLEY
         // Objeto de volley
         StringRequest stringRequest = new StringRequest(Request.Method.POST, HttpUriCheck,
@@ -173,7 +176,7 @@ public class home extends Fragment {
                         // UNA VEZ QUE SE MANDAN TODOS LOS VALORES AL WEB SERVICE
                         // QUITAMOS EL PROGRESS DIALOG PARA QUE UNA VEZ QUE SE MANDEN LOS DATOS
                         // YA SE PUEDA TRABAJAR
-                        progressDialog.dismiss();
+                        // progressDialog.dismiss();
                         // MANEJO DE ERRORES CON RESPECTO A LA RESPUESTA
                         try {
                             // CREAR UN OBJETO DE TIPO JSON PARA OBTENER EL ARCHIVO QUE MANDARÁ EL WEB SERVICE
@@ -181,40 +184,62 @@ public class home extends Fragment {
                             // INTERPRETAR EL VALOR DEL JSON OBTENIDO DEL WEB SERVICE
                             int status = obj.getInt("Estado");
                             // INTERPRETAR LOS VALORES
-                            if (status==0) {
-                                // OCULTAMOS LA PALOMA VERDE Y SE MUESTRA TACHE
-                                imgEstadoB.setVisibility(getView().GONE);
-                                imgEstadoX.setVisibility(getView().VISIBLE);
+                            if(vAlarma==0) {
+                                if (status == 0) {
+                                    // OCULTAMOS LA PALOMA VERDE Y SE MUESTRA TACHE
+                                    imgEstadoB.setVisibility(getView().GONE);
+                                    imgEstadoX.setVisibility(getView().VISIBLE);
 
-                                // COLOCAMOS EN EL TEXT VIEW QUE EXISTE UN ERROR
-                                tvEstado.setText("¡MOTOCICLETA CAÍDA!");
+                                    // COLOCAMOS EN EL TEXT VIEW QUE EXISTE UN ERROR
+                                    tvEstado.setText("¡MOTOCICLETA CAÍDA!");
 
-                                // ALERT DIALOG PARA INDICAR QUE DEBE DE CONTINUAR LLENANDO SU INFORMACIÓN DESPUÉS DE HABER HECHO LOGIN
-                                AlertDialog.Builder VerificaAlerta = new AlertDialog.Builder(getContext());
-                                VerificaAlerta.setIcon(R.drawable.ic_baseline_healing_24);
-                                VerificaAlerta.setTitle("¡SE HA DETECTADO UN ACCIDENTE!");
-                                VerificaAlerta.setMessage("Presiona en DETENER si no deseas que se manden las alertas a tus contactos");
-                                VerificaAlerta.setPositiveButton("DETENER", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                    // ALERT DIALOG PARA INDICAR QUE DEBE DE CONTINUAR LLENANDO SU INFORMACIÓN DESPUÉS DE HABER HECHO LOGIN
+                                    AlertDialog.Builder VerificaAlerta = new AlertDialog.Builder(getContext());
+                                    VerificaAlerta.setIcon(R.drawable.ic_baseline_healing_24);
+                                    VerificaAlerta.setTitle("¡SE HA DETECTADO UN ACCIDENTE!");
+                                    VerificaAlerta.setMessage("Presiona en DETENER si no deseas que se manden las alertas a tus contactos");
+                                    VerificaAlerta.setPositiveButton("DETENER", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            SharedPreferences sp1 = getActivity().getSharedPreferences("MisDatos", Context.MODE_PRIVATE);
+                                            // SE MODIFICA EL VALOR DEL SHARED INICIALIZANDO EL EDITOR DEL SHARED
+                                            SharedPreferences.Editor editor = sp1.edit();
+                                            editor.putInt("alarma", 1);
+                                            editor.commit();
+                                        }
+                                    });
 
-                                    }
-                                });
-                                /*
-                                VerificaAlerta.setNegativeButton("MAS TARDE", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                    // TIMERS
+                                    handler = new Handler();
+                                    runnable = new Runnable(){
+                                        @Override
+                                        public void run(){
+                                            mandaMensajes();
+                                            handler.postDelayed(this, PERIODO_ALARMA);
+                                        }
+                                    };
+                                    handler.postDelayed(runnable, PERIODO_ALARMA);
+                                    /*
+                                    VerificaAlerta.setNegativeButton("MAS TARDE", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                        }
+                                    });
+                                    */
+                                    VerificaAlerta.show();
 
-                                    }
-                                });
-                                */
-                                VerificaAlerta.show();
-                            } else {
-                                // OCULTAMOS EL TACHE Y SE MUESTRA LA PALOMA
-                                imgEstadoB.setVisibility(getView().VISIBLE);
-                                imgEstadoX.setVisibility(getView().GONE);
 
-                                tvEstado.setText("EXCELENTE");
+                                } else {
+                                    // OCULTAMOS EL TACHE Y SE MUESTRA LA PALOMA
+                                    imgEstadoB.setVisibility(getView().VISIBLE);
+                                    imgEstadoX.setVisibility(getView().GONE);
+
+                                    tvEstado.setText("EXCELENTE");
+                                }
+                            }
+                            else{
+                                // SI EL VALOR DE LA ALARMA TIENE UN VALOR DE 1 QUIERE DECIR QUE SE PAGÓ LA ALARMA O SE ENVIARON
+                                // LOS MENSAJES
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -248,6 +273,10 @@ public class home extends Fragment {
 
         // SE MANDA A EJECUTAR EL STRING PARA LA LIBRERÍA DE VOLLEY
         requestQueue.add(stringRequest);
+    }
+
+    private void mandaMensajes(){
+        Toast.makeText(getActivity(),"MANDANDO MENSAJES", Toast.LENGTH_SHORT).show();
     }
 
 }

@@ -48,7 +48,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     // CREAMOS UNA CADENA LA CUAL CONTENDRÁ LA CADENA DE NUESTRO WEB SERVICE
     String HttpUriCheck = "http://192.168.43.200:8080/SARAM-API/public/api/getUbicacion";
     String vtoken, idmoto, modelo;
-    Double latitudb, longitudb;
+    double latitudb, longitudb;
 
     // ESTE MÉTODO EVITA QUE SE REGRESE CON LA FLECHA DE RETORNO QUE TODOS TENEMOS
     @Override
@@ -71,13 +71,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         requestQueue = Volley.newRequestQueue(MapsActivity.this);
         progressDialog = new ProgressDialog(MapsActivity.this);
 
-        //-------------------------INICIO DE LA LLAMADA AL WEB SERVICE--------------------
         // OBTENEMOS EL TOKEN DEL SHARED
         SharedPreferences sp1 = getSharedPreferences("MisDatos", Context.MODE_PRIVATE);
         vtoken = sp1.getString("token", "");
         idmoto = sp1.getString("moto","");
         modelo = sp1.getString("modelo","");
 
+        // LLAMAMOS A LA BASE DE DATOS
+        //-------------------------INICIO DE LA LLAMADA AL WEB SERVICE--------------------
         // SE ACTIVA TODO PARA TRAER INFORMACIÓN DEL ESTADO DE LA MOTOCICLETA
         // MOSTRAMOS EL PROGRESS DIALOG ---- AQUÍ SE COMIENZA EL ARMADO Y LA EJECUCIÓN DEL WEB SERVICE
         progressDialog.setMessage("CARGANDO...");
@@ -109,6 +110,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 longitudb = Double.parseDouble(longitud);
 
                                 Toast.makeText(getApplicationContext(), "PREPARANDO LOCALIZACIÓN DE MOTOCICLETA "+modelo+"...", Toast.LENGTH_LONG).show();
+
+                                // ESTA SERÁ LA POSICIÓN DE LA MOTOCICLETA QUE SE ESTÉ GEOLOCALIZANDO
+                                LatLng SARAM = new LatLng(latitudb, longitudb);
+                                mMap.addMarker(new MarkerOptions().position(SARAM).title("Mi Moto "+modelo));
+                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(SARAM, 18f));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -143,7 +149,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // SE MANDA A EJECUTAR EL STRING PARA LA LIBRERÍA DE VOLLEY
         requestQueue.add(stringRequest);
         //------------------FIN DE LA LLAMADA DEL WEB SERVICE-----------------------------
-
     }
 
 
@@ -162,10 +167,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setMyLocationEnabled(true);
         // PARA QUE AUTOMÁTICAMENTE SE ACTIVE LA UBICACIÓN DEL MÓVIL
         // mMap.getUiSettings().setMyLocationButtonEnabled(false);
-
-        // ESTA SERÁ LA POSICIÓN DE LA MOTOCICLETA QUE SE ESTÉ GEOLOCALIZANDO
-        LatLng SARAM = new LatLng(latitudb, longitudb);
-        mMap.addMarker(new MarkerOptions().position(SARAM).title("Mi Moto "+modelo));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(SARAM, 18f));
     }
 }
