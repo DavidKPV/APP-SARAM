@@ -264,6 +264,7 @@ public class MainActivity extends AppCompatActivity {
             editor.putString("token", "");
             editor.putString("moto","");
             editor.putString("modelo","Nada que monitorear");
+            editor.putInt("alarma",0);
 
             // SE MANDA UNA INSTRUCCIÓN COMMIT PARA QUE SE GUARDEN LOS CAMBIOS
             editor.commit();
