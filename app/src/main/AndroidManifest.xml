@@ -18,20 +18,26 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".edit_contactosActivity"
+            android:label="Información contacto"/>
+        <activity
+            android:name=".contactos_saramActivity"
+            android:label="Tus contactos SARAM" />
+        <activity
             android:name=".userinfoActivity"
-            android:label="Mi información"/>
+            android:label="Mi información" />
         <activity
             android:name=".addmotoActivity"
-            android:label="Nueva Motocicleta" />
+            android:label="Nueva motocicleta" />
         <activity
             android:name=".editmotoActivity"
-            android:label="Información de Motocicleta" />
+            android:label="Información de motocicleta" />
         <activity
             android:name=".infomotoActivity"
-            android:label="Información de Motocicletas" />
+            android:label="Información de motocicletas" />
         <activity
             android:name=".contactosActivity"
-            android:label="Contactos" /> <!-- META DATA UTILIZADO PARA ACTIVAR LA API DE GOOGLE -->
+            android:label="Selecciona contactos" /> <!-- META DATA UTILIZADO PARA ACTIVAR LA API DE GOOGLE -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" /> <!-- META DATA PARA LA CONEXIÓN WEB CON VOLLEY -->

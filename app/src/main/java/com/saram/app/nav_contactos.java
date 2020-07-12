@@ -34,7 +34,7 @@ public class nav_contactos extends Fragment {
         if(permissionCheckContactos == PackageManager.PERMISSION_GRANTED){
             // SIMPLEMENTE SE CAMBIA A LA ACTIVITY PARA EVITAR TRABAJAR CON SINTAXIS DE FRAGMENTOS
             // Y CONTINUAR CON EL CÓDIGO DE ACTIVITYS
-            Intent contactos = new Intent(getActivity(), contactosActivity.class);
+            Intent contactos = new Intent(getActivity(), contactos_saramActivity.class);
             startActivity(contactos);
         }
         else{

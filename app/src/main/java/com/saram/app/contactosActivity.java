@@ -7,11 +7,15 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.AbsListView;
@@ -25,22 +29,48 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.saram.app.ui.adapter.MotosAdapter;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class contactosActivity extends AppCompatActivity {
 
     // SE DECLARAN LOS OBJETOS
     ListView listaContactos;
+    // OBJETOS PARA LA CONEXIÓN AL SERVIDOR UTILIZANDO VOLLEY
+    RequestQueue requestQueue;
+    ProgressDialog progressDialog;
+
+    // CREAMOS UNA CADENA LA CUAL CONTENDRÁ LA CADENA DE NUESTRO WEB SERVICE
+    String HttpUriSave = "http://192.168.43.200:8080/SARAM-API/public/api/setContactos";
+    String vtoken, nombre, numero;
 
     // ESTE MÉTODO EVITA QUE SE REGRESE CON LA FLECHA DE RETORNO QUE TODOS TENEMOS
     @Override
     public void onBackPressed() {
         // CUANDO REGRESE CON LA FLECHA DE REGRESO LO QUE HARÁ SERÁ REGRESAR AL INICIO
-        Intent inicio = new Intent(this, inicioActivity.class);
+        Intent inicio = new Intent(this, contactos_saramActivity.class);
         startActivity(inicio);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
     }
 
     @Override
@@ -49,6 +79,14 @@ public class contactosActivity extends AppCompatActivity {
         setContentView(R.layout.activity_contactos);
         // PARA ACTIVAR LA FLECHA DE RETORNO
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // SE ACTIVAN LOS OBJETOS DE REQUEST QUEUE Y PROGRESS DIALOG
+        requestQueue = Volley.newRequestQueue(this);
+        progressDialog = new ProgressDialog(this);
+
+        // OBTENEMOS EL TOKEN DEL SHARED
+        SharedPreferences sp1 = getSharedPreferences("MisDatos", Context.MODE_PRIVATE);
+        vtoken = sp1.getString("token", "");
 
         // SE ENLAZAN LOS OBJETOS CON LA VISTA
         listaContactos = (ListView) findViewById(R.id.listaContactos);
@@ -91,11 +129,11 @@ public class contactosActivity extends AppCompatActivity {
                 public void onItemClick(AdapterView<?> adapterView, final View view, int position, long id) {
 
                     // SE BUSCA LA REFERENCIA DEL TEXTVIEW EN LA VISTA.
-                    TextView tvNombre = (TextView) view.findViewById(R.id.tvNombreContacto);
-                    TextView tvNumero = (TextView) view.findViewById(R.id.tvNombreContacto);
+                    final TextView tvNombre = (TextView) view.findViewById(R.id.tvNombreContacto);
+                    final TextView tvNumero = (TextView) view.findViewById(R.id.tvNumeroContacto);
                     // SE OBTIENE EL TEXTO DENTRO DEL CAMPO.
-                    final String nombre  = tvNombre.getText().toString();
-                    String numero  = tvNumero.getText().toString();
+                    nombre  = tvNombre.getText().toString();
+                    numero  = tvNumero.getText().toString();
 
                     // DECLARAMOS LAS OPCIONES U OPCIÓN QUE REALIZARÁ LA APP AL MOSTRAR EL ALERT DIALOG
                     DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
@@ -103,8 +141,71 @@ public class contactosActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             switch (which){
                                 case DialogInterface.BUTTON_POSITIVE:
+                                    //guardarContacto();
+                                    // SE GUARDA EL CONTACTO EN LA BASE DE DATOS DE SARAM
+                                    // MOSTRAMOS EL PROGRESS DIALOG ---- AQUÍ SE COMIENZA EL ARMADO Y LA EJECUCIÓN DEL WEB SERVICE
+                                    progressDialog.setMessage("CARGANDO...");
+                                    progressDialog.show();
+                                    // CREACIÓN DE LA CADENA A EJECUTAR EN EL WEB SERVICE MEDIANTE VOLLEY
+                                    // Objeto de volley
+                                    StringRequest stringRequest = new StringRequest(Request.Method.POST, HttpUriSave,
+                                            new Response.Listener<String>() {
+                                                @Override
+                                                public void onResponse(String serverresponse) {
+                                                    // UNA VEZ QUE SE MANDAN TODOS LOS VALORES AL WEB SERVICE
+                                                    // QUITAMOS EL PROGRESS DIALOG PARA QUE UNA VEZ QUE SE MANDEN LOS DATOS
+                                                    // YA SE PUEDA TRABAJAR
+                                                    progressDialog.dismiss();
+                                                    // MANEJO DE ERRORES CON RESPECTO A LA RESPUESTA
+                                                    try {
+                                                        // CREAR UN OBJETO DE TIPO JSON PARA OBTENER EL ARCHIVO QUE MANDARÁ EL WEB SERVICE
+                                                        // JSONObject obj = new JSONObject(serverresponse);
+                                                        // INTERPRETAR EL VALOR DEL JSON OBTENIDO DEL WEB SERVICE
+                                                        // String mensaje = obj.getString("mensaje");
+                                                        // INTERPRETAR LOS VALORES
 
-                                    Toast.makeText(getApplicationContext(), "CONTACTO AGREGADO "+nombre, Toast.LENGTH_LONG).show();
+                                                        // SE MANEJARÁ COMO ARRAY DE ACUERDO A LO PROGRAMADO POR EL WEB SERVICE
+                                                        JSONArray valores = new JSONArray(serverresponse);
+                                                        String [] mensaje = new String[valores.length()];
+                                                        mensaje [0] = valores.getJSONObject(0).getString("mensaje");
+                                                        Toast.makeText(getApplicationContext(),mensaje[0], Toast.LENGTH_LONG).show();
+
+                                                    } catch (JSONException e) {
+                                                        e.printStackTrace();
+                                                    }
+
+                                                }
+                                                // ESTE SE EJECUTA SI HAY UN ERROR EN LA RESPUESTA
+                                            }, new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+                                            // SE OCULTA EL PROGRESS DIALOG
+                                            progressDialog.dismiss();
+                                            Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+                                        }
+                                    }) {
+                                        // MAPEO DE LOS VALORES QUE MANDAMOS AL WEB SERVICE
+                                        protected Map<String, String> getParams() {
+                                            // RETORNAR LOS VALORES
+                                            Map<String, String> parametros = new HashMap<>();
+                                            parametros.put("Nombre", nombre);
+                                            parametros.put("Numero_Tel", numero);
+                                            return parametros;
+                                        }
+                                        @Override
+                                        public Map<String, String> getHeaders() throws AuthFailureError {
+                                            Map<String,String> params = new HashMap<String, String>();
+                                            params.put("Content-Type","application/x-www-form-urlencoded");
+                                            params.put("Authorization", vtoken);
+                                            return params;
+                                        }
+                                    };
+
+                                    // SE MANDA A EJECUTAR EL STRING PARA LA LIBRERÍA DE VOLLEY
+                                    requestQueue.add(stringRequest);
+                                    break;
+                                default:
+                                    break;
                             }
                         }
                     };
@@ -117,61 +218,8 @@ public class contactosActivity extends AppCompatActivity {
                 }
             });
         }
-
     }
 
-    // NUEVO CÓDIGO PARA OBTENER LOS CONTACTOS DE MANERA MÁS PRÁCTICAS
-    // METODO PARA OBTENER LOS CONTACTOS DEL TELEFONO
-    public class contactos_android{
-        public String nombre_contacto ="";
-        public String numero_contacto ="";
-        public int id_contacto=0;
-    }
-
-    //-----------------FIN DEL NUEVO CÓDIGO------------------------
-
-    private void obtenerContactos(){
-        /* ESTA PARTE ES UN CÓDIGO EN EL CUÁL INTENTÉ FILTRAR LOS RESULTADOS DE LOS CONTACTOS PERO AÚN LO
-        PUEDO NECESITAR XD
-        // SE DECLARA LA CADENA QUE OBTENDRÁ TODA LA INFORMACIÓN DE LOS CONTACTOS
-        String[] proyeccion = new String[]{
-                // SON TABLAS DONDE SE ALMACENAN LOS DATOS GENÉRICOS DENTRO DEL DISPOSITIVO MÓVIL
-                ContactsContract.Data._ID,
-                ContactsContract.Data.DISPLAY_NAME,
-                ContactsContract.CommonDataKinds.Phone.NUMBER,
-                ContactsContract.CommonDataKinds.Phone.TYPE
-        };
-        // SE DECLARA LA SELECCIÓN DE CONTACTOS
-        String seleccion =
-                ContactsContract.Data.MIMETYPE + "='" +
-                        ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE + "' AND" +
-                        ContactsContract.CommonDataKinds.Phone.NUMBER + "IS NOT NULL";
-        // PARA COLOCAR EL ORDEN DE COMO SE MOSTRARÁN LOS CONTACTOS
-        String orden = ContactsContract.Data.DISPLAY_NAME + " ASC";
-
-        // SE LE ASIGNAN TODOS LOS PARÁMETROS ANTERIORES A LA PETICIÓN DEL CONTENT PROVIDER DE CONTACTOS
-        Cursor cursor = getContentResolver().query(
-                ContactsContract.Data.CONTENT_URI,
-                proyeccion,
-                seleccion,
-                null,
-                orden
-        );
-
-        // HACEMOS EL CICLO PARA QUE NOS IMPRIMA TODOS LOS CONTACTO DEL MÓVIL
-        while (cursor.moveToNext()){
-            textView.append(
-                    "Identificador -" + cursor.getString(0)
-                            +"Nombre -" + cursor.getString(1)
-                            +"Número -" + cursor.getString(2)
-                            +"Tipo -" + cursor.getString(3)
-            );
-        }
-
-        // SE CIERRA EL PROCESO
-        cursor.close();
-        */
-    }
 
     // PARA ACTIVAR LA FUNCIONALIDAD DE LA FLECHA DE RETORNO
     @Override

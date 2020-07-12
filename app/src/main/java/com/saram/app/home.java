@@ -132,6 +132,7 @@ public class home extends Fragment {
             // COLOCAMOS EL VALOR DE MOTOCICLETA EN BUEN ESTADO
             tvEstado.setText("");
             tvModelo.setText(modelo);
+            Toast.makeText(getActivity(), "Ve a la sección de información y selecciona el ícono de SARAM de la motocicleta que deseas monitorear", Toast.LENGTH_LONG).show();
         }
         else{
             checaEstado();
@@ -191,7 +192,7 @@ public class home extends Fragment {
                             int status = obj.getInt("Estado");
                             // INTERPRETAR LOS VALORES
                             if(vAlarma==0) {
-                                if (status == 0) {
+                                if (status == 3) {
                                     // MOSTRAMOS LA IMAGEN ADECUADA
                                     imgEstado.setImageDrawable(getResources().getDrawable(R.drawable.tache));
 
@@ -236,12 +237,21 @@ public class home extends Fragment {
 
 
                                 }
-                                if(status==1){
+                                if(status==2){
                                     // MOSTRAMOS LA IMAGEN ADECUADA
                                     imgEstado.setImageDrawable(getResources().getDrawable(R.drawable.palomaverde));
 
                                     tvModelo.setText(modelo);
                                     tvEstado.setText("EXCELENTE");
+                                }
+                                // CUANDO SARAM NO TENGA ESTADO
+                                if(status==1){
+                                    // MOSTRAMOS LA IMAGEN ADECUADA
+                                    imgEstado.setImageDrawable(getResources().getDrawable(R.drawable.saram_nada));
+
+                                    tvModelo.setText(modelo);
+                                    tvEstado.setText("No se detecta información");
+                                    //Toast.makeText(getActivity(), "Asegurate de que el dispositivo SARAM de la motocicleta "+modelo+" se encuentre encendido", Toast.LENGTH_LONG).show();
                                 }
                             }
                             else{

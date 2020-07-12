@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.saram.app.editmotoActivity">
+    tools:context="com.saram.app.edit_contactosActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -26,25 +26,25 @@
                 app:srcCompat="@drawable/saram" />
 
             <LinearLayout
-                android:id="@+id/llModelo"
+                android:id="@+id/llNombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_gravity="center"
                 android:orientation="horizontal">
                 <TextView
-                    android:id="@+id/tvModelo"
+                    android:id="@+id/tvNombre"
                     android:layout_width="110dp"
                     android:layout_marginTop="18dp"
                     android:layout_height="wrap_content"
-                    android:text="Modelo"
+                    android:text="Nombre"
                     android:textColor="@color/negro"
                     android:textSize="20dp"
                     android:textStyle="bold"
                     android:layout_marginLeft="40dp"
                     />
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilModelo"
+                    android:id="@+id/tilNombre"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:counterEnabled="true"
@@ -52,7 +52,7 @@
                     android:layout_marginRight="50dp">
 
                     <EditText
-                        android:id="@+id/etModelo"
+                        android:id="@+id/etNombre"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text"
@@ -61,103 +61,33 @@
             </LinearLayout>
 
             <LinearLayout
-            android:id="@+id/llMarca"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center"
-            android:orientation="horizontal">
-            <TextView
-                android:id="@+id/tvMarca"
-                android:layout_width="110dp"
-                android:layout_marginTop="18dp"
-                android:layout_height="wrap_content"
-                android:text="Marca"
-                android:textColor="@color/negro"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                android:layout_marginLeft="40dp"
-                />
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilMarca"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:counterEnabled="true"
-                app:counterMaxLength="10"
-                android:layout_marginRight="80dp">
-
-                <EditText
-                    android:id="@+id/etMarca"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    />
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/llCilindraje"
+                android:id="@+id/llApellidos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_gravity="center"
                 android:orientation="horizontal">
                 <TextView
-                    android:id="@+id/tvCilindraje"
+                    android:id="@+id/tvApellidos"
                     android:layout_width="110dp"
                     android:layout_marginTop="18dp"
                     android:layout_height="wrap_content"
-                    android:text="Cilindraje"
+                    android:text="Apellidos"
                     android:textColor="@color/negro"
                     android:textSize="20dp"
                     android:textStyle="bold"
                     android:layout_marginLeft="40dp"
                     />
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilCilindraje"
+                    android:id="@+id/tilApellidos"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:counterEnabled="true"
-                    app:counterMaxLength="6"
-                    android:layout_marginRight="80dp">
+                    app:counterMaxLength="30"
+                    android:layout_marginRight="50dp">
 
                     <EditText
-                        android:id="@+id/etCilindraje"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="number"
-                        />
-                </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/llPlaca"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center"
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/tvPlaca"
-                    android:layout_width="110dp"
-                    android:layout_marginTop="18dp"
-                    android:layout_height="wrap_content"
-                    android:text="Placa"
-                    android:textColor="@color/negro"
-                    android:textSize="20dp"
-                    android:textStyle="bold"
-                    android:layout_marginLeft="40dp"
-                    />
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilPlaca"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:counterEnabled="true"
-                    app:counterMaxLength="5"
-                    android:layout_marginRight="80dp">
-
-                    <EditText
-                        android:id="@+id/etPlaca"
+                        android:id="@+id/etApellidos"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text"
@@ -166,36 +96,71 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/llSARAM"
+                android:id="@+id/llNumero"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_gravity="center"
                 android:orientation="horizontal">
                 <TextView
-                    android:id="@+id/tvSARAM"
+                    android:id="@+id/tvNumero"
                     android:layout_width="110dp"
                     android:layout_marginTop="18dp"
                     android:layout_height="wrap_content"
-                    android:text="SARAM"
+                    android:text="Teléfono"
                     android:textColor="@color/negro"
                     android:textSize="20dp"
                     android:textStyle="bold"
                     android:layout_marginLeft="40dp"
                     />
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilSARAM"
+                    android:id="@+id/tilNumero"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:counterEnabled="true"
-                    app:counterMaxLength="6"
-                    android:layout_marginRight="80dp">
+                    app:counterMaxLength="13"
+                    android:layout_marginRight="50dp">
 
                     <EditText
-                        android:id="@+id/etSARAM"
+                        android:id="@+id/etNumero"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="number"
+                        />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llCorreo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tvCorreo"
+                    android:layout_width="110dp"
+                    android:layout_marginTop="18dp"
+                    android:layout_height="wrap_content"
+                    android:text="Correo"
+                    android:textColor="@color/negro"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="40dp"
+                    />
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilCorreo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="50"
+                    android:layout_marginRight="50dp">
+
+                    <EditText
+                        android:id="@+id/etCorreo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textEmailAddress"
                         />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>

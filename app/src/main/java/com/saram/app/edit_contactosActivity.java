@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,59 +30,59 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
-public class editmotoActivity extends AppCompatActivity {
+public class edit_contactosActivity extends AppCompatActivity {
 
     // SE DECLARAN LOS OBJETOS
-    TextInputLayout tilModelo, tilMarca, tilCilindraje, tilPlaca, tilSARAM;
-    EditText etModelo, etMarca, etCilindraje, etPlaca, etSARAM;
+    TextInputLayout tilNombre, tilApellidos, tilNumero, tilCorreo;
+    EditText etNombre, etApellidos, etNumero, etCorreo;
     Button btnActualiza;
-    int id_moto;
+    String num_tel;
 
     // OBJETOS PARA LA CONEXIÓN AL SERVIDOR UTILIZANDO VOLLEY
     RequestQueue requestQueue;
     ProgressDialog progressDialog;
 
     // CREAMOS UNA CADENA LA CUAL CONTENDRÁ LA CADENA DE NUESTRO WEB SERVICE
-    String HttpUriUpdate = "http://192.168.43.200:8080/SARAM-API/public/api/updatemoto";
-    String HttpUriGetMoto = "http://192.168.43.200:8080/SARAM-API/public/api/getmotos";
+    String HttpUriUpdate = "http://192.168.43.200:8080/SARAM-API/public/api/setContactos"; // ESTO ES LO QUE SE DEBE DE ACTUALIZAR
+    String HttpUriGetContactos = "http://192.168.43.200:8080/SARAM-API/public/api/getContactos";
     String vtoken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_editmoto);
+        setContentView(R.layout.activity_edit_contactos);
+
         // PARA ACTIVAR LA FLECHA DE RETORNO
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // SE ENLAZAN LOS OBJETOS CON LOS CONTROLADORES
-        tilModelo = (TextInputLayout) findViewById(R.id.tilModelo);
-        tilMarca = (TextInputLayout) findViewById(R.id.tilMarca);
-        tilCilindraje = (TextInputLayout) findViewById(R.id.tilCilindraje);
-        tilPlaca = (TextInputLayout) findViewById(R.id.tilPlaca);
-        tilSARAM = (TextInputLayout) findViewById(R.id.tilSARAM);
-        etModelo = (EditText) findViewById(R.id.etModelo);
-        etMarca = (EditText) findViewById(R.id.etMarca);
-        etCilindraje = (EditText) findViewById(R.id.etCilindraje);
-        etPlaca = (EditText) findViewById(R.id.etPlaca);
-        etSARAM = (EditText) findViewById(R.id.etSARAM);
+        tilNombre = (TextInputLayout) findViewById(R.id.tilNombre);
+        tilApellidos = (TextInputLayout) findViewById(R.id.tilApellidos);
+        tilNumero = (TextInputLayout) findViewById(R.id.tilNumero);
+        tilCorreo = (TextInputLayout) findViewById(R.id.tilCorreo);
+        etNombre = (EditText) findViewById(R.id.etNombre);
+        etApellidos = (EditText) findViewById(R.id.etApellidos);
+        etNumero = (EditText) findViewById(R.id.etNumero);
+        etCorreo = (EditText) findViewById(R.id.etCorreo);
         btnActualiza = (Button) findViewById(R.id.btnActualiza);
 
         // SE ACTIVAN LOS OBJETOS DE REQUEST QUEUE Y PROGRESS DIALOG
-        requestQueue = Volley.newRequestQueue(editmotoActivity.this);
-        progressDialog = new ProgressDialog(editmotoActivity.this);
+        requestQueue = Volley.newRequestQueue(edit_contactosActivity.this);
+        progressDialog = new ProgressDialog(edit_contactosActivity.this);
 
         // OBTENEMOS EL TOKEN DEL SHARED
         SharedPreferences sp1 = getSharedPreferences("MisDatos", Context.MODE_PRIVATE);
         vtoken = sp1.getString("token", "");
 
-        // SE ACTIVA TODO PARA TRAER INFORMACIÓN DE LA MOTOCICLETA
+        // SE ACTIVA TODO PARA TRAER INFORMACIÓN DE CONTACTO
         // MOSTRAMOS EL PROGRESS DIALOG ---- AQUÍ SE COMIENZA EL ARMADO Y LA EJECUCIÓN DEL WEB SERVICE
         progressDialog.setMessage("CARGANDO...");
         progressDialog.show();
         // CREACIÓN DE LA CADENA A EJECUTAR EN EL WEB SERVICE MEDIANTE VOLLEY
         // Objeto de volley
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, HttpUriGetMoto,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, HttpUriGetContactos,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String serverresponse) {
@@ -102,16 +103,39 @@ public class editmotoActivity extends AppCompatActivity {
                                 startActivity(inicio2);
                             } else {
                                 // OBTENER SE OBTIENEN LOS DATOS DEL ARRAY
-                                JSONArray infomotos = obj.getJSONArray("motos");
+                                JSONArray ContactosInfo = obj.getJSONArray("contactos");
+                                final String[] Nombre = new String[ContactosInfo.length()];
+                                final String[] Apellidos = new String[ContactosInfo.length()];
+                                final String[] Numero = new String[ContactosInfo.length()];
+                                final String[] Correo = new String[ContactosInfo.length()];
+
+                                // TRAEMOS EL VALOR DEL CONTACTO DEL NUMERO DEL CONTACTO SELECCIONADO
                                 Intent viejo = getIntent();
-                                id_moto = viejo.getIntExtra("ID", -1);
-                                for(int i=0; i<infomotos.length();i++) {
-                                    if(infomotos.getJSONObject(i).getInt("ID_Motocicleta")==id_moto) {
-                                        etModelo.append(infomotos.getJSONObject(i).getString("Modelo"));
-                                        etMarca.append(infomotos.getJSONObject(i).getString("Marca"));
-                                        etCilindraje.append(String.valueOf(infomotos.getJSONObject(i).get("Cilindraje")));
-                                        etPlaca.append(infomotos.getJSONObject(i).getString("Placa"));
-                                        etSARAM.append(infomotos.getJSONObject(i).getString("ID_saram"));
+                                num_tel = viejo.getStringExtra("numero");
+
+                                for(int i=0; i<ContactosInfo.length();i++) {
+                                    if(ContactosInfo.getJSONObject(i).getString("Numero_Tel")==num_tel) {
+                                        etNombre.append(ContactosInfo.getJSONObject(i).getString("Nombre"));
+
+                                        // SE VERIFICA SI LOS VALORES NO ESTAN VACÍOS PARA COLOCARLO EN EL CAMPO
+                                        String apellidos = ContactosInfo.getJSONObject(i).getString("Apellidos");
+                                        if(apellidos.equals("null")){
+                                            etApellidos.append("");
+                                        }
+                                        else{
+                                            etApellidos.append(apellidos);
+                                        }
+
+                                        etNumero.append(String.valueOf(ContactosInfo.getJSONObject(i).get("Numero_Tel")));
+
+                                        // SE VERIFICA SI LOS VALORES NO ESTAN VACÍOS PARA COLOCARLO EN EL CAMPO
+                                        String correo = ContactosInfo.getJSONObject(i).getString("Apellidos");
+                                        if(apellidos.equals("null")){
+                                            etApellidos.append("");
+                                        }
+                                        else{
+                                            etApellidos.append(correo);
+                                        }
                                     }
                                 }
                             }
@@ -143,8 +167,8 @@ public class editmotoActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
 
         // SE CREAN LAS VALIDACIONES EN TIEMPO REAL
-        // VALIDACIÓN PARA EL CAMPO MODELO
-        etModelo.addTextChangedListener(new TextWatcher() {
+        // VALIDACIÓN DENTRO DEL CAMPO NOMBRE
+        etNombre.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -153,7 +177,7 @@ public class editmotoActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 // PARA LIMPIAR LOS ERRORES DENTRO DEL PROCESO DE LLENADO DEL CAMPO
-                tilModelo.setError(null);
+                tilNombre.setError(null);
             }
 
             @Override
@@ -162,8 +186,8 @@ public class editmotoActivity extends AppCompatActivity {
             }
         });
 
-        // VALIDACIÓN PARA EL CAMPO MARCA
-        etMarca.addTextChangedListener(new TextWatcher() {
+        // VALIDACIÓN DEL CAMPO APELLIDOS
+        etApellidos.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -172,7 +196,7 @@ public class editmotoActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 // PARA LIMPIAR LOS ERRORES DENTRO DEL PROCESO DE LLENADO DEL CAMPO
-                tilMarca.setError(null);
+                tilApellidos.setError(null);
             }
 
             @Override
@@ -181,8 +205,8 @@ public class editmotoActivity extends AppCompatActivity {
             }
         });
 
-        // VALIDACIÓN PARA EL CAMPO CILINDRAJE
-        etCilindraje.addTextChangedListener(new TextWatcher() {
+        // VALIDACIÓN PARA EL CAMPO TELEFONO
+        etNumero.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -191,7 +215,7 @@ public class editmotoActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 // PARA LIMPIAR LOS ERRORES DENTRO DEL PROCESO DE LLENADO DEL CAMPO
-                tilCilindraje.setError(null);
+                tilNumero.setError(null);
             }
 
             @Override
@@ -200,8 +224,8 @@ public class editmotoActivity extends AppCompatActivity {
             }
         });
 
-        // VALIDACIÓN PARA EL CAMPO PLACA
-        etPlaca.addTextChangedListener(new TextWatcher() {
+        // VALIDACIÓN DEL CAMPO CORREO
+        etCorreo.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -210,26 +234,7 @@ public class editmotoActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 // PARA LIMPIAR LOS ERRORES DENTRO DEL PROCESO DE LLENADO DEL CAMPO
-                tilPlaca.setError(null);
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
-        // VALIDACIÓN PARA EL CAMPO SARAM
-        etSARAM.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                // PARA LIMPIAR LOS ERRORES DENTRO DEL PROCESO DE LLENADO DEL CAMPO
-                tilSARAM.setError(null);
+                tilCorreo.setError(null);
             }
 
             @Override
@@ -242,36 +247,30 @@ public class editmotoActivity extends AppCompatActivity {
         btnActualiza.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                apdatemoto();
+                apdateContacto();
             }
         });
     }
 
-    // MÉTODO PARA ACTUALIZAR LA MOTOCICLETA
-    private void apdatemoto(){
-        final String modelo = tilModelo.getEditText().getText().toString();
-        final String marca = tilMarca.getEditText().getText().toString();
-        final String cilindraje = tilCilindraje.getEditText().getText().toString();
-        final String placa = tilPlaca.getEditText().getText().toString();
-        final String saram = tilSARAM.getEditText().getText().toString();
+    // MÉTODO PARA ACTUALIZAR EL CONTACTO
+    private void apdateContacto(){
+        final String nombre = tilNombre.getEditText().getText().toString();
+        final String apellidos = tilApellidos.getEditText().getText().toString();
+        final String numero = tilNumero.getEditText().getText().toString();
+        final String correo = tilCorreo.getEditText().getText().toString();
 
         // SE VALIDAN QUE LOS CAMPOS NO ESTEN VACÍOS
-        if (modelo.isEmpty() || marca.isEmpty() || cilindraje.isEmpty() || placa.isEmpty() || saram.isEmpty()) {
-            Toast.makeText(this, "LLENA TODOS LOS CAMPOS", Toast.LENGTH_LONG).show();
+        if (nombre.isEmpty() || numero.isEmpty()) {
+            Toast.makeText(this, "ES NECESARIO INGRESAR EL NOMBRE Y EL NÚMERO", Toast.LENGTH_LONG).show();
         } else {
-            // PASAMOS LOS DATOS QUE NECESITAN SER DE TIPO ENTERO PARA ALMACENARSE EN LA BD
-            final int intcilindraje = Integer.parseInt(cilindraje);
-            final int intsaram = Integer.parseInt(saram);
-
             // SE OBTIENEN LOS RESULTADOS DE LA VALIDACIÓN DE AMBOS CAMPOS
-            Boolean vmodelo = validaModelo(modelo);
-            Boolean vmarca = validaMarca(marca);
-            Boolean vcilindraje = validaCilindraje(intcilindraje);
-            Boolean vplaca = validaPlaca(placa);
-            Boolean vsaram = validaSARAM(intsaram);
+            Boolean vnombre = validaNombre(nombre);
+            Boolean vapellidos = validaApellidos(apellidos);
+            Boolean vnumero = validaTelefono(numero);
+            Boolean vcorreo = validaCorreo(correo);
 
             // SE VALIDA QUE LOS CAMPOS HAYAN PASADO SUS RESPECTIVAS VALIDACIONES
-            if (vmodelo && vmarca && vcilindraje && vplaca && vsaram) {
+            if (vnombre && vapellidos && vnumero && vcorreo) {
                 // AQUÍ SE REALIZA EL PROCESO PARA REALIZAR LA INSERCIÓN EN LA BASE DE DATOS
                 // MOSTRAMOS EL PROGRESS DIALOG ---- AQUÍ SE COMIENZA EL ARMADO Y LA EJECUCIÓN DEL WEB SERVICE
                 progressDialog.setMessage("CARGANDO...");
@@ -299,9 +298,9 @@ public class editmotoActivity extends AppCompatActivity {
                                         Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_LONG).show();
                                     } else {
                                         Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_LONG).show();
-                                        // REDIRIGE A LA INFO DE LA MOTOCICLETA YA ACTUALIZADA
+                                        // REDIRIGE A LA INFO DE LOS CONTACTOS YA ACTUALIZADA
                                         // REDIRIGE AL ACTIVITY REINICIANDO EL SERVICIO
-                                        Intent infoaupdate = new Intent(getApplicationContext(), infomotoActivity.class);
+                                        Intent infoaupdate = new Intent(getApplicationContext(), contactos_saramActivity.class);
                                         startActivity(infoaupdate);
                                     }
                                 } catch (JSONException e) {
@@ -322,12 +321,10 @@ public class editmotoActivity extends AppCompatActivity {
                     protected Map<String, String> getParams() {
                         // RETORNAR LOS VALORES
                         Map<String, String> parametros = new HashMap<>();
-                        parametros.put("Modelo", modelo);
-                        parametros.put("Marca", marca);
-                        parametros.put("Cilindraje", cilindraje);
-                        parametros.put("SARAM", saram);
-                        parametros.put("Placa", placa);
-                        parametros.put("ID_Moto", String.valueOf(id_moto));
+                        parametros.put("Nombre", nombre);
+                        parametros.put("Apellidos", apellidos);
+                        parametros.put("Numero_Tel", numero);
+                        parametros.put("Correo", correo);
                         return parametros;
                     }
                     @Override
@@ -345,49 +342,60 @@ public class editmotoActivity extends AppCompatActivity {
         }
     }
 
-    // MÉTODOS QUE VALIDAN LÍMTE DE CAMPOS
-    private boolean validaModelo(String modelo){
-        if(modelo.length() > 30 ) {
-            tilModelo.setError("Modelo no válido, Intentalo de nuevo");
+    // MÉTODOS QUE VALIDAN LOS CAMPOS
+    private boolean validaNombre(String nombre){
+        Pattern patron = Pattern.compile("^[a-zA-Z ]+$");
+        // Y NO PASE DEL LÍMTE PERMITIDO
+        if (!patron.matcher(nombre).matches() || nombre.length() > 30) {
+            tilNombre.setError("Nombre no válido, Intentalo de nuevo");
             return false;
         }else{
             return true;
         }
     }
 
-    private boolean validaMarca(String marca){
-        if(marca.length() > 10 ) {
-            tilMarca.setError("Marca no válida, Intentalo de nuevo");
-            return false;
-        }else{
+    private boolean validaApellidos(String apellidos){
+        if(apellidos.equals("")){
             return true;
+        }
+        else {
+            Pattern patron = Pattern.compile("^[a-zA-Z ]+$");
+            // Y NO PASE DEL LÍMTE PERMITIDO
+            if (!patron.matcher(apellidos).matches() || apellidos.length() > 30) {
+                tilApellidos.setError("Apellidos no válidos, Intentalo de nuevo");
+                return false;
+            }else{
+                return true;
+            }
         }
     }
 
-    private boolean validaCilindraje(int cilindraje){
-        if(cilindraje > 99999 && cilindraje < 49 ) {
-            tilCilindraje.setError("Cilindraje no válido, Intentalo de nuevo");
+    private boolean validaTelefono(String telefono){
+        // VALIDA QUE NO PASE DEL LÍMTE PERMITIDO
+        if (telefono.length() > 13) {
+            tilNumero.setError("Teléfono no válido, Intentalo de nuevo");
             return false;
         }else{
-            return true;
+            tilNumero.setError(null);
         }
+        return true;
     }
 
-    private boolean validaPlaca(String placa){
-        if(placa.length() > 5 ) {
-            tilPlaca.setError("Placa no válida, Intentalo de nuevo");
-            return false;
-        }else{
+    private boolean validaCorreo(String correo){
+        if(correo.equals("")){
             return true;
         }
-    }
+        else{
+            // O SE ASEGURA QUE TENGA DATOS ESPECÍFICOS DE UN EMAIL
+            Pattern patronEmail = Patterns.EMAIL_ADDRESS;
 
-    private boolean validaSARAM(int saram){
-        if(saram > 9999 && saram < 0 ) {
-            tilSARAM.setError("Número de SARAM no válido, Intentalo de nuevo");
-            return false;
-        }else{
-            return true;
+            // Y NO PASE DEL LÍMTE PERMITIDO
+            if(!patronEmail.matcher(correo).matches() || correo.length() > 50 ) {
+                tilCorreo.setError("Correo no válido, Intentalo de nuevo");
+                return false;
+            }else{
+                return true;
+            }
         }
     }
 
@@ -397,4 +405,5 @@ public class editmotoActivity extends AppCompatActivity {
         onBackPressed();
         return true;
     }
+
 }
