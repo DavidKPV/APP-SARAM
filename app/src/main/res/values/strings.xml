@@ -8,6 +8,7 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
+    <!-- NOMBRES DE LA SECCIÓN DEL MENÚ DESPLEGABLE -->
     <string name="menu_home">Inicio</string>
     <string name="menu_contactos">Contactos</string>
     <string name="menu_info">Información</string>

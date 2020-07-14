@@ -2,6 +2,8 @@ package com.saram.app;
 
 import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -19,6 +21,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.AuthFailureError;
@@ -36,7 +40,9 @@ import org.w3c.dom.Text;
 import java.util.HashMap;
 import java.util.Map;
 
-import static android.view.View.GONE;
+import static android.content.Context.NOTIFICATION_SERVICE;
+// IMPORTAMOS EL JAVA EN DONDE SE ENCUENTRA DECLARADO EL CANAL QUE UTILIZAREMOS PARA LAS NOTIFICACIONES
+import static com.saram.app.canal_notificacion.Canal_ID;
 
 public class home extends Fragment {
 
@@ -45,8 +51,12 @@ public class home extends Fragment {
     TextView tvNombre, tvEstado, tvModelo;
     ImageView imgEstado;
     String nombre;
-    int vAlarma;
+    int vAlarma, vmensajes;
 
+    // PARA LAS NOTIFICACIONES
+    private NotificationManagerCompat notificationManager;
+
+    // PARA EL LLAMADO CONTINUO DEL WEB SERVICE
     public static final long PERIODO_MONI = 30000; // 30 segundos (60 * 1000 millisegundos)
     public static final long PERIODO_ALARMA = 120000; // 30 segundos (60 * 1000 millisegundos)
     private Handler handler;
@@ -78,6 +88,7 @@ public class home extends Fragment {
             // SI NO HAY NADA QUE MONITOREAR NO REALIZARÁ EL PROCESO DE LLAMADA CONTINUA AL SERVIDOR
         }
         else{
+
             handler = new Handler();
             runnable = new Runnable() {
                 @Override
@@ -103,6 +114,9 @@ public class home extends Fragment {
         imgEstado = (ImageView) view.findViewById(R.id.imgEstado);
         tvModelo = (TextView) view.findViewById(R.id.tvModeloMoto);
 
+        // PARA AENLAZAR EL ADMINISTRADOR DE NOTIFICACIONES
+        notificationManager = NotificationManagerCompat.from(getContext());
+
         // SE ACTIVAN LOS OBJETOS DE REQUEST QUEUE Y PROGRESS DIALOG
         requestQueue = Volley.newRequestQueue(getActivity());
         progressDialog = new ProgressDialog(getActivity());
@@ -120,6 +134,7 @@ public class home extends Fragment {
         idmoto = sp1.getString("moto","");
         modelo = sp1.getString("modelo","");
         vAlarma = sp1.getInt("alarma",0);
+        vmensajes = sp1.getInt("mensajes",0);
 
         // SE ACTIVAN LOS OBJETOS DE REQUEST QUEUE Y PROGRESS DIALOG
         requestQueue = Volley.newRequestQueue(getActivity());
@@ -142,6 +157,38 @@ public class home extends Fragment {
     }
 
     private void ejecutar_alarma(){
+        /*
+        Notification notification = new NotificationCompat.Builder(getContext(), Canal_ID)
+                .setSmallIcon(R.drawable.saram)
+                .setContentTitle("Alerta caída de motocicleta "+modelo)
+                .setContentText("Se ha detectado una caída de motocicleta, cancela la alerta en caso de que no necesites ayuda")
+                .setVibrate(new long[] {100, 250, 100, 500})
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .build();
+        notificationManager.notify(1, notification);
+         */
+
+        /*
+        // LANZAMOS NOTICACIÓN AL DISPOSITIVO MÓVIL
+        NotificationCompat.Builder builder;
+        NotificationManager saramNotify =(NotificationManager) getContext().getSystemService(NOTIFICATION_SERVICE);
+        // DECLARAMOS AL INTENT QUE VA A REDIRECCIONAR UNA VEZ QUE SE ACCEDA A EL
+        Intent alerta=new Intent(getContext(), inicioActivity.class);
+        // DECLARAMOS EL INTENT COMO PENDIENTE PARA QUE PUEDA LEERLO LAS NOTIFICACIONES
+        PendingIntent intentalarma = PendingIntent.getActivity(getContext(), 0, alerta, 0);
+        // SE CREA TODA LA ESTRUCTURA DE LA NOTIFICACIÓN
+        builder =new NotificationCompat.Builder(getActivity())
+                .setContentIntent(intentalarma)
+                .setSmallIcon(R.drawable.saram)
+                .setContentTitle("Alerta de caída de motocicleta")
+                .setContentText("Se ha detectado una caída de motocicleta, cancela la alerta en caso de que no necesites ayuda")
+                .setVibrate(new long[] {100, 250, 100, 500})
+                .setAutoCancel(true);
+        // SE EJECUTA LA NOTIFICACIÓN
+        saramNotify.notify(1, builder.build());
+         */
+
         AlertDialog.Builder VerificaAlerta = new AlertDialog.Builder(getContext());
         VerificaAlerta.setIcon(R.drawable.ic_baseline_healing_24);
         VerificaAlerta.setTitle("SE ACTIVARÁ LA ALARMA MANUAL :C");
@@ -162,7 +209,7 @@ public class home extends Fragment {
         VerificaAlerta.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-
+                showNotification();
             }
         });
         VerificaAlerta.show();
@@ -191,7 +238,7 @@ public class home extends Fragment {
                             // INTERPRETAR EL VALOR DEL JSON OBTENIDO DEL WEB SERVICE
                             int status = obj.getInt("Estado");
                             // INTERPRETAR LOS VALORES
-                            if(vAlarma==0) {
+                            //if(vAlarma==0) {
                                 if (status == 3) {
                                     // MOSTRAMOS LA IMAGEN ADECUADA
                                     imgEstado.setImageDrawable(getResources().getDrawable(R.drawable.tache));
@@ -200,32 +247,42 @@ public class home extends Fragment {
                                     // COLOCAMOS EN EL TEXT VIEW QUE EXISTE UN ERROR
                                     tvEstado.setText("¡MOTOCICLETA CAÍDA!");
 
-                                    // ALERT DIALOG PARA INDICAR QUE DEBE DE CONTINUAR LLENANDO SU INFORMACIÓN DESPUÉS DE HABER HECHO LOGIN
-                                    AlertDialog.Builder VerificaAlerta = new AlertDialog.Builder(getContext());
-                                    VerificaAlerta.setIcon(R.drawable.ic_baseline_healing_24);
-                                    VerificaAlerta.setTitle("¡SE HA DETECTADO UN ACCIDENTE!");
-                                    VerificaAlerta.setMessage("Presiona en DETENER si no deseas que se manden las alertas a tus contactos");
-                                    VerificaAlerta.setPositiveButton("DETENER", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            SharedPreferences sp1 = getActivity().getSharedPreferences("MisDatos", Context.MODE_PRIVATE);
-                                            // SE MODIFICA EL VALOR DEL SHARED INICIALIZANDO EL EDITOR DEL SHARED
-                                            SharedPreferences.Editor editor = sp1.edit();
-                                            editor.putInt("alarma", 1);
-                                            editor.commit();
-                                        }
-                                    });
+                                    /*
 
-                                    // TIMERS
-                                    handler = new Handler();
-                                    runnable = new Runnable(){
-                                        @Override
-                                        public void run(){
-                                            mandaMensajes();
-                                            handler.postDelayed(this, PERIODO_ALARMA);
+                                     */
+
+
+
+                                    if(vmensajes == 0){
+                                        // ALERT DIALOG PARA INDICAR QUE SE HA DETECTADO UN ACCIDENTE
+                                        AlertDialog.Builder VerificaAlerta = new AlertDialog.Builder(getContext());
+                                        VerificaAlerta.setIcon(R.drawable.ic_baseline_healing_24);
+                                        VerificaAlerta.setTitle("¡SE HA DETECTADO UN ACCIDENTE!");
+                                        VerificaAlerta.setMessage("Presiona en DETENER si no deseas que se manden las alertas a tus contactos");
+                                        VerificaAlerta.setPositiveButton("DETENER", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                SharedPreferences sp1 = getActivity().getSharedPreferences("MisDatos", Context.MODE_PRIVATE);
+                                                // SE MODIFICA EL VALOR DEL SHARED INICIALIZANDO EL EDITOR DEL SHARED
+                                                SharedPreferences.Editor editor = sp1.edit();
+                                                editor.putInt("alarma", 1);
+                                                editor.putInt("mensajes", 1);
+                                                editor.commit();
+                                            }
+                                        });
+
+                                        if(vmensajes == 0) {
+                                            // TIMERS
+                                            handler = new Handler();
+                                            runnable = new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    mandaMensajes();
+                                                    handler.postDelayed(this, PERIODO_ALARMA);
+                                                }
+                                            };
+                                            handler.postDelayed(runnable, PERIODO_ALARMA);
                                         }
-                                    };
-                                    handler.postDelayed(runnable, PERIODO_ALARMA);
                                     /*
                                     VerificaAlerta.setNegativeButton("MAS TARDE", new DialogInterface.OnClickListener() {
                                         @Override
@@ -233,9 +290,11 @@ public class home extends Fragment {
                                         }
                                     });
                                     */
-                                    VerificaAlerta.show();
+                                        VerificaAlerta.show();
+                                    }
+                                    else{
 
-
+                                    }
                                 }
                                 if(status==2){
                                     // MOSTRAMOS LA IMAGEN ADECUADA
@@ -253,11 +312,11 @@ public class home extends Fragment {
                                     tvEstado.setText("No se detecta información");
                                     //Toast.makeText(getActivity(), "Asegurate de que el dispositivo SARAM de la motocicleta "+modelo+" se encuentre encendido", Toast.LENGTH_LONG).show();
                                 }
-                            }
-                            else{
+                            //}
+                            //else{
                                 // SI EL VALOR DE LA ALARMA TIENE UN VALOR DE 1 QUIERE DECIR QUE SE PAGÓ LA ALARMA O SE ENVIARON
                                 // LOS MENSAJES
-                            }
+                            //}
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -276,7 +335,7 @@ public class home extends Fragment {
             protected Map<String, String> getParams() {
                 // RETORNAR LOS VALORES
                 Map<String, String> parametros = new HashMap<>();
-                parametros.put("ID_motocicleta", "18");
+                parametros.put("ID_motocicleta", idmoto);
                 return parametros;
             }
             @Override
@@ -293,7 +352,35 @@ public class home extends Fragment {
     }
 
     private void mandaMensajes(){
+        SharedPreferences sp1 = getActivity().getSharedPreferences("MisDatos", Context.MODE_PRIVATE);
+        // SE MODIFICA EL VALOR DEL SHARED INICIALIZANDO EL EDITOR DEL SHARED
+        SharedPreferences.Editor editor = sp1.edit();
+        editor.putInt("mensajes", 0);
+        editor.commit();
+
         Toast.makeText(getActivity(),"MANDANDO MENSAJES", Toast.LENGTH_SHORT).show();
+    }
+
+    public void showNotification() {
+
+        NotificationManager notificationManager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // Podrás mostrar el icono de la notificación, en este caso una alerta
+        Notification notification = new Notification(android.R.drawable.stat_sys_warning,
+                        "Notificación", System.currentTimeMillis());
+
+        CharSequence titulo = "Alerta";
+
+        // Clase de Notification
+        Intent notificationIntent = new Intent(getContext(), inicioActivity.class);
+        PendingIntent contIntent = PendingIntent.getActivity(getContext(), 0, notificationIntent, 0);
+        //notification.setLatestEventInfo(this, "Aviso de notificación", "Esto es un ejemplo de notificación", contIntent);
+
+        notification.flags |= Notification.FLAG_AUTO_CANCEL;
+
+        //importante
+        int not_id = 1;
+        notificationManager.notify(not_id, notification);
     }
 
 }

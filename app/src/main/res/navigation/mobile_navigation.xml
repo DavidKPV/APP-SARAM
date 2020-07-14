@@ -32,7 +32,7 @@
     <fragment
         android:id="@+id/nav_pprivacidad"
         android:name="com.saram.app.nav_pprivacidad"
-        android:label="Políticas de Pribacidad"
+        android:label="Políticas SARAM"
         tools:layout="@layout/fragment_pprivacidad" />
 
     <fragment
