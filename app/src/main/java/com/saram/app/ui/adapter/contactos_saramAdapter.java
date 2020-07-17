@@ -32,9 +32,10 @@ public class contactos_saramAdapter extends RecyclerView.Adapter<contactos_saram
             super(contactos);
             Nombre = contactos.findViewById(R.id.tvNombreContacto);
             Numero = contactos.findViewById(R.id.tvNumeroContacto);
-            btn_Edit = contactos.findViewById(R.id.imgEditar);
+            //btn_Edit = contactos.findViewById(R.id.imgEditar);
             btn_delete = contactos.findViewById(R.id.imgEliminar);
 
+            /*
             btn_Edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -46,6 +47,7 @@ public class contactos_saramAdapter extends RecyclerView.Adapter<contactos_saram
                     }
                 }
             });
+             */
 
             // BOTÓN PARA ELIMINAR REGISTRO DE LA MOTOCICLETA
            btn_delete.setOnClickListener(new View.OnClickListener() {
@@ -89,7 +91,7 @@ public class contactos_saramAdapter extends RecyclerView.Adapter<contactos_saram
     public  void  onBindViewHolder(final ViewHolder holder, final int position){
         holder.Nombre.setText("Nombre: "+Nombre[position].toString());
         holder.Numero.setText("Número: "+Numero[position].toString());
-        holder.btn_Edit.setId(IDs[position]);
+        //holder.btn_Edit.setId(IDs[position]);
     }
 
     @Override

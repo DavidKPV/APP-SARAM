@@ -8,6 +8,8 @@
     <uses-permission android:name="android.permission.INTERNET" /> <!-- SE LE DAN PERMISOS DE VIBRACIÓN DE HARDWARE DEL DISPOSITIVO -->
     <uses-permission android:name="android.permission.VIBRATE" /> <!-- PERMISO PARA PODER OBTENER LOS CONTACTOS DEL DISPOSITIVO (CONTENT PROVIDER) -->
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <!-- PERMISO PARA EL ENVÍO DE MENSAJES DE TEXTO -->
+    <uses-permission android:name="android.permission.SEND_SMS"/>
 
     <application
         android:allowBackup="true"

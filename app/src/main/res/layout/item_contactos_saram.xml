@@ -49,6 +49,7 @@
         android:gravity="right"
         android:layout_marginRight="20dp">
 
+        <!--
         <ImageView
             android:id="@+id/imgEditar"
             android:layout_width="20dp"
@@ -57,6 +58,7 @@
             android:src="@drawable/lapiz"
             android:layout_marginTop="20dp"
             />
+            -->
 
         <ImageView
             android:id="@+id/imgEliminar"

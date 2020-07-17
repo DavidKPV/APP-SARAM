@@ -47,7 +47,6 @@ public class nav_ubicacion extends Fragment {
         }
         else{
             if(modelo.equals("Nada que monitorear")){
-                Toast.makeText(getContext(), "DEBES ACTIVAR LOS PERMISOS DE UBICACIÓN PARA UTILIZAR ESTA OPCIÓN", Toast.LENGTH_LONG).show();
                 Toast.makeText(getContext(), "DEBES ELEGIR UNA MOTOCICLETA A MONITOREAR EN LA SECCIÓN DE INFORMACIÓN", Toast.LENGTH_LONG).show();
                 Intent inicio = new Intent(getContext(), inicioActivity.class);
                 startActivity(inicio);

@@ -38,7 +38,7 @@ public class nav_contactos extends Fragment {
             startActivity(contactos);
         }
         else{
-            Toast.makeText(getContext(), "DEBES ACTIVAR LOS PERMISOS DE CONTACTOS PARA UTILIZAR ESTA OPCIÓN", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "DEBES ACTIVAR LOS PERMISOS DE LECTURA DE CONTACTOS PARA UTILIZAR ESTA OPCIÓN", Toast.LENGTH_LONG).show();
 
             Intent inicio = new Intent(getContext(), inicioActivity.class);
             startActivity(inicio);

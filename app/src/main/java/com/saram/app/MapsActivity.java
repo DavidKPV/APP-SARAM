@@ -116,6 +116,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 mMap.addMarker(new MarkerOptions().position(SARAM).title("Mi Moto "+modelo));
                                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(SARAM, 18f));
                             }
+                            else{
+                                Toast.makeText(getApplicationContext(), "NO HAY REGISTROS DE UBICACIÓN DE LA MOTOCICLETA "+modelo+" AEGÚRATE DE QUE EL DISPOSITIVO SARAM ASOCIADO A ESTA MOTO ESTÉ EN FUNCIONAMIENTO", Toast.LENGTH_LONG).show();
+                                //Intent regresa = new Intent(getApplicationContext(), inicioActivity.class);
+                                //startActivity(regresa);
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.telephony.SmsManager;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
@@ -62,7 +63,7 @@ public class  inicioActivity extends AppCompatActivity {
     // ESTE MÉTODO EVITA QUE SE REGRESE CON LA FLECHA DE RETORNO QUE TODOS TENEMOS
     @Override
     public void onBackPressed() {
-        finishAffinity();
+        mensajeEvita();
     }
 
     @Override
@@ -182,6 +183,18 @@ public class  inicioActivity extends AppCompatActivity {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             }
         }
+
+        // VEWRIFICAMOS QUE SE TENGAN LOS PERMISOS NECESARIOS PARA EL ENVÍO DE MENSAJES DE TEXTO
+        int permissionCheckSMS = ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS);
+
+        // SE VERIFICA CON LA CONDICIONAL DE QUE LOS PERMISOS SE ENCIENTREN INSTALDOS
+        if(permissionCheckSMS == PackageManager.PERMISSION_GRANTED){
+            // AQUI SE COLOCA MENSAJES EXTRAS QUE SE QUIERAN COLOCAR SOBRE LA EXPLICACIÓN DE LOS PERMISOS
+        }
+        else{
+            // PEDIRÁ LA ACTIVACIÓN DEL SERVICIO
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, 1);
+        }
     }
 
     // PARA DARLE EL COMPORTAMIENTO A CADA ITEM QUE SE TIENE EN EL MENÚ SUPERIOR IZQUIERDO
@@ -191,10 +204,30 @@ public class  inicioActivity extends AppCompatActivity {
         switch(item.getItemId()){
             case R.id.accion_salir:
                 // ESTA FUNCIÓN HACE QUE SALGAS DE LA APP (SE FINALICE SIN CERRAR SESION);
-                finishAffinity();
+                mensajeEvita();
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    // MENSAJE PARA EVITAR QUE EL USUARIO DEJE DE MONITOREAR LA MOTOCICLETA
+    private void mensajeEvita(){
+        // DECLARAMOS LAS OPCIONES U OPCIÓN QUE REALIZARÁ LA APP AL MOSTRAR EL ALERT DIALOG
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        finishAffinity();
+                }
+            }
+        };
+
+        // SE CREA EL MENSAJE DE CONFIRMACIÓN
+        AlertDialog.Builder mensaje = new AlertDialog.Builder(inicioActivity.this);
+        mensaje.setTitle("¿DESEAS SALIR DE SARAM?").setPositiveButton("SALIR", dialogClickListener)
+                .setNegativeButton("SEGUIR EN SARAM", dialogClickListener).setIcon(R.drawable.saram)
+                .setMessage("Si sales de la APP, SARAM dejará de monitorear la motocicleta, te recomendamos dejar la APP en segundo plano").show();
     }
 
 }

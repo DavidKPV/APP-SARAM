@@ -133,9 +133,11 @@ public class contactos_saramActivity extends AppCompatActivity {
                                 Contactos.setOnItemClickListener(new contactos_saramAdapter.OnItemClickListener() {
                                     @Override
                                     public void onEditClick(int position) {
+                                        /*
                                         Intent editcontacto = new Intent(contactos_saramActivity.this, edit_contactosActivity.class);
                                         editcontacto.putExtra("numero", Numero[position]);
                                         startActivity(editcontacto);
+                                         */
                                     }
 
                                     @Override
