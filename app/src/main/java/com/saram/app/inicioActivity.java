@@ -9,12 +9,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.telephony.SmsManager;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -184,7 +188,7 @@ public class  inicioActivity extends AppCompatActivity {
             }
         }
 
-        // VEWRIFICAMOS QUE SE TENGAN LOS PERMISOS NECESARIOS PARA EL ENVÍO DE MENSAJES DE TEXTO
+        // VERIFICAMOS QUE SE TENGAN LOS PERMISOS NECESARIOS PARA EL ENVÍO DE MENSAJES DE TEXTO
         int permissionCheckSMS = ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS);
 
         // SE VERIFICA CON LA CONDICIONAL DE QUE LOS PERMISOS SE ENCIENTREN INSTALDOS
@@ -205,6 +209,14 @@ public class  inicioActivity extends AppCompatActivity {
             case R.id.accion_salir:
                 // ESTA FUNCIÓN HACE QUE SALGAS DE LA APP (SE FINALICE SIN CERRAR SESION);
                 mensajeEvita();
+                break;
+            case R.id.accion_soporte:
+                // SE CARGA LA DIRECCIÓN DE LA PÁGINA EN LA APP
+                String url = "http://192.168.43.200:8080/SARAM-API/public/#Servicio";
+                Uri uri = Uri.parse(url);
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+
                 break;
         }
         return super.onOptionsItemSelected(item);

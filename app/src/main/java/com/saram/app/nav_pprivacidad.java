@@ -35,7 +35,7 @@ public class nav_pprivacidad extends Fragment {
         configuraciones.setJavaScriptEnabled(true);
 
         // SE CARGA LA DIRECCIÓN DE LA PÁGINA EN LA APP
-        vistaPagina.loadUrl("http://192.168.43.200:8080/SSARM-WEB/inicio.php#privacidad");
+        vistaPagina.loadUrl("http://192.168.43.200:8080/SARAM-API/public/privacidad");
         // SE HABILITARÁ LA CONFIGURACIÓN PARA QUE LA APP EJECUTE LA PÁGINA DE MANERA INTERNA
         // SIN NECESIDAD DE DEPENDER DE LOS NAVEGADORES WEB
         vistaPagina.setWebViewClient(new WebViewClient());

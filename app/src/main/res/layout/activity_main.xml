@@ -28,7 +28,7 @@
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="80dp"
+                android:layout_marginTop="50dp"
                 app:srcCompat="@drawable/saram" />
 
             <ImageView
@@ -130,7 +130,7 @@
                 android:background="@drawable/boton"
                 android:textSize="20dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="30dp"
                 android:textStyle="bold"
                 />
 
@@ -144,8 +144,37 @@
                 android:textColor="@color/negro"
                 android:textSize="18dp"
                 android:textStyle="bold"
-                android:layout_marginBottom="50dp"
+                android:layout_marginBottom="0dp"
                 />
+
+            <LinearLayout
+                android:id="@+id/llQR"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="50dp"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/ivQR"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    app:srcCompat="@drawable/qr"
+                    />
+
+                <TextView
+                    android:id="@+id/tvQR"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Iniciar con QR"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/negro"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    />
+
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>

@@ -1,22 +1,28 @@
 package com.saram.app;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -25,6 +31,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.zxing.Result;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,9 +40,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-public class MainActivity extends AppCompatActivity {
+import me.dm7.barcodescanner.zxing.ZXingScannerView;
+
+public class MainActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
 
     // SE DECLARAN LOS OBJETOS UTILIZADOS
+    LinearLayout llQR;
     TextView tvOlvido, tvRegistro;
     Button btnIngreso;
     EditText etNombre, etPass;
@@ -43,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
     // SE DECLARAN LOS OBJETOS NECESARIOS PARA LA LIBRERÍA DE VOLLEY
     RequestQueue requestQueue;
     ProgressDialog progressDialog;
+
+    // PARA EL SCANNER DEL CÓDIGOS QR
+    private ZXingScannerView myScannerview;
 
     // CREAMOS UNA CADENA LA CUAL CONTENDRÁ LA CADENA DE NUESTRO WEB SERVICE
     String HttpUri = "http://192.168.43.200:8080/SARAM-API/public/api/login";
@@ -71,6 +84,21 @@ public class MainActivity extends AppCompatActivity {
         etPass = (EditText) findViewById(R.id.etPass);
         tilNombre = (TextInputLayout) findViewById(R.id.tilNombre);
         tilPass = (TextInputLayout) findViewById(R.id.tilPass);
+        llQR = (LinearLayout) findViewById(R.id.llQR);
+
+
+        // VERIFICA QUE TENGA LA APP LOS PERMISOS NECESARIOS PARA LA UTILIZACIÓN DE LA CAMARA
+        final int permissionCheckCamera = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+
+        // SE VERIFICA CON LA CONDICIONAL QUE SE TENGAN LOS PERMISOS INSTALADOS
+        if (permissionCheckCamera == PackageManager.PERMISSION_DENIED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
+                // AQUI SE COLOCA MENSAJES EXTRAS QUE SE QUIERAN COLOCAR SOBRE LA EXPLICACIÓN DE LOS PERMISOS
+            } else {
+                // PEDIRÁ LA ACTIVACIÓN DEL SERVICIO
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 1);
+            }
+        }
 
         // SE ACTIVAN LOS OBJETOS DE REQUEST QUEUE Y PROGRESS DIALOG
         requestQueue = Volley.newRequestQueue(MainActivity.this);
@@ -138,6 +166,19 @@ public class MainActivity extends AppCompatActivity {
                 ingresar();
             }
         });
+
+        // SE CREAL EL OYECTE PARA EL LINEAR LAYOUT DE LECTOR DE QR
+        llQR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (permissionCheckCamera == PackageManager.PERMISSION_DENIED) {
+                    Toast.makeText(getApplicationContext(), "DEBES DE ACTIVAR LOS PERMISOS DE ACCESO A LA CÁMARA PARA PODER UTILIZAR ESTA OPCIÓN", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    activarLector();
+                }
+            }
+        });
     }
 
     // MÉTODO DE INGRESO AL INICIO DE LA APP
@@ -157,7 +198,6 @@ public class MainActivity extends AppCompatActivity {
 
             // SE VALIDA QUE LOS CAMPOS HAYAN PASADO SUS RESPECTIVAS VALIDACIONES
             if(vemail && vpass) {
-                // AQUÍ SE REALIZA EL PROCESO PARA REALIZAR LA INSERCIÓN EN LA BASE DE DATOS
                 // MOSTRAMOS EL PROGRESS DIALOG ---- AQUÍ SE COMIENZA EL ARMADO Y LA EJECUCIÓN DEL WEB SERVICE
                 progressDialog.setMessage("CARGANDO...");
                 progressDialog.show();
@@ -316,5 +356,84 @@ public class MainActivity extends AppCompatActivity {
             tilPass.setError(null);
         }
         return true;
+    }
+
+    private void activarLector(){
+        myScannerview = new ZXingScannerView(this);
+        setContentView(myScannerview);
+        myScannerview.setResultHandler(this);
+        myScannerview.startCamera();
+    }
+
+    // ESTE MÉTODO SE ENCARGA DE LEER EL CÓDIFO Y TRADUCIRLO
+    @Override
+    public void handleResult(final Result result) {
+        /*
+        Log.v("HandleResult", result.getText());
+        Toast.makeText(this, "Lo escaneado es: "+result.getText(), Toast.LENGTH_LONG).show();
+
+        // PARA QUE CONTINUE ESCANEANDO SI ES QUE YA SE ESCANEÓ UNA VEZ
+        myScannerview.resumeCameraPreview(this);
+         */
+        // MOSTRAMOS EL PROGRESS DIALOG ---- AQUÍ SE COMIENZA EL ARMADO Y LA EJECUCIÓN DEL WEB SERVICE
+        progressDialog.setMessage("CARGANDO...");
+        progressDialog.show();
+        // CREACIÓN DE LA CADENA A EJECUTAR EN EL WEB SERVICE MEDIANTE VOLLEY
+        // Objeto de volley
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, HttpUri,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String serverresponse) {
+                        // UNA VEZ QUE SE MANDAN TODOS LOS VALORES AL WEB SERVICE
+                        // QUITAMOS EL PROGRESS DIALOG PARA QUE UNA VEZ QUE SE MANDEN LOS DATOS
+                        // YA SE PUEDA TRABAJAR
+                        progressDialog.dismiss();
+                        // MANEJO DE ERRORES CON RESPECTO A LA RESPUESTA
+                        try {
+                            // CREAR UN OBJETO DE TIPO JSON PARA OBTENER EL ARCHIVO QUE MANDARÁ EL WEB SERVICE
+                            JSONObject obj = new JSONObject(serverresponse);
+                            // INTERPRETAR EL VALOR DEL JSON OBTENIDO DEL WEB SERVICE
+                            String status = obj.getString("status");
+                            // OBTENER EL MENSAJE
+                            String mensaje = obj.getString("mensaje");
+
+                            // INTERPRETAR VALORES
+                            if(status.contentEquals("false")){
+                                Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_LONG).show();
+                            }
+                            else{
+                                String nombre = obj.getString("Nombre");
+
+                                Toast.makeText(getApplicationContext(), mensaje+" "+nombre, Toast.LENGTH_LONG).show();
+
+                                // REDIRIGE AL INICIO DE LA APP
+                                Intent intent_inicio = new Intent(getApplicationContext(), inicioActivity.class);
+                                startActivity(intent_inicio);
+                            }
+                        }catch(JSONException e){
+                            e.printStackTrace();
+                        }
+
+                    }
+                    // ESTE SE EJECUTA SI HAY UN ERROR EN LA RESPUESTA
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // SE OCULTA EL PROGRESS DIALOG
+                progressDialog.dismiss();
+                Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            // MAPEO DE LOS VALORES QUE MANDAMOS AL WEB SERVICE
+            protected Map<String, String> getParams(){
+                // RETORNAR LOS VALORES
+                Map<String, String> parametros = new HashMap<>();
+                parametros.put("Token", result.getText());
+                return parametros;
+            }
+        };
+
+        // SE MANDA A EJECUTAR EL STRING PARA LA LIBRERÍA DE VOLLEY
+        requestQueue.add(stringRequest);
     }
 }
