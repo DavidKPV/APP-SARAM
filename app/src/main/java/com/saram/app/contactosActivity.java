@@ -121,7 +121,8 @@ public class contactosActivity extends AppCompatActivity {
             };
 
             // SE CREA EL ADAPTER PARA INSERTAR LOS NOMBRE Y NÚMEROS DE CADA CONTACTO
-            final SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(this, R.layout.item_contactos, contactosN, desde, a);
+            final SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(this,
+                    R.layout.item_contactos, contactosN, desde, a);
             listaContactos.setAdapter(simpleCursorAdapter);
 
             listaContactos.setOnItemClickListener(new AdapterView.OnItemClickListener(){

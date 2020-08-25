@@ -23,7 +23,7 @@ public class nav_pprivacidad extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // SE INSTANCIA UN VIEW PARA PODER UTILIZAR CCÓDIGO JAVA (AUNQUE LAS SENTENCIAS CAMBIAN EN
+        // SE INSTANCIA UN VIEW PARA PODER UTILIZAR CÓDIGO JAVA (AUNQUE LAS SENTENCIAS CAMBIAN EN
         // COMPARACIÓN A COMO SE DECLARAN Y SE TRAEN UN ACTIVITY)
         final View view = inflater.inflate(R.layout.fragment_pprivacidad, container, false);
 

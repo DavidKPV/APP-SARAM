@@ -242,13 +242,13 @@ public class editmotoActivity extends AppCompatActivity {
         btnActualiza.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                apdatemoto();
+                updatemoto();
             }
         });
     }
 
     // MÉTODO PARA ACTUALIZAR LA MOTOCICLETA
-    private void apdatemoto(){
+    private void updatemoto(){
         final String modelo = tilModelo.getEditText().getText().toString();
         final String marca = tilMarca.getEditText().getText().toString();
         final String cilindraje = tilCilindraje.getEditText().getText().toString();

@@ -335,7 +335,6 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
     private boolean validaemail(String noe){
         // O SE ASEGURA QUE TENGA DATOS ESPECÍFICOS DE UN EMAIL
         Pattern patronEmail = Patterns.EMAIL_ADDRESS;
-
         // Y NO PASE DEL LÍMTE PERMITIDO
         if(!patronEmail.matcher(noe).matches() || noe.length() > 50 ) {
             tilNombre.setError("Correo no válido, Intentalo de nuevo");
@@ -343,10 +342,8 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         }else{
             tilNombre.setError(null);
         }
-
         return true;
     }
-
     private boolean validapassword(String password){
         // VALIDA QUE NO PASE DEL LÍMTE PERMITIDO
         if (password.length() > 16) {
@@ -357,7 +354,6 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         }
         return true;
     }
-
     private void activarLector(){
         myScannerview = new ZXingScannerView(this);
         setContentView(myScannerview);
@@ -368,13 +364,8 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
     // ESTE MÉTODO SE ENCARGA DE LEER EL CÓDIFO Y TRADUCIRLO
     @Override
     public void handleResult(final Result result) {
-        /*
-        Log.v("HandleResult", result.getText());
-        Toast.makeText(this, "Lo escaneado es: "+result.getText(), Toast.LENGTH_LONG).show();
-
         // PARA QUE CONTINUE ESCANEANDO SI ES QUE YA SE ESCANEÓ UNA VEZ
         myScannerview.resumeCameraPreview(this);
-         */
         // MOSTRAMOS EL PROGRESS DIALOG ---- AQUÍ SE COMIENZA EL ARMADO Y LA EJECUCIÓN DEL WEB SERVICE
         progressDialog.setMessage("CARGANDO...");
         progressDialog.show();
@@ -413,7 +404,6 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
                         }catch(JSONException e){
                             e.printStackTrace();
                         }
-
                     }
                     // ESTE SE EJECUTA SI HAY UN ERROR EN LA RESPUESTA
                 }, new Response.ErrorListener() {

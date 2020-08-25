@@ -315,5 +315,4 @@ public class infomotoActivity extends AppCompatActivity {
         onBackPressed();
         return true;
     }
-
 }

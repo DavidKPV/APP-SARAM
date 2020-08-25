@@ -3,10 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.saram.app">
     <!-- PEIMITIR EL USO DE EL GPS DEL DISPOSITIVO -->
-    <uses-feature android:name="android.hardware.location.gps" /> <!-- PERMISO PARA UTILIZAR LA LOCALIZACIÓN DEL CELULAR -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- PERMISO PARA PERMITIR EL USO DE INTERNET -->
-    <uses-permission android:name="android.permission.INTERNET" /> <!-- SE LE DAN PERMISOS DE VIBRACIÓN DE HARDWARE DEL DISPOSITIVO -->
-    <uses-permission android:name="android.permission.VIBRATE" /> <!-- PERMISO PARA PODER OBTENER LOS CONTACTOS DEL DISPOSITIVO (CONTENT PROVIDER) -->
+    <uses-feature android:name="android.hardware.location.gps" />
+    <!-- PERMISO PARA UTILIZAR LA LOCALIZACIÓN DEL CELULAR -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- PERMISO PARA PERMITIR EL USO DE INTERNET -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- SE LE DAN PERMISOS DE VIBRACIÓN DE HARDWARE DEL DISPOSITIVO -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- PERMISO PARA PODER OBTENER LOS CONTACTOS DEL DISPOSITIVO (CONTENT PROVIDER) -->
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <!-- PERMISO PARA EL ENVÍO DE MENSAJES DE TEXTO -->
     <uses-permission android:name="android.permission.SEND_SMS"/>

@@ -82,8 +82,6 @@ public class contactos_saramAdapter extends RecyclerView.Adapter<contactos_saram
         //Creacón de nueva vista
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_contactos_saram, parent, false);
-
-
         return  new ViewHolder(v, mListener);
     }
 

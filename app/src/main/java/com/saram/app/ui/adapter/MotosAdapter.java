@@ -49,7 +49,6 @@ public class MotosAdapter extends RecyclerView.Adapter<MotosAdapter.ViewHolder> 
             btn_Edit = moto.findViewById(R.id.imgEditar);
             btn_delete = moto.findViewById(R.id.imgEliminar);
             btn_saram = moto.findViewById(R.id.imgMoto);
-
             btn_Edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -61,7 +60,6 @@ public class MotosAdapter extends RecyclerView.Adapter<MotosAdapter.ViewHolder> 
                     }
                 }
             });
-
             // BOTÓN PARA ELIMINAR REGISTRO DE LA MOTOCICLETA
            btn_delete.setOnClickListener(new View.OnClickListener() {
                @Override
@@ -74,7 +72,6 @@ public class MotosAdapter extends RecyclerView.Adapter<MotosAdapter.ViewHolder> 
                    }
                }
            });
-
            btn_saram.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View view) {
