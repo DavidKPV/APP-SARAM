@@ -1,4 +1,4 @@
-package com.saram.app;
+package com.saram.app.fragments;
 
 import android.os.Bundle;
 
@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import com.saram.app.R;
 
 public class nav_pprivacidad extends Fragment {
 

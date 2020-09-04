@@ -1,4 +1,4 @@
-package com.saram.app;
+package com.saram.app.activitys;
 
 import android.Manifest;
 import android.app.ProgressDialog;
@@ -7,11 +7,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -32,6 +29,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.zxing.Result;
+import com.saram.app.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;

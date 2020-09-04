@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.saram.app.edit_contactosActivity">
+    tools:context="com.saram.app.activitys.edit_contactosActivity">
 
     <ScrollView
         android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-package com.saram.app;
+package com.saram.app.fragments;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -7,14 +7,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.Toast;
+
+import com.saram.app.R;
+import com.saram.app.activitys.MainActivity;
+import com.saram.app.activitys.inicioActivity;
 
 public class nav_cerrarS extends Fragment {
 

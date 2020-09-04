@@ -1,21 +1,67 @@
 package com.saram.app.ui.adapter;
 
+import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.saram.app.R;
+import com.saram.app.contactos_saramActivity;
 
-public class contactos_saramAdapter extends RecyclerView.Adapter<contactos_saramAdapter.ViewHolder> {
+public class contactos_saramAdapter extends RecyclerView.Adapter<contactos_saramAdapter.ViewHolder> implements View.OnCreateContextMenuListener, MenuItem.OnMenuItemClickListener {
+    // DECALARAMOS LA VARIABLE DE LA ACTIVITY
+    private Activity activity;
+
     private String[] Nombre;
     private String[] Numero;
     private OnItemClickListener mListener;
     private int[] IDs;
+
+    // CREAMOS EL CONTEXT MENU, EL CUÁL SE MOSTRARÁ AL DEJAR PRESIONADO EL CONTACTO SELECCIONADO
+    // SE INFLA EL LAYOUT DEL MENÚ DE OPCIONES
+    @Override
+    public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+        // INFLAMOS EL MENÚ
+        MenuInflater menuInflater = activity.getMenuInflater();
+
+        // AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) contextMenuInfo;
+        menuInflater.inflate(R.menu.context_menu, contextMenu);
+        contextMenu.setHeaderTitle("SE ELIMINARÁ RL CONTACTO SSELECCIONADO");
+
+        // LE DAMOS SOLO A LA PRIMERA OPCIÓN UN MÉTODO NLISTENER YA QUE SOLO TENEMOS UNO EN CASO DE QUE FUERAN
+        // MÁS HABRÍA QUE COLOCAR UN FOR OBTENIENDO EL TAMAÑO DEL ARRAY
+        // EJEM for (int counter=0; counter<= contextMenu.size(); counter++){...}
+        contextMenu.getItem(0).setOnMenuItemClickListener(this);
+    }
+
+    // MÉTODO ENCARGADO DE VERIFICAR QUE CONTACTO HA SIDO SELECCIONADO
+    // SE MANEJA EL EVENTO DE CADA OPCIÓN
+    @Override
+    public boolean onMenuItemClick(MenuItem menuItem) {
+        // ADAPTER QUE TRAE INFORMACIÓN DEL ITEM SELECCIONADO
+        // AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        // CREAMOS EL SWITCH ENCARGADO DE LEER LAS OPCIONES
+        switch(menuItem.getItemId()){
+            case R.id.delContacto:
+                //Toast.makeText(activity, "Contacto Eliminado xd PRUEBA", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return false;
+        }
+    }
+
     public  interface OnItemClickListener{
         void onEditClick(int position);
         void onDeleteClick(int position);
@@ -61,6 +107,9 @@ public class contactos_saramAdapter extends RecyclerView.Adapter<contactos_saram
                    }
                }
            });
+
+           // HABILITAMOS EL CONTEXT MENU DENTRO DE CADA ITEM
+           contactos.setOnCreateContextMenuListener((View.OnCreateContextMenuListener) this);
         }
 
     }

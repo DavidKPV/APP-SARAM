@@ -26,25 +26,25 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".edit_contactosActivity"
+            android:name=".activitys.edit_contactosActivity"
             android:label="Información contacto"/>
         <activity
-            android:name=".contactos_saramActivity"
+            android:name=".activitys.contactos_saramActivity"
             android:label="Tus contactos SARAM" />
         <activity
-            android:name=".userinfoActivity"
+            android:name=".activitys.userinfoActivity"
             android:label="Mi información" />
         <activity
-            android:name=".addmotoActivity"
+            android:name=".activitys.addmotoActivity"
             android:label="Nueva motocicleta" />
         <activity
-            android:name=".editmotoActivity"
+            android:name=".activitys.editmotoActivity"
             android:label="Información de motocicleta" />
         <activity
-            android:name=".infomotoActivity"
+            android:name=".activitys.infomotoActivity"
             android:label="Información de motocicletas" />
         <activity
-            android:name=".contactosActivity"
+            android:name=".activitys.contactosActivity"
             android:label="Selecciona contactos" /> <!-- META DATA UTILIZADO PARA ACTIVAR LA API DE GOOGLE -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -54,10 +54,10 @@
             android:resource="@xml/network_security_config" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name=".fragments.MapsActivity"
             android:label="Mapa SARAM" />
         <activity
-            android:name=".inicioActivity"
+            android:name=".activitys.inicioActivity"
             android:label="@string/title_activity_inicio"
             android:theme="@style/AppTheme.NoActionBar" />
         <!--
@@ -65,13 +65,13 @@
         FUNCIONE CORRECTAMENTE CON LAS ACTIVITYS DE LAS LINEAS SIGUIENTES DE LO CONTRARIOM LA APP SE CRASHEA
         -->
         <activity
-            android:name=".registroActivity"
+            android:name=".activitys.registroActivity"
             android:label="Nuevo Usuario - Registro" />
         <activity
-            android:name=".recuperarContra"
+            android:name=".activitys.recuperarContra"
             android:label="Recuperar mi Contraseña" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activitys.MainActivity"
             android:configChanges="uiMode"
             android:windowSoftInputMode="stateVisible|adjustPan">
             <intent-filter>
@@ -80,7 +80,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity> <!-- SE IMPLEMENTA EL RECEIVER PARA LA ALARMA -->
-        <receiver android:name=".alarma" />
+        <receiver android:name=".modules.alarma" />
     </application>
 
 </manifest>

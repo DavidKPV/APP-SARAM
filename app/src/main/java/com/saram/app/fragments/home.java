@@ -13,7 +13,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -47,8 +46,6 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static android.content.Context.NOTIFICATION_SERVICE;
 // IMPORTAMOS EL JAVA EN DONDE SE ENCUENTRA DECLARADO EL CANAL QUE UTILIZAREMOS PARA LAS NOTIFICACIONES
 // import static com.saram.app.canal_notificacion.Canal_ID;
 
@@ -186,7 +183,7 @@ public class home extends Fragment{
             public void onClick(DialogInterface dialogInterface, int i) {
                 Toast.makeText(getContext(), "SE ESTA ACTIVANDO...", Toast.LENGTH_LONG).show();
                 // REALIZAMOS EL CAMBIO A LA CLASE JAVA DE LA ALARMA CON LA AYUDA DE UN INTENT
-                Intent alarma = new Intent(getActivity(), com.saram.app.alarma.class);
+                Intent alarma = new Intent(getActivity(), com.saram.app.modules.alarma.class);
 
                 // SE CREA EL OBJETO DEL ALARM MANAGER
                 AlarmManager am = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);

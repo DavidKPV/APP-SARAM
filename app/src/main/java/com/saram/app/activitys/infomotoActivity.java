@@ -5,7 +5,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
-import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,8 +22,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.saram.app.ui.adapter.MotosAdapter;
-import com.saram.app.ui.adapter.contactos_saramAdapter;
+import com.saram.app.activitys.addmotoActivity;
+import com.saram.app.adapters.MotosAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,20 +32,20 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class contactos_saramActivity extends AppCompatActivity {
+public class infomotoActivity extends AppCompatActivity {
 
     // ESTOS SON DE LA ETIQUETA QUE CREO NO SE OCUPAN
     FloatingActionButton fabMas;
-    RecyclerView rvContenedorContactos;
-    contactos_saramAdapter Contactos;
+    RecyclerView rvContenedorMotos;
+    MotosAdapter Motocicletas;
 
     // OBJETOS PARA LA CONEXIÓN AL SERVIDOR UTILIZANDO VOLLEY
     RequestQueue requestQueue;
     ProgressDialog progressDialog;
 
     // CREAMOS UNA CADENA LA CUAL CONTENDRÁ LA CADENA DE NUESTRO WEB SERVICE
-    String HttpUri = "http://192.168.43.200:8080/SARAM-API/public/api/getContactos";
-    String HttpUriDel = "http://192.168.43.200:8080/SARAM-API/public/api/delContactos";
+    String HttpUri = "http://192.168.43.200:8080/SARAM-API/public/api/getmotos";
+    String HttpUriDel = "http://192.168.43.200:8080/SARAM-API/public/api/deleteMoto";
     String vtoken;
 
     // ESTE MÉTODO EVITA QUE SE REGRESE CON LA FLECHA DE RETORNO QUE TODOS TENEMOS
@@ -60,37 +59,38 @@ public class contactos_saramActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_contactos_saram);
-
+        setContentView(R.layout.activity_infomoto);
         // PARA ACTIVAR LA FLECHA DE RETORNO
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // SE ENLAZAN LOS OBJETOS CON LA VISTA
         fabMas = (FloatingActionButton) findViewById(R.id.fabMas);
-        rvContenedorContactos = (RecyclerView) findViewById(R.id.rvContenedorContactos);
-        rvContenedorContactos.setHasFixedSize(true);
+        rvContenedorMotos = (RecyclerView) findViewById(R.id.rvContenedorMotos);
+        rvContenedorMotos.setHasFixedSize(true);
 
         //Asociar el RV a un LinearLayoutManager
         LinearLayoutManager LLManager= new LinearLayoutManager(this);
-        rvContenedorContactos.setLayoutManager(LLManager);
+        rvContenedorMotos.setLayoutManager(LLManager);
 
         // SE ACTIVAN LOS OBJETOS DE REQUEST QUEUE Y PROGRESS DIALOG
-        requestQueue = Volley.newRequestQueue(contactos_saramActivity.this);
-        progressDialog = new ProgressDialog(contactos_saramActivity.this);
+        requestQueue = Volley.newRequestQueue(infomotoActivity.this);
+        progressDialog = new ProgressDialog(infomotoActivity.this);
 
         // OBTENEMOS EL TOKEN DEL SHARED
         SharedPreferences sp1 = getSharedPreferences("MisDatos", Context.MODE_PRIVATE);
         vtoken = sp1.getString("token", "");
 
+
         fabMas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent agregarContacto =  new Intent(contactos_saramActivity.this, contactosActivity.class);
-                startActivity(agregarContacto);
+                Intent agregar =  new Intent(infomotoActivity.this, addmotoActivity.class);
+                startActivity(agregar);
             }
         });
 
-        // SE ACTIVA TODO PARA TRAER INFORMACIÓN DE LOS CONTACTOS
+        // SE ACTIVA TODO PARA TRAER INFORMACIÓN DE LA MOTOCICLETA
+        // AQUÍ SE REALIZA EL PROCESO PARA REALIZAR LA INSERCIÓN EN LA BASE DE DATOS
         // MOSTRAMOS EL PROGRESS DIALOG ---- AQUÍ SE COMIENZA EL ARMADO Y LA EJECUCIÓN DEL WEB SERVICE
         progressDialog.setMessage("CARGANDO...");
         progressDialog.show();
@@ -110,7 +110,6 @@ public class contactos_saramActivity extends AppCompatActivity {
                             JSONObject obj = new JSONObject(serverresponse);
                             // INTERPRETAR EL VALOR DEL JSON OBTENIDO DEL WEB SERVICE
                             String status = obj.getString("status");
-
                             // INTERPRETAR LOS VALORES
                             if (status.contentEquals("false")) {
                                 Toast.makeText(getApplicationContext(), "Error de autenticación, Intentalo más tarde", Toast.LENGTH_LONG).show();
@@ -118,32 +117,36 @@ public class contactos_saramActivity extends AppCompatActivity {
                                 startActivity(inicio2);
                             } else {
                                 // OBTENER SE OBTIENEN LOS DATOS DEL ARRAY
-                                JSONArray ContactosInfo = obj.getJSONArray("contactos");
-                                final String[] Nombre = new String[ContactosInfo.length()];
-                                final String[] Numero = new String[ContactosInfo.length()];
-                                final int[] ID_contactos = new int[ContactosInfo.length()];
-                                for (int i=0; i<ContactosInfo.length(); i++){
-                                    Nombre[i]=ContactosInfo.getJSONObject(i).getString("Nombre");
-                                    Numero[i]=ContactosInfo.getJSONObject(i).getString("Numero_Tel");
-                                    ID_contactos[i]=ContactosInfo.getJSONObject(i).getInt("ID_Usuario");
+                                JSONArray MotosInfo = obj.getJSONArray("motos");
+                                final String[] Modelos = new String[MotosInfo.length()];
+                                String[] Marcas = new String[MotosInfo.length()];
+                                String[] Cilindraje = new String[MotosInfo.length()];
+                                String[] Placas = new String[MotosInfo.length()];
+                                String[] SARAM = new String[MotosInfo.length()];
+                                final int[] ID_Motocicleta = new int[MotosInfo.length()];
+                                for (int i=0; i<MotosInfo.length(); i++){
+                                    Modelos[i]=MotosInfo.getJSONObject(i).getString("Modelo");
+                                    Marcas[i]=MotosInfo.getJSONObject(i).getString("Marca");
+                                    Cilindraje[i]=MotosInfo.getJSONObject(i).getString("Cilindraje");
+                                    SARAM[i]=MotosInfo.getJSONObject(i).getString("ID_saram");
+                                    Placas[i]=MotosInfo.getJSONObject(i).getString("Placa");
+                                    ID_Motocicleta[i]=MotosInfo.getJSONObject(i).getInt("ID_Motocicleta");
                                 }
-                                Contactos = new contactos_saramAdapter(Nombre, Numero, ID_contactos, getApplication());
-                                rvContenedorContactos.setAdapter(Contactos);
+                                Motocicletas = new MotosAdapter(Modelos, Marcas, Cilindraje, Placas, SARAM, ID_Motocicleta, getApplication());
+                                rvContenedorMotos.setAdapter(Motocicletas);
 
-                                Contactos.setOnItemClickListener(new contactos_saramAdapter.OnItemClickListener() {
+                                Motocicletas.setOnItemClickListener(new MotosAdapter.OnItemClickListener() {
                                     @Override
                                     public void onEditClick(int position) {
-                                        /*
-                                        Intent editcontacto = new Intent(contactos_saramActivity.this, edit_contactosActivity.class);
-                                        editcontacto.putExtra("numero", Numero[position]);
-                                        startActivity(editcontacto);
-                                         */
+                                        Intent editmoto = new Intent(infomotoActivity.this, editmotoActivity.class);
+                                        editmoto.putExtra("ID", ID_Motocicleta[position]);
+                                        startActivity(editmoto);
                                     }
 
                                     @Override
                                     public void onDeleteClick(final int position) {
                                         // DAMOS EL VALOR DEL MODELO DE LA MOTOCICLETA A ELIMINAR
-                                        final String nombre = Nombre[position];
+                                        final String modelo = Modelos[position];
 
                                         // DECLARAMOS LAS OPCIONES U OPCIÓN QUE REALIZARÁ LA APP AL MOSTRAR EL ALERT DIALOG
                                         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
@@ -151,7 +154,7 @@ public class contactos_saramActivity extends AppCompatActivity {
                                             public void onClick(DialogInterface dialog, int which) {
                                                 switch (which){
                                                     case DialogInterface.BUTTON_POSITIVE:
-                                                        // SE ACTIVA TODO PARA ELIMINAR INFORMACIÓN DEL CONTACTO SELECCIONADO
+                                                        // SE ACTIVA TODO PARA ELIMINAR INFORMACIÓN DE LA MOTOCICLETA
                                                         // AQUÍ SE REALIZA EL PROCESO PARA REALIZAR LA INSERCIÓN EN LA BASE DE DATOS
                                                         // MOSTRAMOS EL PROGRESS DIALOG ---- AQUÍ SE COMIENZA EL ARMADO Y LA EJECUCIÓN DEL WEB SERVICE
                                                         progressDialog.setMessage("CARGANDO...");
@@ -159,7 +162,7 @@ public class contactos_saramActivity extends AppCompatActivity {
                                                         // CREACIÓN DE LA CADENA A EJECUTAR EN EL WEB SERVICE MEDIANTE VOLLEY
                                                         // Objeto de volley
                                                         StringRequest stringRequest = new StringRequest(Request.Method.POST, HttpUriDel,
-                                                                new Response.Listener<String>(){
+                                                                new Response.Listener<String>() {
                                                                     @Override
                                                                     public void onResponse(String serverresponse) {
                                                                         // UNA VEZ QUE SE MANDAN TODOS LOS VALORES AL WEB SERVICE
@@ -168,15 +171,17 @@ public class contactos_saramActivity extends AppCompatActivity {
                                                                         progressDialog.dismiss();
                                                                         // MANEJO DE ERRORES CON RESPECTO A LA RESPUESTA
                                                                         try {
-                                                                            // SE MANEJARÁ COMO ARRAY DE ACUERDO A LO PROGRAMADO POR EL WEB SERVICE
-                                                                            JSONArray valores = new JSONArray(serverresponse);
-                                                                            String [] mensaje = new String[valores.length()];
-                                                                            mensaje [0] = valores.getJSONObject(0).getString("mensaje");
-                                                                            Toast.makeText(getApplicationContext(),mensaje[0], Toast.LENGTH_LONG).show();
-
-                                                                            // ACTUALIZAMOS LA LISTA DE CONTACTOS
-                                                                            Intent actualiza = new Intent(getApplicationContext(), contactos_saramActivity.class);
-                                                                            startActivity(actualiza);
+                                                                            // CREAR UN OBJETO DE TIPO JSON PARA OBTENER EL ARCHIVO QUE MANDARÁ EL WEB SERVICE
+                                                                            JSONObject obj = new JSONObject(serverresponse);
+                                                                            // INTERPRETAR EL VALOR DEL JSON OBTENIDO DEL WEB SERVICE
+                                                                            String status = obj.getString("status");
+                                                                            String mensaje = obj.getString("mensaje");
+                                                                            if(status.contentEquals("true")){
+                                                                                Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_LONG).show();
+                                                                                // ACTUALIZAMOS EL ACTIVITY
+                                                                                Intent infomoto = new Intent(getApplicationContext(), infomotoActivity.class);
+                                                                                startActivity(infomoto);
+                                                                            }
                                                                         } catch (JSONException e) {
                                                                             e.printStackTrace();
                                                                         }
@@ -194,8 +199,9 @@ public class contactos_saramActivity extends AppCompatActivity {
                                                             // MAPEO DE LOS VALORES QUE MANDAMOS AL WEB SERVICE
                                                             protected Map<String, String> getParams(){
                                                                 // RETORNAR LOS VALORES
+                                                                String id_moto = String.valueOf(ID_Motocicleta[position]);
                                                                 Map<String, String> parametros = new HashMap<>();
-                                                                parametros.put("Numero_Tel", Numero[position]);
+                                                                parametros.put("ID_Moto", id_moto);
                                                                 return parametros;
                                                             }
                                                             // SOLO SE MANDA EL TOKEN
@@ -215,16 +221,53 @@ public class contactos_saramActivity extends AppCompatActivity {
                                         };
 
                                         // SE CREA EL MENSAJE DE CONFIRMACIÓN
-                                        AlertDialog.Builder mensaje = new AlertDialog.Builder( contactos_saramActivity.this);
-                                        mensaje.setTitle("¿ELIMINAR CONTACTO?").setPositiveButton("ELIMINAR", dialogClickListener)
+                                        AlertDialog.Builder mensaje = new AlertDialog.Builder(infomotoActivity.this);
+                                        mensaje.setTitle("¿ELIMINAR MOTOCICLETA?").setPositiveButton("ELIMINAR", dialogClickListener)
                                                 .setNegativeButton("CANCELAR", dialogClickListener).setIcon(R.drawable.saram)
-                                                .setMessage("El contacto de nombre "+nombre+" será eliminado").show();
+                                                .setMessage("La motocicleta "+modelo+" será eliminada").show();
+                                    }
+
+                                    // CUANDO SE LE DE EN EL ÍCONO DE SARAM DE LA MOTOCICLETA SERÁ LA ACCIÓN PARA SELECCIONAR
+                                    // EL MONITOREO DE LA MISMA
+                                    @Override
+                                    public void onSaramClick(int position) {
+                                        // ACTIVAMOS EL EDITOR DEL SHARED
+                                        final SharedPreferences sp1 = getSharedPreferences("MisDatos", Context.MODE_PRIVATE);
+                                        // DAMOS EL VALOR DEL ID QUE MONITOREARÁ
+                                        final String id_moto = String.valueOf(ID_Motocicleta[position]);
+                                        final String modelo = Modelos[position];
+
+                                        // DECLARAMOS LAS OPCIONES U OPCIÓN QUE REALIZARÁ LA APP AL MOSTRAR EL ALERT DIALOG
+                                        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                switch (which){
+                                                    case DialogInterface.BUTTON_POSITIVE:
+                                                        SharedPreferences.Editor editor = sp1.edit();
+                                                        editor.putString("moto", id_moto);
+                                                        editor.putString("modelo", modelo);
+                                                        editor.commit();
+
+                                                        Toast.makeText(getApplicationContext(), "CAMBIANDO A MOTOCICLETA "+modelo, Toast.LENGTH_SHORT).show();
+                                                        Toast.makeText(getApplicationContext(), "MONITOREANDO... ", Toast.LENGTH_LONG).show();
+
+                                                        //CAMBIAMOS AL INTENT DEL INICIO
+                                                        Intent inicio = new Intent(getApplicationContext(), inicioActivity.class);
+                                                        startActivity(inicio);
+                                                }
+                                            }
+                                        };
+
+                                        // SE CREA EL MENSAJE DE CONFIRMACIÓN
+                                        AlertDialog.Builder mensaje = new AlertDialog.Builder(infomotoActivity.this);
+                                        mensaje.setTitle("¿CAMBIAR DE MOTOCICLETA?").setPositiveButton("CAMBIAR", dialogClickListener)
+                                                .setNegativeButton("CANCELAR", dialogClickListener).setIcon(R.drawable.saram)
+                                                .setMessage("Desde ahora la motocicleta "+modelo+" será monitoreada por la APP SARAM").show();
                                     }
                                 });
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(), "NO ENTRA AL TRY", Toast.LENGTH_LONG).show();
                         }
 
                     }

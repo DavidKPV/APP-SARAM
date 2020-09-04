@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".nav_ubicacion"
+    tools:context=".fragments.nav_ubicacion"
     android:orientation="vertical">
 
     <!-- SE INCLUYE LA VISTA DE MAPS QUE FUNCIONA CON LA API
