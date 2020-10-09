@@ -9,4 +9,8 @@
     <string name="menu_PPrivacidad">Políticas de Privacidad</string>
     <string name="menu_ubicacion">Ubicación</string>
     <string name="title_activity_maps">Mapa SARAM</string>
+    <string name="title_splash">SARAM</string>
+    <string name="title_splashdesc">Sistema Automatizado de Reacción</string>
+    <string name="title_splashdesc1">y geolocalización contra Accidentes</string>
+    <string name="title_splashdesc2">para Motociclistas</string>
 </resources>

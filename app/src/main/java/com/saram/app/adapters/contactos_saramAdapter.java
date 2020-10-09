@@ -105,7 +105,7 @@ public class contactos_saramAdapter extends RecyclerView.Adapter<contactos_saram
            });
 
            // HABILITAMOS EL CONTEXT MENU DENTRO DE CADA ITEM
-           contactos.setOnCreateContextMenuListener((View.OnCreateContextMenuListener) this);
+           // contactos.setOnCreateContextMenuListener((View.OnCreateContextMenuListener) this);/
         }
 
     }

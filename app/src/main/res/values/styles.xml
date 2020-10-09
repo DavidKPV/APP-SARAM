@@ -21,4 +21,9 @@
         <item name="android:textColor">@color/blanco</item>
     </style>
 
+    <!-- Estilo para el splash Screen -->
+    <style name="splash_screen" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash</item>
+    </style>
+
 </resources>

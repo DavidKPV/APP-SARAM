@@ -72,9 +72,6 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         // ELIMINA EL TOOL BAR DE LA ACTIVITY
         getSupportActionBar().hide();
 
-        // VERIFICA SI EXISTE O NO UNA SESION INICIADA
-        verifica();
-
         // SE ENLANZAN LOS CONTROLADORES CON LA VISTA
         tvOlvido = (TextView) findViewById(R.id.tvOlvido);
         tvRegistro = (TextView) findViewById(R.id.tvRegistro);
@@ -84,7 +81,6 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         tilNombre = (TextInputLayout) findViewById(R.id.tilNombre);
         tilPass = (TextInputLayout) findViewById(R.id.tilPass);
         llQR = (LinearLayout) findViewById(R.id.llQR);
-
 
         // VERIFICA QUE TENGA LA APP LOS PERMISOS NECESARIOS PARA LA UTILIZACIÓN DE LA CAMARA
         final int permissionCheckCamera = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
@@ -285,52 +281,6 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         // SE INICIA LA NUEVA ACTIVITY
         startActivity(intentregistro);
     }
-
-    // SE CREA LA FUNCIÓN DEL SHARED PREFERENCES
-    private void CrearSharedPreferences(){
-        // SE INSTANCIA EL SHARED                   Nombre del archivo,   forma en como se abrirá
-        SharedPreferences sp1 = getSharedPreferences("MisDatos", Context.MODE_PRIVATE);
-
-        // SE ACTIVA LA EDICIÓN DEL ARCHIVO
-
-        SharedPreferences.Editor editor = sp1.edit();
-
-        boolean sesion = sp1.getBoolean("sesion", false);
-        if(!sesion) {
-            // SE MANDAN LOS VALORES QUE QUEREMOS ALMACENAR
-            // Nombre de la variable, valor de la variable
-            editor.putBoolean("sesion", false);
-            editor.putString("nombre", "");
-            editor.putString("token", "");
-            editor.putString("moto","");
-            editor.putString("modelo","Nada que monitorear");
-            editor.putInt("alarma",0);
-            editor.putInt("mensajes", 0);
-
-            // SE MANDA UNA INSTRUCCIÓN COMMIT PARA QUE SE GUARDEN LOS CAMBIOS
-            editor.commit();
-        }
-    }
-
-    private void verifica(){
-        // ACTIVAMOS EL EDITOR DEL SHARED
-        SharedPreferences sp1 = getSharedPreferences("MisDatos", Context.MODE_PRIVATE);
-
-        // TRAEMOS EL VALOR DE LA SESION
-        boolean val = sp1.getBoolean("sesion", false);
-
-        // SE INSTANCIA EL ACTIVITY DEL INICIO DE LA APP    contexto, nombre de la clase compilada
-        Intent intent1 = new Intent(this, inicioActivity.class);
-
-        if(val == true) {
-            // SE MANDA A EJECUTAR EL ACTIVITY DE INICIO DE LA APP
-            startActivity(intent1);
-        }else{
-            // SE ACTIVA EL MÉTODO PARA CREAR EL SHARED PREFERENCES
-            CrearSharedPreferences();
-        }
-    }
-
     private boolean validaemail(String noe){
         // O SE ASEGURA QUE TENGA DATOS ESPECÍFICOS DE UN EMAIL
         Pattern patronEmail = Patterns.EMAIL_ADDRESS;
