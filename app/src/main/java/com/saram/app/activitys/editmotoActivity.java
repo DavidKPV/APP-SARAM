@@ -1,4 +1,4 @@
-package com.saram.app;
+package com.saram.app.activitys;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,6 +22,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.textfield.TextInputLayout;
+import com.saram.app.R;
+import com.saram.app.models.rutas;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,8 +45,8 @@ public class editmotoActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
 
     // CREAMOS UNA CADENA LA CUAL CONTENDRÁ LA CADENA DE NUESTRO WEB SERVICE
-    String HttpUriUpdate = "http://192.168.43.200:8080/SARAM-API/public/api/updatemoto";
-    String HttpUriGetMoto = "http://192.168.43.200:8080/SARAM-API/public/api/getmotos";
+    String HttpUriUpdate = rutas.updateMoto;
+    String HttpUriGetMoto = rutas.getMotos;
     String vtoken;
 
     @Override

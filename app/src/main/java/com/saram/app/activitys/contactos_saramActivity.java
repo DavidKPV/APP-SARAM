@@ -1,9 +1,8 @@
-package com.saram.app;
+package com.saram.app.activitys;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -17,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -26,12 +24,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.saram.app.R;
 import com.saram.app.adapters.contactos_saramAdapter;
-
+import com.saram.app.models.rutas;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,8 +45,8 @@ public class contactos_saramActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
 
     // CREAMOS UNA CADENA LA CUAL CONTENDRÁ LA CADENA DE NUESTRO WEB SERVICE
-    String HttpUri = "http://192.168.43.200:8080/SARAM-API/public/api/getContactos";
-    String HttpUriDel = "http://192.168.43.200:8080/SARAM-API/public/api/delContactos";
+    String HttpUri = rutas.getContactos;
+    String HttpUriDel = rutas.delContactos;
     String vtoken;
 
     // ESTE MÉTODO EVITA QUE SE REGRESE CON LA FLECHA DE RETORNO QUE TODOS TENEMOS
@@ -286,7 +284,7 @@ public class contactos_saramActivity extends AppCompatActivity {
         // CREAMOS EL SWITCH ENCARGADO DE LEER LAS OPCIONES
         switch(item.getItemId()){
             case R.id.delContacto:
-                Toast.makeText(contactos_saramActivity.this, "Contacto Eliminado xd PRUEBA", Toast.LENGTH_SHORT).show();
+                Toast.makeText(contactos_saramActivity.this, "Contacto Eliminado", Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 return super.onContextItemSelected(item);

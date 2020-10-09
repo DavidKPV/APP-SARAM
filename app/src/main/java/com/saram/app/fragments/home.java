@@ -1,4 +1,4 @@
-package com.saram.app;
+package com.saram.app.fragments;
 
 import android.Manifest;
 import android.app.AlarmManager;
@@ -39,6 +39,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.saram.app.R;
+import com.saram.app.activitys.inicioActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;

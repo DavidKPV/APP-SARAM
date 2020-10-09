@@ -1,23 +1,19 @@
-package com.saram.app.ui.adapter;
+package com.saram.app.adapters;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.saram.app.R;
-import com.saram.app.contactos_saramActivity;
 
 public class contactos_saramAdapter extends RecyclerView.Adapter<contactos_saramAdapter.ViewHolder> implements View.OnCreateContextMenuListener, MenuItem.OnMenuItemClickListener {
     // DECALARAMOS LA VARIABLE DE LA ACTIVITY

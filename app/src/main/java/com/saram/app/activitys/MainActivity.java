@@ -30,6 +30,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.zxing.Result;
 import com.saram.app.R;
+import com.saram.app.models.rutas;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
     private ZXingScannerView myScannerview;
 
     // CREAMOS UNA CADENA LA CUAL CONTENDRÁ LA CADENA DE NUESTRO WEB SERVICE
-    String HttpUri = "http://192.168.43.200:8080/SARAM-API/public/api/login";
+    String HttpUri = rutas.login;
 
     // ESTE MÉTODO EVITA QUE SE REGRESE CON LA FLECHA DE RETORNO QUE TODOS TENEMOS
     @Override

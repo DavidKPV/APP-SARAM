@@ -27,6 +27,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.textfield.TextInputLayout;
 import com.saram.app.R;
+import com.saram.app.models.rutas;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,8 +55,8 @@ public class userinfoActivity extends AppCompatActivity {
     String vsexo=null;
 
     // CREAMOS UNA CADENA LA CUAL CONTENDRÁ LA CADENA DE NUESTRO WEB SERVICE
-    String HttpUriUpdate = "http://192.168.43.200:8080/SARAM-API/public/api/updateUser";
-    String HttpUriGetUser = "http://192.168.43.200:8080/SARAM-API/public/api/getuser";
+    String HttpUriUpdate = rutas.updateUser;
+    String HttpUriGetUser = rutas.getUser;
     String vtoken;
 
     // ESTE MÉTODO EVITA QUE SE REGRESE CON LA FLECHA DE RETORNO QUE TODOS TENEMOS

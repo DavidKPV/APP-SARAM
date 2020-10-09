@@ -22,6 +22,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.textfield.TextInputLayout;
 import com.saram.app.R;
+import com.saram.app.models.rutas;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,7 +45,7 @@ public class registroActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
 
     // CREAMOS UNA CADENA LA CUAL CONTENDRÁ LA CADENA DE NUESTRO WEB SERVICE
-    String HttpUri = "http://192.168.43.200:8080/SARAM-API/public/api/registerUser";
+    String HttpUri = rutas.registerUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

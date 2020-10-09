@@ -1,4 +1,4 @@
-package com.saram.app;
+package com.saram.app.activitys;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,8 +22,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.saram.app.activitys.addmotoActivity;
+import com.saram.app.R;
 import com.saram.app.adapters.MotosAdapter;
+import com.saram.app.models.rutas;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,8 +45,8 @@ public class infomotoActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
 
     // CREAMOS UNA CADENA LA CUAL CONTENDRÁ LA CADENA DE NUESTRO WEB SERVICE
-    String HttpUri = "http://192.168.43.200:8080/SARAM-API/public/api/getmotos";
-    String HttpUriDel = "http://192.168.43.200:8080/SARAM-API/public/api/deleteMoto";
+    String HttpUri = rutas.getMotos;
+    String HttpUriDel = rutas.delMoto;
     String vtoken;
 
     // ESTE MÉTODO EVITA QUE SE REGRESE CON LA FLECHA DE RETORNO QUE TODOS TENEMOS

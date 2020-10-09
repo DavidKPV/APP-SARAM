@@ -1,4 +1,4 @@
-package com.saram.app;
+package com.saram.app.activitys;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -11,35 +11,19 @@ import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.telephony.SmsManager;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
+import com.saram.app.R;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -48,12 +32,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
-
 public class  inicioActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -61,8 +39,8 @@ public class  inicioActivity extends AppCompatActivity {
     ImageView ivUser;
 
     // OBJETOS PARA LA CONEXIÓN AL SERVIDOR UTILIZANDO VOLLEY
-    RequestQueue requestQueue;
-    ProgressDialog progressDialog;
+    // RequestQueue requestQueue;
+    // ProgressDialog progressDialog;
 
     // ESTE MÉTODO EVITA QUE SE REGRESE CON LA FLECHA DE RETORNO QUE TODOS TENEMOS
     @Override

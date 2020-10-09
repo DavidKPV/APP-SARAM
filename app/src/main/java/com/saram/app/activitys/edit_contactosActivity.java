@@ -1,4 +1,4 @@
-package com.saram.app;
+package com.saram.app.activitys;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,6 +23,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.textfield.TextInputLayout;
+import com.saram.app.R;
+import com.saram.app.models.rutas;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,6 +35,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 public class edit_contactosActivity extends AppCompatActivity {
+    // TODO ESTO ES LO QUE SE ESTÁ TRABAJANDO
 
     // SE DECLARAN LOS OBJETOS
     TextInputLayout tilNombre, tilApellidos, tilNumero, tilCorreo;
@@ -45,8 +48,8 @@ public class edit_contactosActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
 
     // CREAMOS UNA CADENA LA CUAL CONTENDRÁ LA CADENA DE NUESTRO WEB SERVICE
-    String HttpUriUpdate = "http://192.168.43.200:8080/SARAM-API/public/api/setContactos"; // ESTO ES LO QUE SE DEBE DE ACTUALIZAR
-    String HttpUriGetContactos = "http://192.168.43.200:8080/SARAM-API/public/api/getContactos";
+    String HttpUriUpdate = rutas.setContactos; // ESTO ES LO QUE SE DEBE DE ACTUALIZAR
+    String HttpUriGetContactos = rutas.getContactos;
     String vtoken;
 
     @Override
