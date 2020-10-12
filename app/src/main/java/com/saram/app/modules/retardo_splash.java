@@ -8,6 +8,6 @@ public class retardo_splash extends Application {
     public void onCreate() {
         super.onCreate();
         // DORMIMOS LA APP DURANTE 3 SEGUNDOS
-        SystemClock.sleep(2000);
+        SystemClock.sleep(500);
     }
 }

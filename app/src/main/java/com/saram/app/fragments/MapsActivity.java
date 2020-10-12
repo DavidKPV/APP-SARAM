@@ -27,6 +27,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.saram.app.R;
 import com.saram.app.activitys.inicioActivity;
+import com.saram.app.models.rutas;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,7 +44,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     ProgressDialog progressDialog;
 
     // CREAMOS UNA CADENA LA CUAL CONTENDRÁ LA CADENA DE NUESTRO WEB SERVICE
-    String HttpUriCheck = "http://192.168.43.200:8080/SARAM-API/public/api/getUbicacion";
+    String HttpUriCheck = rutas.getUbicacion;
     String vtoken, idmoto, modelo;
     double latitudb, longitudb;
 

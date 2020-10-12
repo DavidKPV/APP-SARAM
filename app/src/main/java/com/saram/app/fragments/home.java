@@ -41,6 +41,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.saram.app.R;
 import com.saram.app.activitys.inicioActivity;
+import com.saram.app.models.rutas;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -75,9 +76,9 @@ public class home extends Fragment{
     ProgressDialog progressDialog;
 
     // CREAMOS UNA CADENA LA CUAL CONTENDRÁ LA CADENA DE NUESTRO WEB SERVICE
-    String HttpUriCheck = "http://192.168.43.200:8080/SARAM-API/public/api/getEstado";
-    String HttpUriContac = "http://192.168.43.200:8080/SARAM-API/public/api/getContactos";
-    String HttpUriCheckGPS = "http://192.168.43.200:8080/SARAM-API/public/api/getUbicacion";
+    String HttpUriCheck = rutas.getEstado;
+    String HttpUriContac = rutas.getContactos;
+    String HttpUriCheckGPS = rutas.getUbicacion;
     String vtoken, idmoto, modelo;
 
     public home() {

@@ -12,4 +12,7 @@ public class rutas {
     public static final String registerUser = "http://192.168.43.200:8080/SARAM-API/public/api/registerUser";
     public static final String updateUser = "http://192.168.43.200:8080/SARAM-API/public/api/updateUser";
     public static final String getUser = "http://192.168.43.200:8080/SARAM-API/public/api/getuser";
+    public static final String getEstado = "http://192.168.43.200:8080/SARAM-API/public/api/getEstado";
+    public static final String getUbicacion = "http://192.168.43.200:8080/SARAM-API/public/api/getUbicacion";
+    public static final String privacidad = "http://192.168.43.200:8080/SARAM-API/public/privacidad";
 }

@@ -23,7 +23,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="50dp"
                 android:background="@drawable/contorno"
-                app:srcCompat="@drawable/saram" />
+                app:srcCompat="@drawable/saram"/>
 
             <LinearLayout
                 android:id="@+id/llNombre"
@@ -178,7 +178,6 @@
                 android:textStyle="bold"
                 android:layout_marginBottom="50dp"
                 />
-
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

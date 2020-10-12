@@ -3,13 +3,17 @@ package com.saram.app.activitys;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -34,12 +38,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class contactos_saramActivity extends AppCompatActivity {
-
     // ESTOS SON DE LA ETIQUETA QUE CREO NO SE OCUPAN
     FloatingActionButton fabMas;
     RecyclerView rvContenedorContactos;
-    contactos_saramAdapter Contactos;
-
+    contactos_saramAdapter Contactos = null;
     // OBJETOS PARA LA CONEXIÓN AL SERVIDOR UTILIZANDO VOLLEY
     RequestQueue requestQueue;
     ProgressDialog progressDialog;
@@ -47,7 +49,10 @@ public class contactos_saramActivity extends AppCompatActivity {
     // CREAMOS UNA CADENA LA CUAL CONTENDRÁ LA CADENA DE NUESTRO WEB SERVICE
     String HttpUri = rutas.getContactos;
     String HttpUriDel = rutas.delContactos;
+    String HttpUriSave = rutas.setContactos;
     String vtoken;
+    static final int PICK_CONTACT = 1;
+    String nombre, telefono;
 
     // ESTE MÉTODO EVITA QUE SE REGRESE CON LA FLECHA DE RETORNO QUE TODOS TENEMOS
     @Override
@@ -70,9 +75,11 @@ public class contactos_saramActivity extends AppCompatActivity {
         rvContenedorContactos = (RecyclerView) findViewById(R.id.rvContenedorContactos);
         rvContenedorContactos.setHasFixedSize(true);
 
-        //Asociar el RV a un LinearLayoutManager
+        // ASOCIAR EL RV A UN LINEAR LAYOUT MANAGER
         LinearLayoutManager LLManager= new LinearLayoutManager(this);
         rvContenedorContactos.setLayoutManager(LLManager);
+        // REGISTRAR EL RECYCLE VIEW PARA EL CONTEXT VIEW
+        registerForContextMenu(rvContenedorContactos);
 
         // SE ACTIVAN LOS OBJETOS DE REQUEST QUEUE Y PROGRESS DIALOG
         requestQueue = Volley.newRequestQueue(contactos_saramActivity.this);
@@ -85,11 +92,22 @@ public class contactos_saramActivity extends AppCompatActivity {
         fabMas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /* REDIRIGE A LA ACTIVITY QUE CONTIENE UN CONTENT PROVIDER (OEERO DUPLICA LOS DATOS)
                 Intent agregarContacto =  new Intent(contactos_saramActivity.this, contactosActivity.class);
                 startActivity(agregarContacto);
+                 */
+                // ACCEDEMOS A LOS CONTACTOS DEL DISPOSITIVO
+                Intent intent1 = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+                startActivityForResult(intent1, PICK_CONTACT);
             }
         });
 
+        // MÉTODO QUE MOSTRARÁ TODOS LOS CONTACTOS ENCONTRADOS DESDE LA APP
+        mostrarDatosCompletos();
+    }
+
+    // MÉTODO QUE OBTIENE TODOS LOS REGISTROS DE LOS CONTACTOS EN LA BASE DE DATOS
+    private void mostrarDatosCompletos(){
         // SE ACTIVA TODO PARA TRAER INFORMACIÓN DE LOS CONTACTOS
         // MOSTRAMOS EL PROGRESS DIALOG ---- AQUÍ SE COMIENZA EL ARMADO Y LA EJECUCIÓN DEL WEB SERVICE
         progressDialog.setMessage("CARGANDO...");
@@ -175,13 +193,8 @@ public class contactos_saramActivity extends AppCompatActivity {
                                                                             String [] mensaje = new String[valores.length()];
                                                                             mensaje [0] = valores.getJSONObject(0).getString("mensaje");
                                                                             Toast.makeText(getApplicationContext(),mensaje[0], Toast.LENGTH_LONG).show();
-
-                                                                            // ACTUALIZAMOS LA LISTA DE CONTACTOS
-                                                                            // Intent actualiza = new Intent(getApplicationContext(), contactos_saramActivity.class);
-                                                                            // startActivity(actualiza);
-                                                                            // ACTUALIZA LISTA DE CONTACTOS DE UNA MANERA MÁS EFICIENTE Y CORRECTA
-                                                                            // Contactos.notifyItemRemoved(position);
-                                                                            Contactos.notifyItemChanged(position);
+                                                                            // SE ACTUALIZA EL LISTADO
+                                                                            mostrarDatosCompletos();
                                                                         } catch (JSONException e) {
                                                                             e.printStackTrace();
                                                                         }
@@ -257,7 +270,6 @@ public class contactos_saramActivity extends AppCompatActivity {
 
         // SE MANDA A EJECUTAR EL STRING PARA LA LIBRERÍA DE VOLLEY
         requestQueue.add(stringRequest);
-
     }
 
     // CREAMOS EL CONTEXT MENU, EL CUÁL SE MOSTRARÁ AL DEJAR PRESIONADO EL CONTACTO SELECCIONADO
@@ -270,7 +282,7 @@ public class contactos_saramActivity extends AppCompatActivity {
         MenuInflater menuInflater = getMenuInflater();
 
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        menu.setHeaderTitle("SE ELIMINARÁ RL CONTACTO SSELECCIONADO");
+        menu.setHeaderTitle("SE ELIMINARÁ RL CONTACTO SELECCIONADO");
         menuInflater.inflate(R.menu.context_menu, menu);
     }
 
@@ -278,9 +290,6 @@ public class contactos_saramActivity extends AppCompatActivity {
     // SE MANEJA EL EVENTO DE CADA OPCIÓN
     @Override
     public boolean onContextItemSelected(MenuItem item){
-        // ADAPTER QUE TRAE INFORMACIÓN DEL ITEM SELECCIONADO
-        // AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-
         // CREAMOS EL SWITCH ENCARGADO DE LEER LAS OPCIONES
         switch(item.getItemId()){
             case R.id.delContacto:
@@ -288,6 +297,111 @@ public class contactos_saramActivity extends AppCompatActivity {
                 return true;
             default:
                 return super.onContextItemSelected(item);
+        }
+    }
+
+    // ESTE MÉTODO ES FORZOSO LLAMARSE ASÍ
+    public void onActivityResult(int reqCode, int resultCode, Intent datos){
+        super.onActivityResult(reqCode, resultCode, datos);
+        if(reqCode == PICK_CONTACT){
+            if(resultCode == Activity.RESULT_OK){
+                Uri contactos = datos.getData(); // OBTENEMOS LA URI DE LOS CONTACTOS
+                // OBTENEMOS TODA LA INFORMACIÓN DENTRO DEL CURSOR
+                Cursor cursorContactos = managedQuery(contactos, null, null, null, null);
+                if(cursorContactos.moveToFirst()){
+                    // OBTENEMOS EL NOMBRE DEL TELÉFONO Y SU ID
+                    nombre = cursorContactos.getString(cursorContactos.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+                    String id_contacto = cursorContactos.getString(cursorContactos.getColumnIndex(ContactsContract.Contacts._ID));
+
+                    // OBTENEMOS MEDIANTE EL ID EL NÚMERO DEL TELÉFONO
+                    Cursor cursorTel = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                            null,
+                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID +"="+id_contacto,
+                            null,
+                            null);
+
+                    // POSICIONAMOS EL CURSOR EN EL PRIMER REGISTRO
+                    cursorTel.moveToFirst();
+                    // CON EL CICLO FOR OBTENEMOS EL VALOR DEL O LOS TELÉFONOS ENCONTRADOS DE ACUERDO AL ID DEL USUARIO
+                    telefono = cursorTel.getString(cursorTel.getColumnIndex("data1"));
+
+                    // GUARDAMOS EL CONTACTO
+                    // DECLARAMOS LAS OPCIONES U OPCIÓN QUE REALIZARÁ LA APP AL MOSTRAR EL ALERT DIALOG
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which){
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    //guardarContacto();
+                                    // SE GUARDA EL CONTACTO EN LA BASE DE DATOS DE SARAM
+                                    // MOSTRAMOS EL PROGRESS DIALOG ---- AQUÍ SE COMIENZA EL ARMADO Y LA EJECUCIÓN DEL WEB SERVICE
+                                    progressDialog.setMessage("CARGANDO...");
+                                    progressDialog.show();
+                                    // CREACIÓN DE LA CADENA A EJECUTAR EN EL WEB SERVICE MEDIANTE VOLLEY
+                                    // Objeto de volley
+                                    StringRequest stringRequest = new StringRequest(Request.Method.POST, HttpUriSave,
+                                            new Response.Listener<String>() {
+                                                @Override
+                                                public void onResponse(String serverresponse) {
+                                                    // UNA VEZ QUE SE MANDAN TODOS LOS VALORES AL WEB SERVICE
+                                                    // QUITAMOS EL PROGRESS DIALOG PARA QUE UNA VEZ QUE SE MANDEN LOS DATOS
+                                                    // YA SE PUEDA TRABAJAR
+                                                    progressDialog.dismiss();
+                                                    // MANEJO DE ERRORES CON RESPECTO A LA RESPUESTA
+                                                    try {
+                                                        // SE MANEJARÁ COMO ARRAY DE ACUERDO A LO PROGRAMADO POR EL WEB SERVICE
+                                                        JSONArray valores = new JSONArray(serverresponse);
+                                                        String [] mensaje = new String[valores.length()];
+                                                        mensaje [0] = valores.getJSONObject(0).getString("mensaje");
+                                                        Toast.makeText(getApplicationContext(),mensaje[0], Toast.LENGTH_LONG).show();
+                                                        // ACTUALIZAR EL RECYCLE VIEW
+                                                        mostrarDatosCompletos();
+                                                    } catch (JSONException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                }
+                                                // ESTE SE EJECUTA SI HAY UN ERROR EN LA RESPUESTA
+                                            }, new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+                                            // SE OCULTA EL PROGRESS DIALOG
+                                            progressDialog.dismiss();
+                                            Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+                                        }
+                                    }) {
+                                        // MAPEO DE LOS VALORES QUE MANDAMOS AL WEB SERVICE
+                                        protected Map<String, String> getParams() {
+                                            // RETORNAR LOS VALORES
+                                            Map<String, String> parametros = new HashMap<>();
+                                            parametros.put("Nombre", nombre);
+                                            parametros.put("Numero_Tel", telefono);
+                                            return parametros;
+                                        }
+                                        @Override
+                                        public Map<String, String> getHeaders() throws AuthFailureError {
+                                            Map<String,String> params = new HashMap<String, String>();
+                                            params.put("Content-Type","application/x-www-form-urlencoded");
+                                            params.put("Authorization", vtoken);
+                                            return params;
+                                        }
+                                    };
+
+                                    // SE MANDA A EJECUTAR EL STRING PARA LA LIBRERÍA DE VOLLEY
+                                    requestQueue.add(stringRequest);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    };
+
+                    // SE CREA EL MENSAJE DE CONFIRMACIÓN
+                    AlertDialog.Builder mensaje = new AlertDialog.Builder(contactos_saramActivity.this);
+                    mensaje.setTitle("¿SE AGREGARÁ EL CONTACTO A SARAM?").setPositiveButton("ACEPTAR", dialogClickListener)
+                            .setNegativeButton("CANCELAR", dialogClickListener).setIcon(R.drawable.saram)
+                            .setMessage("Desde ahora "+nombre+" recibirá los mensajes de alerta por parte de SARAM").show();
+                }
+            }
         }
     }
 

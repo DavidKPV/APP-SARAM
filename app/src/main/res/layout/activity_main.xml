@@ -51,7 +51,7 @@
                     android:layout_height="45dp"
                     android:layout_marginLeft="30dp"
                     android:layout_gravity="center"
-                    app:srcCompat="@drawable/baseline_person_24" />
+                    app:srcCompat="@drawable/ic_baseline_person_24"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilNombre"
@@ -86,7 +86,7 @@
                     android:layout_height="40dp"
                     android:layout_marginLeft="30dp"
                     android:layout_gravity="center"
-                    app:srcCompat="@drawable/candado" />
+                    app:srcCompat="@drawable/ic_baseline_vpn_key_24" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilPass"

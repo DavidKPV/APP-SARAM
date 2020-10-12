@@ -45,9 +45,7 @@
         <activity
             android:name=".activitys.infomotoActivity"
             android:label="Información de motocicletas" />
-        <activity
-            android:name=".activitys.contactosActivity"
-            android:label="Selecciona contactos" /> <!-- META DATA UTILIZADO PARA ACTIVAR LA API DE GOOGLE -->
+        <!-- META DATA UTILIZADO PARA ACTIVAR LA API DE GOOGLE -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" /> <!-- META DATA PARA LA CONEXIÓN WEB CON VOLLEY -->
@@ -61,10 +59,6 @@
             android:name=".activitys.inicioActivity"
             android:label="@string/title_activity_inicio"
             android:theme="@style/AppTheme.NoActionBar" />
-        <!--
-         LAS SIGUIENTES DOS LÍNEAS Y LA DE ARRIBA SON INDISPENSABLES PARA QUE LA FLECHA DE RETORNO
-        FUNCIONE CORRECTAMENTE CON LAS ACTIVITYS DE LAS LINEAS SIGUIENTES DE LO CONTRARIOM LA APP SE CRASHEA
-        -->
         <activity
             android:name=".activitys.registroActivity"
             android:label="Nuevo Usuario - Registro" />
