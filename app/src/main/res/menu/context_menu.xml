@@ -3,4 +3,6 @@
     // CREAMOS UN ITEM POR CADA OPCIÓN
     <item android:id="@+id/delContacto"
         android:title="Eliminar Contacto" />
+    <item android:id="@+id/editContacto"
+        android:title="Eliminar Contacto" />
 </menu>

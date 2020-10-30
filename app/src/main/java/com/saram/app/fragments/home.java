@@ -273,7 +273,7 @@ public class home extends Fragment{
                                 imgEstado.setImageDrawable(getResources().getDrawable(R.drawable.saram_nada));
 
                                 tvModelo.setText(modelo);
-                                tvEstado.setText("No se detecta información");
+                                tvEstado.setText("No se detecta\ninformación");
                                 //Toast.makeText(getActivity(), "Asegurate de que el dispositivo SARAM de la motocicleta "+modelo+" se encuentre encendido", Toast.LENGTH_LONG).show();
                             }
                         } catch (JSONException e) {

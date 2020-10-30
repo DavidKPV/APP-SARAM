@@ -1,11 +1,17 @@
 package com.saram.app.activitys;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,6 +19,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -24,7 +31,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.textfield.TextInputLayout;
 import com.saram.app.R;
+import com.saram.app.models.Images;
+import com.saram.app.models.Userbd;
 import com.saram.app.models.rutas;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,20 +45,25 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 public class edit_contactosActivity extends AppCompatActivity {
-    // TODO ESTO ES LO QUE SE ESTÁ TRABAJANDO
+    // IMAGENES
+    Images imagenes = new Images();
+    Userbd userbd = new Userbd(this);
 
     // SE DECLARAN LOS OBJETOS
     TextInputLayout tilNombre, tilApellidos, tilNumero, tilCorreo;
     EditText etNombre, etApellidos, etNumero, etCorreo;
     Button btnActualiza;
-    String num_tel;
+    int id_contacto;
+    ImageView ivLogo;
+
+    private final static int CODE_GALLERY = 123;
 
     // OBJETOS PARA LA CONEXIÓN AL SERVIDOR UTILIZANDO VOLLEY
     RequestQueue requestQueue;
     ProgressDialog progressDialog;
 
     // CREAMOS UNA CADENA LA CUAL CONTENDRÁ LA CADENA DE NUESTRO WEB SERVICE
-    String HttpUriUpdate = rutas.setContactos; // ESTO ES LO QUE SE DEBE DE ACTUALIZAR
+    String HttpUriUpdate = rutas.updateContactos; // ESTO ES LO QUE SE DEBE DE ACTUALIZAR
     String HttpUriGetContactos = rutas.getContactos;
     String vtoken;
 
@@ -70,6 +85,7 @@ public class edit_contactosActivity extends AppCompatActivity {
         etNumero = (EditText) findViewById(R.id.etNumero);
         etCorreo = (EditText) findViewById(R.id.etCorreo);
         btnActualiza = (Button) findViewById(R.id.btnActualiza);
+        ivLogo = (ImageView) findViewById(R.id.ivLogo);
 
         // SE ACTIVAN LOS OBJETOS DE REQUEST QUEUE Y PROGRESS DIALOG
         requestQueue = Volley.newRequestQueue(edit_contactosActivity.this);
@@ -114,30 +130,30 @@ public class edit_contactosActivity extends AppCompatActivity {
 
                                 // TRAEMOS EL VALOR DEL CONTACTO DEL NUMERO DEL CONTACTO SELECCIONADO
                                 Intent viejo = getIntent();
-                                num_tel = viejo.getStringExtra("numero");
+                                id_contacto = viejo.getIntExtra("ID", -1);
 
                                 for(int i=0; i<ContactosInfo.length();i++) {
-                                    if(ContactosInfo.getJSONObject(i).getString("Numero_Tel")==num_tel) {
+                                    if(ContactosInfo.getJSONObject(i).getInt("id_contacto")==id_contacto) {
                                         etNombre.append(ContactosInfo.getJSONObject(i).getString("Nombre"));
 
                                         // SE VERIFICA SI LOS VALORES NO ESTAN VACÍOS PARA COLOCARLO EN EL CAMPO
                                         String apellidos = ContactosInfo.getJSONObject(i).getString("Apellidos");
                                         if(apellidos.equals("null")){
-                                            etApellidos.append("");
+                                            etApellidos.setText("");
                                         }
                                         else{
-                                            etApellidos.append(apellidos);
+                                            etApellidos.setText(apellidos);
                                         }
 
                                         etNumero.append(String.valueOf(ContactosInfo.getJSONObject(i).get("Numero_Tel")));
 
                                         // SE VERIFICA SI LOS VALORES NO ESTAN VACÍOS PARA COLOCARLO EN EL CAMPO
-                                        String correo = ContactosInfo.getJSONObject(i).getString("Apellidos");
-                                        if(apellidos.equals("null")){
-                                            etApellidos.append("");
+                                        String correo = ContactosInfo.getJSONObject(i).getString("Correo");
+                                        if(correo.equals("null")){
+                                            etCorreo.setText("");
                                         }
                                         else{
-                                            etApellidos.append(correo);
+                                            etCorreo.setText(correo);
                                         }
                                     }
                                 }
@@ -253,6 +269,47 @@ public class edit_contactosActivity extends AppCompatActivity {
                 apdateContacto();
             }
         });
+
+        ivLogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ActivityCompat.requestPermissions(
+                        edit_contactosActivity.this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        CODE_GALLERY
+                );
+            }
+        });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == CODE_GALLERY){
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                // LANZAMOS EL ITENT IMPLÍCITO DE LA GALERÍA
+                Intent galeria = new Intent(Intent.ACTION_PICK);
+                galeria.setType("image/*");
+                startActivityForResult(galeria, CODE_GALLERY);
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "DEBES CONCEDER EL PERMISO PARA ACCEDER A LA GALERÍA", Toast.LENGTH_LONG).show();
+            }
+            return;
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == CODE_GALLERY && resultCode == RESULT_OK && data != null){
+            Uri uri = data.getData();
+            Picasso.get()
+                    .load(uri)
+                    .noPlaceholder()
+                    .error(R.drawable.saram)
+                    .into(ivLogo);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     // MÉTODO PARA ACTUALIZAR EL CONTACTO
@@ -328,6 +385,7 @@ public class edit_contactosActivity extends AppCompatActivity {
                         parametros.put("Apellidos", apellidos);
                         parametros.put("Numero_Tel", numero);
                         parametros.put("Correo", correo);
+                        parametros.put("id_contacto", String.valueOf(id_contacto));
                         return parametros;
                     }
                     @Override

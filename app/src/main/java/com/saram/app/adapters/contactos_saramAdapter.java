@@ -51,7 +51,8 @@ public class contactos_saramAdapter extends RecyclerView.Adapter<contactos_saram
         // CREAMOS EL SWITCH ENCARGADO DE LEER LAS OPCIONES
         switch(menuItem.getItemId()){
             case R.id.delContacto:
-                //Toast.makeText(activity, "Contacto Eliminado xd PRUEBA", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.editContacto:
                 return true;
             default:
                 return false;
@@ -74,10 +75,9 @@ public class contactos_saramAdapter extends RecyclerView.Adapter<contactos_saram
             super(contactos);
             Nombre = contactos.findViewById(R.id.tvNombreContacto);
             Numero = contactos.findViewById(R.id.tvNumeroContacto);
-            //btn_Edit = contactos.findViewById(R.id.imgEditar);
             btn_delete = contactos.findViewById(R.id.imgEliminar);
+            btn_Edit = contactos.findViewById(R.id.ivEdit);
 
-            /*
             btn_Edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -89,7 +89,6 @@ public class contactos_saramAdapter extends RecyclerView.Adapter<contactos_saram
                     }
                 }
             });
-             */
 
             // BOTÓN PARA ELIMINAR REGISTRO DE LA MOTOCICLETA
            btn_delete.setOnClickListener(new View.OnClickListener() {

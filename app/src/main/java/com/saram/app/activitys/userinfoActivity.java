@@ -1,11 +1,21 @@
 package com.saram.app.activitys;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,6 +24,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -25,18 +36,28 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.material.textfield.TextInputLayout;
 import com.saram.app.R;
+import com.saram.app.models.Images;
+import com.saram.app.models.Userbd;
 import com.saram.app.models.rutas;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
 public class userinfoActivity extends AppCompatActivity {
+    // IMAGENES
+    Images imagenes = new Images();
+    Userbd userbd = new Userbd(this);
 
     // SE DECLARAN LOS OBJETOS UTILIZADOS
     LinearLayout llSexo;
@@ -44,6 +65,7 @@ public class userinfoActivity extends AppCompatActivity {
     TextInputLayout tilNombre, tilApellidos, tilFecha, tilDireccion, tilTelefono, tilEmail, tilTipoSangre, tilAlergias, tilReligion, tilExtra;
     EditText etNombre, etApellidos, etFecha, etDireccion, etTelefono, etEmail, etTipoSangre, etAlergias, etReligion, etExtra;
     Button btnActualiza;
+    ImageView ivLogo;
 
     // OBJETOS PARA LA CONEXIÓN AL SERVIDOR UTILIZANDO VOLLEY
     RequestQueue requestQueue;
@@ -53,6 +75,7 @@ public class userinfoActivity extends AppCompatActivity {
     String sexo;
     String nada="";
     String vsexo=null;
+    private final static int CODE_GALLERY = 123;
 
     // CREAMOS UNA CADENA LA CUAL CONTENDRÁ LA CADENA DE NUESTRO WEB SERVICE
     String HttpUriUpdate = rutas.updateUser;
@@ -95,6 +118,7 @@ public class userinfoActivity extends AppCompatActivity {
         etAlergias = (EditText) findViewById(R.id.etAlergias);
         etReligion = (EditText) findViewById(R.id.etReligion);
         etExtra = (EditText) findViewById(R.id.etExtra);
+        ivLogo = (ImageView) findViewById(R.id.ivLogo);
         // ENCONTRAR LOS ELEMENTOS POR ID PARA EL SPINNER
         spSexo = (Spinner) findViewById(R.id.spSexo);
         // ENCONTRAMOS EL LINEAR LAYOUT DE SEXO
@@ -113,111 +137,15 @@ public class userinfoActivity extends AppCompatActivity {
         SharedPreferences sp1 = getSharedPreferences("MisDatos", Context.MODE_PRIVATE);
         vtoken = sp1.getString("token", "");
 
-        // SE ACTIVA TODO PARA TRAER INFORMACIÓN DE USUARIO
-        // MOSTRAMOS EL PROGRESS DIALOG ---- AQUÍ SE COMIENZA EL ARMADO Y LA EJECUCIÓN DEL WEB SERVICE
-        progressDialog.setMessage("CARGANDO...");
-        progressDialog.show();
-        // CREACIÓN DE LA CADENA A EJECUTAR EN EL WEB SERVICE MEDIANTE VOLLEY
-        // Objeto de volley
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, HttpUriGetUser,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String serverresponse) {
-                        // UNA VEZ QUE SE MANDAN TODOS LOS VALORES AL WEB SERVICE
-                        // QUITAMOS EL PROGRESS DIALOG PARA QUE UNA VEZ QUE SE MANDEN LOS DATOS
-                        // YA SE PUEDA TRABAJAR
-                        progressDialog.dismiss();
-                        // MANEJO DE ERRORES CON RESPECTO A LA RESPUESTA
-                        try {
-                            // CREAR UN OBJETO DE TIPO JSON PARA OBTENER EL ARCHIVO QUE MANDARÁ EL WEB SERVICE
-                            JSONObject obj = new JSONObject(serverresponse);
-                            // INTERPRETAR LOS VALORES DEL JSON OBTENIDO DEL WEB SERVICE
-                            String nombre = obj.getString("Nombre");
-                            String apellidos = obj.getString("Apellidos");
-                            String correo = obj.getString("Correo");
-                            String fecha = obj.getString("Edad");
-                            String direccion = obj.getString("Direccion");
-                            String telefono = obj.getString("Telefono");
-                            String tiposangre = obj.getString("Tipo_sangre");
-                            String alergias = obj.getString("Alergias");
-                            String religion = obj.getString("Religion");
-                            String extra = obj.getString("Informacion_adicional");
-                            sexo = obj.getString("Sexo");
+        // DAMOS LA IMAGEN SELECCIONADA
+        String[] resul = userbd.getData("1");
+        if(resul[0] != null){
+            byte[] imagenInicio = userbd.getImagen();
+            Bitmap bitmap = BitmapFactory.decodeByteArray(imagenInicio, 0, imagenInicio.length);
+            ivLogo.setImageBitmap(bitmap);
+        }
 
-                            if(sexo.equals("null")){
-                                // SI ES NULO MOSTRARÁ EL CAMPO DE SEXO
-                            }
-                            else{
-                                // SI YA CONTIENE PARÁMETROS EL CAMPO SEXO EVITAR QUE SE MUESTRE ESA OPCIÓN
-                                llSexo.setVisibility(llSexo.GONE);
-                            }
-
-                            etNombre.setText(nombre);
-                            etApellidos.setText(apellidos);
-                            etEmail.setText(correo);
-
-                            if(fecha.equals("null")){
-                                etFecha.setText(nada);
-                            }else{
-                                etFecha.setText(fecha);
-                            }
-                            if(direccion.equals("null")){
-                                etDireccion.setText(nada);
-                            }else{
-                                etDireccion.setText(direccion);
-                            }
-                            if(telefono.equals("null")){
-                                etTelefono.setText(nada);
-                            }else{
-                                etTelefono.setText(telefono);
-                            }
-                            if(tiposangre.equals("null")){
-                                etTipoSangre.setText(nada);
-                            }else{
-                                etTipoSangre.setText(tiposangre);
-                            }
-                            if(alergias.equals("null")){
-                                etAlergias.setText(nada);
-                            }else{
-                                etAlergias.setText(alergias);
-                            }
-                            if(religion.equals("null")){
-                                etReligion.setText(nada);
-                            }else{
-                                etReligion.setText(religion);
-                            }
-                            if(extra.equals("null")){
-                                etExtra.setText(nada);
-                            }
-                            else{
-                                etExtra.setText(extra);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                    // ESTE SE EJECUTA SI HAY UN ERROR EN LA RESPUESTA
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                // SE OCULTA EL PROGRESS DIALOG
-                progressDialog.dismiss();
-                Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
-            }
-        }) {
-            // SOLO SE MANDA EL TOKEN
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String,String> params = new HashMap<String, String>();
-                params.put("Content-Type","application/x-www-form-urlencoded");
-                params.put("Authorization", vtoken);
-                return params;
-            }
-        };
-
-        // SE MANDA A EJECUTAR EL STRING PARA LA LIBRERÍA DE VOLLEY
-        requestQueue.add(stringRequest);
+        obtenerDatos();
 
         // SE CREAN LAS VALIDACIONES EN TIEMPO REAL
         // VALIDACIÓN PARA EL CAMPO NOMBRE
@@ -418,10 +346,164 @@ public class userinfoActivity extends AppCompatActivity {
             }
         });
 
+        ivLogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ActivityCompat.requestPermissions(
+                        userinfoActivity.this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        CODE_GALLERY
+                );
+            }
+        });
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == CODE_GALLERY){
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                // LANZAMOS EL ITENT IMPLÍCITO DE LA GALERÍA
+                Intent galeria = new Intent(Intent.ACTION_PICK);
+                galeria.setType("image/*");
+                startActivityForResult(galeria, CODE_GALLERY);
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "DEBES CONCEDER EL PERMISO PARA ACCEDER A LA GALERÍA", Toast.LENGTH_LONG).show();
+            }
+            return;
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == CODE_GALLERY && resultCode == RESULT_OK && data != null){
+            Uri uri = data.getData();
+            Picasso.get()
+                    .load(uri)
+                    .noPlaceholder()
+                    .error(R.drawable.saram)
+                    .into(ivLogo);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void obtenerDatos(){
+        // SE ACTIVA TODO PARA TRAER INFORMACIÓN DE USUARIO
+        // MOSTRAMOS EL PROGRESS DIALOG ---- AQUÍ SE COMIENZA EL ARMADO Y LA EJECUCIÓN DEL WEB SERVICE
+        progressDialog.setMessage("CARGANDO...");
+        progressDialog.show();
+        // CREACIÓN DE LA CADENA A EJECUTAR EN EL WEB SERVICE MEDIANTE VOLLEY
+        // Objeto de volley
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, HttpUriGetUser,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String serverresponse) {
+                        // UNA VEZ QUE SE MANDAN TODOS LOS VALORES AL WEB SERVICE
+                        // QUITAMOS EL PROGRESS DIALOG PARA QUE UNA VEZ QUE SE MANDEN LOS DATOS
+                        // YA SE PUEDA TRABAJAR
+                        progressDialog.dismiss();
+                        // MANEJO DE ERRORES CON RESPECTO A LA RESPUESTA
+                        try {
+                            // CREAR UN OBJETO DE TIPO JSON PARA OBTENER EL ARCHIVO QUE MANDARÁ EL WEB SERVICE
+                            JSONObject obj = new JSONObject(serverresponse);
+                            // INTERPRETAR LOS VALORES DEL JSON OBTENIDO DEL WEB SERVICE
+                            String nombre = obj.getString("Nombre");
+                            String apellidos = obj.getString("Apellidos");
+                            String correo = obj.getString("Correo");
+                            String fecha = obj.getString("Edad");
+                            String direccion = obj.getString("Direccion");
+                            String telefono = obj.getString("Telefono");
+                            String tiposangre = obj.getString("Tipo_sangre");
+                            String alergias = obj.getString("Alergias");
+                            String religion = obj.getString("Religion");
+                            String extra = obj.getString("Informacion_adicional");
+                            sexo = obj.getString("Sexo");
+
+                            if(sexo.equals("null")){
+                                // SI ES NULO MOSTRARÁ EL CAMPO DE SEXO
+                            }
+                            else{
+                                // SI YA CONTIENE PARÁMETROS EL CAMPO SEXO EVITAR QUE SE MUESTRE ESA OPCIÓN
+                                llSexo.setVisibility(llSexo.GONE);
+                            }
+
+                            etNombre.setText(nombre);
+                            etApellidos.setText(apellidos);
+                            etEmail.setText(correo);
+
+                            if(fecha.equals("null")){
+                                etFecha.setText(nada);
+                            }else{
+                                etFecha.setText(fecha);
+                            }
+                            if(direccion.equals("null")){
+                                etDireccion.setText(nada);
+                            }else{
+                                etDireccion.setText(direccion);
+                            }
+                            if(telefono.equals("null")){
+                                etTelefono.setText(nada);
+                            }else{
+                                etTelefono.setText(telefono);
+                            }
+                            if(tiposangre.equals("null")){
+                                etTipoSangre.setText(nada);
+                            }else{
+                                etTipoSangre.setText(tiposangre);
+                            }
+                            if(alergias.equals("null")){
+                                etAlergias.setText(nada);
+                            }else{
+                                etAlergias.setText(alergias);
+                            }
+                            if(religion.equals("null")){
+                                etReligion.setText(nada);
+                            }else{
+                                etReligion.setText(religion);
+                            }
+                            if(extra.equals("null")){
+                                etExtra.setText(nada);
+                            }
+                            else{
+                                etExtra.setText(extra);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                    // ESTE SE EJECUTA SI HAY UN ERROR EN LA RESPUESTA
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // SE OCULTA EL PROGRESS DIALOG
+                progressDialog.dismiss();
+                Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+            }
+        }) {
+            // SOLO SE MANDA EL TOKEN
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("Content-Type","application/x-www-form-urlencoded");
+                params.put("Authorization", vtoken);
+                return params;
+            }
+        };
+
+        // SE MANDA A EJECUTAR EL STRING PARA LA LIBRERÍA DE VOLLEY
+        requestQueue.add(stringRequest);
     }
 
     // MÉTODO PARA ACTUALIZAR LOS DATOS DEL USUARIO
     private void actualizarDatos(){
+        // TRANSFORMAMOS LA IMAGEN SELECCIONADA A UN ARREGLODE Bytes
+        byte[] imagen = imagenes.transformarImagenAByte(ivLogo);
+        // ALMACENAMOS LA IMAGEN DE USUARIO
+        userbd.updateData("1", imagen);
+
         final String nombre = tilNombre.getEditText().getText().toString();
         final String apellidos = tilApellidos.getEditText().getText().toString();
         final String correo = tilEmail.getEditText().getText().toString();
@@ -483,8 +565,9 @@ public class userinfoActivity extends AppCompatActivity {
                                         Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_LONG).show();
                                         // REDIRIGE A LA INFO DE LA MOTOCICLETA YA ACTUALIZADA
                                         // REDIRIGE AL ACTIVITY REINICIANDO EL SERVICIO PARA ACTUALIZAR
-                                        Intent infoUserupdate = new Intent(getApplicationContext(), userinfoActivity.class);
-                                        startActivity(infoUserupdate);
+                                        // Intent infoUserupdate = new Intent(getApplicationContext(), userinfoActivity.class);
+                                        // startActivity(infoUserupdate);
+                                        obtenerDatos();
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();

@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -23,6 +24,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.saram.app.R;
@@ -110,8 +113,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 Toast.makeText(getApplicationContext(), "PREPARANDO LOCALIZACIÓN DE MOTOCICLETA "+modelo+"...", Toast.LENGTH_LONG).show();
 
                                 // ESTA SERÁ LA POSICIÓN DE LA MOTOCICLETA QUE SE ESTÉ GEOLOCALIZANDO
+                                UiSettings configuraciones = mMap.getUiSettings();
+                                configuraciones.setTiltGesturesEnabled(true);
+                                configuraciones.setScrollGesturesEnabled(true);
+                                configuraciones.setZoomControlsEnabled(true);
+                                configuraciones.setCompassEnabled(true);
+
                                 LatLng SARAM = new LatLng(latitudb, longitudb);
-                                mMap.addMarker(new MarkerOptions().position(SARAM).title("Mi Moto "+modelo));
+                                mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                                mMap.setTrafficEnabled(true);
+                                mMap.addMarker(
+                                        new MarkerOptions().
+                                                position(SARAM).
+                                                title("Mi Moto "+modelo).
+                                                icon(BitmapDescriptorFactory.fromResource(R.drawable.motouno)));
                                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(SARAM, 18f));
                             }
                             else{

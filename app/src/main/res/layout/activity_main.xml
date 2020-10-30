@@ -7,13 +7,6 @@
     android:orientation="vertical"
     tools:context=".activitys.MainActivity" >
 
-    <!-- En cuanto se pueda cambiar las imagenes que se tienen por
-    las de colores negro o ver en  https://material.io/ -->
-    <!-- SE AÑADE UN SCROLL PARA QUE SE PUEDA APLICAR AL ACTIVITY
-     DENTRO DEL SCROLL ES OBLIGATORIO COLOCAR EL LINEAR LAYOUT
-     ESTO SE REALIZA PARA QUE SE PUEDAN VER TODOS LOS ELEMENTOS
-     EN CASO DE QUE SE CAMBIE LA ORIENTACIÓN DE LA PANTALLA Y NO
-     ENTREN TODOS LOS ELEMENTOS-->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -48,10 +41,10 @@
                 <ImageView
                     android:id="@+id/ivUser"
                     android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:layout_marginLeft="30dp"
+                    android:layout_height="28dp"
                     android:layout_gravity="center"
-                    app:srcCompat="@drawable/ic_baseline_person_24"/>
+                    android:layout_marginLeft="30dp"
+                    app:srcCompat="@drawable/ic_baseline_person_24" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilNombre"

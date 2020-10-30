@@ -5,7 +5,7 @@
     <!-- NOMBRES DE LA SECCIÓN DEL MENÚ DESPLEGABLE -->
     <string name="menu_home">Inicio</string>
     <string name="menu_contactos">Contactos</string>
-    <string name="menu_info">Información</string>
+    <string name="menu_info">Motocicletas</string>
     <string name="menu_PPrivacidad">Políticas de Privacidad</string>
     <string name="menu_ubicacion">Ubicación</string>
     <string name="title_activity_maps">Mapa SARAM</string>

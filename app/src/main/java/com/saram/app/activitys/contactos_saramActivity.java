@@ -143,7 +143,7 @@ public class contactos_saramActivity extends AppCompatActivity {
                                 for (int i=0; i<ContactosInfo.length(); i++){
                                     Nombre[i]=ContactosInfo.getJSONObject(i).getString("Nombre");
                                     Numero[i]=ContactosInfo.getJSONObject(i).getString("Numero_Tel");
-                                    ID_contactos[i]=ContactosInfo.getJSONObject(i).getInt("ID_Usuario");
+                                    ID_contactos[i]=ContactosInfo.getJSONObject(i).getInt("id_contacto");
                                 }
                                 Contactos = new contactos_saramAdapter(Nombre, Numero, ID_contactos, getApplication());
                                 rvContenedorContactos.setAdapter(Contactos);
@@ -153,11 +153,9 @@ public class contactos_saramActivity extends AppCompatActivity {
                                 Contactos.setOnItemClickListener(new contactos_saramAdapter.OnItemClickListener() {
                                     @Override
                                     public void onEditClick(int position) {
-                                        /*
                                         Intent editcontacto = new Intent(contactos_saramActivity.this, edit_contactosActivity.class);
-                                        editcontacto.putExtra("numero", Numero[position]);
+                                        editcontacto.putExtra("ID", ID_contactos[position]);
                                         startActivity(editcontacto);
-                                         */
                                     }
 
                                     @Override

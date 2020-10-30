@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -20,6 +22,8 @@ import android.widget.TextView;
 import com.android.volley.RequestQueue;
 import com.google.android.material.navigation.NavigationView;
 import com.saram.app.R;
+import com.saram.app.models.Userbd;
+import com.saram.app.models.rutas;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -33,14 +37,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 public class  inicioActivity extends AppCompatActivity {
+    Userbd userbd = new Userbd(this);
 
     private AppBarConfiguration mAppBarConfiguration;
     TextView tvNombreMenu;
     ImageView ivUser;
-
-    // OBJETOS PARA LA CONEXIÓN AL SERVIDOR UTILIZANDO VOLLEY
-    // RequestQueue requestQueue;
-    // ProgressDialog progressDialog;
 
     // ESTE MÉTODO EVITA QUE SE REGRESE CON LA FLECHA DE RETORNO QUE TODOS TENEMOS
     @Override
@@ -94,6 +95,14 @@ public class  inicioActivity extends AppCompatActivity {
 
         tvNombreMenu = (TextView) findViewById(R.id.tvNombreMenu);
         ivUser = (ImageView) findViewById(R.id.ivUser);
+
+        // DAMOS LA IMAGEN SELECCIONADA
+        String[] resul = userbd.getData("1");
+        if(resul[0] != null){
+            byte[] imagenInicio = userbd.getImagen();
+            Bitmap bitmap = BitmapFactory.decodeByteArray(imagenInicio, 0, imagenInicio.length);
+            ivUser.setImageBitmap(bitmap);
+        }
 
         SharedPreferences sp1 = getSharedPreferences("MisDatos", Context.MODE_PRIVATE);
 
@@ -190,7 +199,7 @@ public class  inicioActivity extends AppCompatActivity {
                 break;
             case R.id.accion_soporte:
                 // SE CARGA LA DIRECCIÓN DE LA PÁGINA EN LA APP
-                String url = "http://192.168.43.200:8080/SARAM-API/public/#Servicio";
+                String url = rutas.servicio;
                 Uri uri = Uri.parse(url);
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);

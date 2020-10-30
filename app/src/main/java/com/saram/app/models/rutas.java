@@ -1,18 +1,24 @@
 package com.saram.app.models;
 
 public class rutas {
-    public static final String addMotos = "http://192.168.43.200:8080/SARAM-API/public/api/addmoto";
-    public static final String getContactos = "http://192.168.43.200:8080/SARAM-API/public/api/getContactos";
-    public static final String delContactos = "http://192.168.43.200:8080/SARAM-API/public/api/delContactos";
-    public static final String setContactos = "http://192.168.43.200:8080/SARAM-API/public/api/setContactos";
-    public static final String updateMoto = "http://192.168.43.200:8080/SARAM-API/public/api/updatemoto";
-    public static final String getMotos = "http://192.168.43.200:8080/SARAM-API/public/api/getmotos";
-    public static final String delMoto = "http://192.168.43.200:8080/SARAM-API/public/api/deleteMoto";
-    public static final String login = "http://192.168.43.200:8080/SARAM-API/public/api/login";
-    public static final String registerUser = "http://192.168.43.200:8080/SARAM-API/public/api/registerUser";
-    public static final String updateUser = "http://192.168.43.200:8080/SARAM-API/public/api/updateUser";
-    public static final String getUser = "http://192.168.43.200:8080/SARAM-API/public/api/getuser";
-    public static final String getEstado = "http://192.168.43.200:8080/SARAM-API/public/api/getEstado";
-    public static final String getUbicacion = "http://192.168.43.200:8080/SARAM-API/public/api/getUbicacion";
-    public static final String privacidad = "http://192.168.43.200:8080/SARAM-API/public/privacidad";
+    private static final String SERVIDOR = "http://192.168.43.200:8080/";
+    private static final String UBICACION = "SARAM-API/public/api/";
+    private static final String UBICACION_PAG = "SARAM-API/public/";
+
+    public static final String addMotos = SERVIDOR + UBICACION + "addmoto";
+    public static final String getContactos = SERVIDOR + UBICACION + "getContactos";
+    public static final String delContactos = SERVIDOR + UBICACION + "delContactos";
+    public static final String setContactos = SERVIDOR + UBICACION + "setContactos";
+    public static final String updateContactos = SERVIDOR + UBICACION + "updateContactos";
+    public static final String updateMoto = SERVIDOR + UBICACION + "updatemoto";
+    public static final String getMotos = SERVIDOR + UBICACION + "getmotos";
+    public static final String delMoto = SERVIDOR + UBICACION + "deleteMoto";
+    public static final String login = SERVIDOR + UBICACION + "login";
+    public static final String registerUser = SERVIDOR + UBICACION + "registerUser";
+    public static final String updateUser = SERVIDOR + UBICACION + "updateUser";
+    public static final String getUser = SERVIDOR + UBICACION + "getuser";
+    public static final String getEstado = SERVIDOR + UBICACION + "getEstado";
+    public static final String getUbicacion = SERVIDOR + UBICACION + "getUbicacion";
+    public static final String privacidad = SERVIDOR + UBICACION_PAG + "privacidad";
+    public static final String servicio = SERVIDOR + UBICACION_PAG + "#Servicio";
 }

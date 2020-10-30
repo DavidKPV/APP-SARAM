@@ -13,6 +13,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +31,8 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.zxing.Result;
 import com.saram.app.R;
+import com.saram.app.models.Images;
+import com.saram.app.models.Userbd;
 import com.saram.app.models.rutas;
 
 import org.json.JSONException;
@@ -42,8 +45,12 @@ import java.util.regex.Pattern;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class MainActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
+    // BASE DE DATOS
+    Userbd userbd = new Userbd(this);
+    Images imagenes = new Images();
 
     // SE DECLARAN LOS OBJETOS UTILIZADOS
+    ImageView ivlogo;
     LinearLayout llQR;
     TextView tvOlvido, tvRegistro;
     Button btnIngreso;
@@ -73,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         getSupportActionBar().hide();
 
         // SE ENLANZAN LOS CONTROLADORES CON LA VISTA
+        ivlogo = (ImageView) findViewById(R.id.ivLogo);
         tvOlvido = (TextView) findViewById(R.id.tvOlvido);
         tvRegistro = (TextView) findViewById(R.id.tvRegistro);
         btnIngreso = (Button) findViewById(R.id.btnIngreso);
@@ -234,6 +242,12 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
                                         editor.putString("nombre", nombre);
                                         editor.putString("token", token);
                                         editor.apply();
+                                        // VERIFICAMOS QUE NO EXISTA REGISTRO EN LA BD
+                                        String[] datos = userbd.getData("1");
+                                        if(datos[0] == null){
+                                            userbd.setData(1, nombre, imagenes.transformarImagenAByte(ivlogo));
+                                        }
+
                                         // REDIRIGE AL INICIO DE LA APP
                                         Intent intent_inicio = new Intent(getApplicationContext(), inicioActivity.class);
                                         startActivity(intent_inicio);

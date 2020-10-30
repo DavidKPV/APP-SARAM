@@ -1,17 +1,24 @@
 package com.saram.app.activitys;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -23,7 +30,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.textfield.TextInputLayout;
 import com.saram.app.R;
+import com.saram.app.models.Images;
+import com.saram.app.models.Userbd;
 import com.saram.app.models.rutas;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,10 +42,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class addmotoActivity extends AppCompatActivity {
+    // IMAGENES
+    Images imagenes = new Images();
+    Userbd userbd = new Userbd(this);
+
     // SE DECLARAN LOS OBJETOS
     TextInputLayout tilModelo, tilMarca, tilCilindraje, tilPlaca, tilSARAM;
     EditText etModelo, etMarca, etCilindraje, etPlaca, etSARAM;
     Button btnRegistro;
+    ImageView ivLogo;
+
+    private final static int CODE_GALLERY = 123;
 
     // OBJETOS PARA LA CONEXIÓN AL SERVIDOR UTILIZANDO VOLLEY
     RequestQueue requestQueue;
@@ -64,6 +81,7 @@ public class addmotoActivity extends AppCompatActivity {
         etPlaca = (EditText) findViewById(R.id.etPlaca);
         etSARAM = (EditText) findViewById(R.id.etSARAM);
         btnRegistro = (Button) findViewById(R.id.btnRegistro);
+        ivLogo = (ImageView) findViewById(R.id.ivLogo);
 
         // SE ACTIVAN LOS OBJETOS DE REQUEST QUEUE Y PROGRESS DIALOG
         requestQueue = Volley.newRequestQueue(addmotoActivity.this);
@@ -177,6 +195,47 @@ public class addmotoActivity extends AppCompatActivity {
             }
         });
 
+        ivLogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ActivityCompat.requestPermissions(
+                        addmotoActivity.this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        CODE_GALLERY
+                );
+            }
+        });
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == CODE_GALLERY){
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                // LANZAMOS EL ITENT IMPLÍCITO DE LA GALERÍA
+                Intent galeria = new Intent(Intent.ACTION_PICK);
+                galeria.setType("image/*");
+                startActivityForResult(galeria, CODE_GALLERY);
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "DEBES CONCEDER EL PERMISO PARA ACCEDER A LA GALERÍA", Toast.LENGTH_LONG).show();
+            }
+            return;
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == CODE_GALLERY && resultCode == RESULT_OK && data != null){
+            Uri uri = data.getData();
+            Picasso.get()
+                    .load(uri)
+                    .noPlaceholder()
+                    .error(R.drawable.saram)
+                    .into(ivLogo);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     // MÉTODO PARA AGREGAR NUEVA MOTOCICLETA

@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" /> <!-- PERMISO PARA EL ENVÍO DE MENSAJES DE TEXTO -->
     <uses-permission android:name="android.permission.SEND_SMS" /> <!-- DAMOS PERMISOS A LA CÁMARA -->
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".modules.retardo_splash"
