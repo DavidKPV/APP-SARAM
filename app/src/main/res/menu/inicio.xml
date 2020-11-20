@@ -7,16 +7,14 @@
         android:title="Salir"
         app:showAsAction="never" />
 
-    <!--
     <item
-        android:id="@+id/accion_ayuda"
+        android:id="@+id/accion_bot"
         android:orderInCategory="100"
         android:title="Ayuda"
         />
-        -->
 
     <item
-        android:id="@+id/accion_soporte"
+        android:id="@+id/accion_pagina"
         android:orderInCategory="100"
         android:title="Acerca de SARAM"
         />

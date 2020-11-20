@@ -197,7 +197,11 @@ public class  inicioActivity extends AppCompatActivity {
                 // ESTA FUNCIÓN HACE QUE SALGAS DE LA APP (SE FINALICE SIN CERRAR SESION);
                 mensajeEvita();
                 break;
-            case R.id.accion_soporte:
+            case R.id.accion_bot:
+                Intent vistaChatBot = new Intent(this, ChatBotActivity.class);
+                startActivity(vistaChatBot);
+                break;
+            case R.id.accion_pagina:
                 // SE CARGA LA DIRECCIÓN DE LA PÁGINA EN LA APP
                 String url = rutas.servicio;
                 Uri uri = Uri.parse(url);

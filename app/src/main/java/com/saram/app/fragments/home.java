@@ -205,12 +205,6 @@ public class home extends Fragment{
     }
 
     private void checaEstado(){
-        // SE VERIFICA CON LA BASE DE DATOS SI LOS DATOS ESENCIALES DEL USUARIO ESTAN COMPLETOS
-        // MOSTRAMOS EL PROGRESS DIALOG ---- AQUÍ SE COMIENZA EL ARMADO Y LA EJECUCIÓN DEL WEB SERVICE
-        //progressDialog.setMessage("CARGANDO...");
-        //progressDialog.show();
-        // CREACIÓN DE LA CADENA A EJECUTAR EN EL WEB SERVICE MEDIANTE VOLLEY
-        // Objeto de volley
         StringRequest stringRequest = new StringRequest(Request.Method.POST, HttpUriCheck,
                 new Response.Listener<String>() {
                     @Override
@@ -270,7 +264,7 @@ public class home extends Fragment{
                             // CUANDO SARAM NO TENGA ESTADO
                             if(status==1){
                                 // MOSTRAMOS LA IMAGEN ADECUADA
-                                imgEstado.setImageDrawable(getResources().getDrawable(R.drawable.saram_nada));
+                                imgEstado.setImageDrawable(getResources().getDrawable(R.drawable.nada));
 
                                 tvModelo.setText(modelo);
                                 tvEstado.setText("No se detecta\ninformación");

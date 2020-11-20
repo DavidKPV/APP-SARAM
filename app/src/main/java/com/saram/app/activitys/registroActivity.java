@@ -3,6 +3,8 @@ package com.saram.app.activitys;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -26,6 +28,7 @@ import com.saram.app.models.rutas;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -68,6 +71,7 @@ public class registroActivity extends AppCompatActivity {
         etPassword = (EditText) findViewById(R.id.etPassword);
         etRPassword = (EditText) findViewById(R.id.etRPassword);
         chbTerminos = (CheckBox) findViewById(R.id.chbTerminos);
+        tvTerminos = (TextView) findViewById(R.id.tvTerminos);
 
         // SE ACTIVAN LOS OBJETOS DE REQUEST QUEUE Y PROGRESS DIALOG
         requestQueue = Volley.newRequestQueue(registroActivity.this);
@@ -175,6 +179,20 @@ public class registroActivity extends AppCompatActivity {
                 registrarDatos();
             }
         });
+
+        tvTerminos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                abrirTerminos();
+            }
+        });
+    }
+
+    private void abrirTerminos(){
+        String url = rutas.privacidad;
+        Uri uri = Uri.parse(url);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
     }
 
     private void registrarDatos(){

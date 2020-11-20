@@ -29,7 +29,7 @@
                 android:layout_height="70dp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="10dp"
-                app:srcCompat="@drawable/saram" />
+                app:srcCompat="@drawable/motorcycle" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -98,19 +98,20 @@
 
                     <ImageView
                         android:id="@+id/imgEditar"
-                        android:layout_width="20dp"
-                        android:layout_height="24dp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:layout_marginBottom="2dp"
                         app:srcCompat="@drawable/lapiz" />
 
                     <ImageView
                         android:id="@+id/imgEliminar"
-                        android:layout_width="27dp"
-                        android:layout_height="26dp"
-                        android:layout_marginLeft="10dp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="30dp"
                         app:srcCompat="@drawable/ic_baseline_delete_forever_24" />
                 </LinearLayout>
             </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

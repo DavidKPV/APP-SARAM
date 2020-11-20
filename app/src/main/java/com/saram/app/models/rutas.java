@@ -2,8 +2,9 @@ package com.saram.app.models;
 
 public class rutas {
     private static final String SERVIDOR = "http://192.168.43.200:8080/";
+    private static final String SERVIDOR_PAG = "http://sarammx.com:8080/";
     private static final String UBICACION = "SARAM-API/public/api/";
-    private static final String UBICACION_PAG = "SARAM-API/public/";
+    private static final String UBICACION_PAG = "";
 
     public static final String addMotos = SERVIDOR + UBICACION + "addmoto";
     public static final String getContactos = SERVIDOR + UBICACION + "getContactos";
@@ -19,6 +20,7 @@ public class rutas {
     public static final String getUser = SERVIDOR + UBICACION + "getuser";
     public static final String getEstado = SERVIDOR + UBICACION + "getEstado";
     public static final String getUbicacion = SERVIDOR + UBICACION + "getUbicacion";
-    public static final String privacidad = SERVIDOR + UBICACION_PAG + "privacidad";
-    public static final String servicio = SERVIDOR + UBICACION_PAG + "#Servicio";
+    public static final String privacidad = SERVIDOR_PAG + "privacidad";
+    public static final String servicio = SERVIDOR_PAG + "#Servicio";
+    public static final String servicioBot = "http://192.168.43.200:8080/PRUEBA_BOT";
 }

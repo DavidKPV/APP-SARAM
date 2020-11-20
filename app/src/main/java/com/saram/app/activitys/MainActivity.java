@@ -11,6 +11,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -50,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
     Images imagenes = new Images();
 
     // SE DECLARAN LOS OBJETOS UTILIZADOS
-    ImageView ivlogo;
+    ImageView ivlogo, ivChatbot;
     LinearLayout llQR;
     TextView tvOlvido, tvRegistro;
     Button btnIngreso;
@@ -81,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
 
         // SE ENLANZAN LOS CONTROLADORES CON LA VISTA
         ivlogo = (ImageView) findViewById(R.id.ivLogo);
+        ivChatbot = (ImageView) findViewById(R.id.ivChatBot);
         tvOlvido = (TextView) findViewById(R.id.tvOlvido);
         tvRegistro = (TextView) findViewById(R.id.tvRegistro);
         btnIngreso = (Button) findViewById(R.id.btnIngreso);
@@ -89,6 +92,10 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         tilNombre = (TextInputLayout) findViewById(R.id.tilNombre);
         tilPass = (TextInputLayout) findViewById(R.id.tilPass);
         llQR = (LinearLayout) findViewById(R.id.llQR);
+
+        Animation animacionChat = AnimationUtils.loadAnimation(this, R.anim.chat_bot_escala);
+        animacionChat.setFillAfter(false);
+        ivChatbot.setAnimation(animacionChat);
 
         // VERIFICA QUE TENGA LA APP LOS PERMISOS NECESARIOS PARA LA UTILIZACIÓN DE LA CAMARA
         final int permissionCheckCamera = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
@@ -180,6 +187,15 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
                 else{
                     activarLector();
                 }
+            }
+        });
+
+        // OYENTE DEL CHATBOT
+        ivChatbot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent irChat = new Intent(getApplicationContext(), ChatBotActivity.class);
+                startActivity(irChat);
             }
         });
     }

@@ -127,7 +127,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                                 position(SARAM).
                                                 title("Mi Moto "+modelo).
                                                 icon(BitmapDescriptorFactory.fromResource(R.drawable.motouno)));
-                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(SARAM, 18f));
+                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(SARAM, 16f));
                             }
                             else{
                                 Toast.makeText(getApplicationContext(), "NO HAY REGISTROS DE UBICACIÓN DE LA MOTOCICLETA "+modelo+" AEGÚRATE DE QUE EL DISPOSITIVO SARAM ASOCIADO A ESTA MOTO ESTÉ EN FUNCIONAMIENTO", Toast.LENGTH_LONG).show();
