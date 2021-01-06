@@ -13,7 +13,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".modules.retardo_splash"
+        android:name=".models.Retardo_splash"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -22,10 +22,10 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".activitys.ChatBotActivity"
+            android:name=".controllers.activitys.ChatBotActivity"
             android:label="Chat SARAM"/>
         <activity
-            android:name=".activitys.SplashActivity"
+            android:name=".controllers.activitys.SplashActivity"
             android:theme="@style/splash_screen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,22 +34,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activitys.edit_contactosActivity"
+            android:name=".controllers.activitys.Edit_contactosActivity"
             android:label="Información contacto" />
         <activity
-            android:name=".activitys.contactos_saramActivity"
+            android:name=".controllers.activitys.Contactos_saramActivity"
             android:label="Tus contactos SARAM" />
         <activity
-            android:name=".activitys.userinfoActivity"
+            android:name=".controllers.activitys.UserinfoActivity"
             android:label="Mi información" />
         <activity
-            android:name=".activitys.addmotoActivity"
+            android:name=".controllers.activitys.AddmotoActivity"
             android:label="Nueva motocicleta" />
         <activity
-            android:name=".activitys.editmotoActivity"
+            android:name=".controllers.activitys.EditmotoActivity"
             android:label="Información de motocicleta" />
         <activity
-            android:name=".activitys.infomotoActivity"
+            android:name=".controllers.activitys.InfomotoActivity"
             android:label="Información de motocicletas" /> <!-- META DATA UTILIZADO PARA ACTIVAR LA API DE GOOGLE -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -59,23 +59,23 @@
             android:resource="@xml/network_security_config" />
 
         <activity
-            android:name=".fragments.MapsActivity"
+            android:name=".controllers.fragments.MapsActivity"
             android:label="Mapa SARAM" />
         <activity
-            android:name=".activitys.inicioActivity"
+            android:name=".controllers.activitys.InicioActivity"
             android:label="@string/title_activity_inicio"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activitys.registroActivity"
+            android:name=".controllers.activitys.RegistroActivity"
             android:label="Nuevo Usuario - Registro" />
         <activity
-            android:name=".activitys.recuperarContra"
+            android:name=".controllers.activitys.RecuperarContra"
             android:label="Recuperar mi Contraseña" />
         <activity
-            android:name=".activitys.MainActivity"
+            android:name=".controllers.activitys.MainActivity"
             android:configChanges="uiMode"
             android:windowSoftInputMode="stateVisible|adjustPan"></activity> <!-- SE IMPLEMENTA EL RECEIVER PARA LA ALARMA -->
-        <receiver android:name=".modules.alarma" />
+        <receiver android:name=".models.Alarma" />
     </application>
 
 </manifest>

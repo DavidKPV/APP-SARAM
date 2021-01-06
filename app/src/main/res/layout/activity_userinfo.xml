@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.saram.app.activitys.userinfoActivity">
+    tools:context=".controllers.activitys.UserinfoActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -120,20 +120,27 @@
                     android:textSize="20dp"
                     android:textStyle="bold" />
 
+                <ImageView
+                    android:id="@+id/ivCalendario"
+                    android:layout_width="100dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/calendario"/>
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilFecha"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="100dp"
+                    android:layout_marginRight="50dp"
                     app:counterEnabled="true"
                     app:counterMaxLength="10">
 
                     <EditText
                         android:id="@+id/etFecha"
+                        android:enabled="false"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="yyyy-mm-dd"
-                        android:inputType="text" />
+                        android:inputType="none" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 

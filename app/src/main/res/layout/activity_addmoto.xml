@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.saram.app.activitys.addmotoActivity">
+    tools:context=".controllers.activitys.AddmotoActivity">
 
     <ScrollView
         android:layout_width="match_parent"

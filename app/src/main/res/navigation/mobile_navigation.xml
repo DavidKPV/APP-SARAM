@@ -7,37 +7,37 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.saram.app.fragments.home"
+        android:name="com.saram.app.controllers.fragments.Home"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/nav_ubicacion"
-        android:name="com.saram.app.fragments.nav_ubicacion"
+        android:name="com.saram.app.controllers.fragments.Nav_ubicacion"
         android:label="Ubicación"
         tools:layout="@layout/fragment_ubicacion" />
 
     <fragment
         android:id="@+id/nav_contactos"
-        android:name="com.saram.app.fragments.nav_contactos"
+        android:name="com.saram.app.controllers.fragments.Nav_contactos"
         android:label="Contactos"
         tools:layout="@layout/fragment_contactos" />
 
     <fragment
         android:id="@+id/nav_info"
-        android:name="com.saram.app.fragments.nav_info"
+        android:name="com.saram.app.controllers.fragments.Nav_info"
         android:label="Información"
         tools:layout="@layout/fragment_info" />
 
     <fragment
         android:id="@+id/nav_pprivacidad"
-        android:name="com.saram.app.fragments.nav_pprivacidad"
+        android:name="com.saram.app.controllers.fragments.Nav_pprivacidad"
         android:label="Políticas SARAM"
         tools:layout="@layout/fragment_pprivacidad" />
 
     <fragment
         android:id="@+id/nav_cerrarS"
-        android:name="com.saram.app.fragments.nav_cerrarS"
+        android:name="com.saram.app.controllers.fragments.Nav_cerrarS"
         android:label="fragment_nav_cerrar_s"
         tools:layout="@layout/fragment_nav_cerrar_s" />
 

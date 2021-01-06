@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.nav_cerrarS"
+    tools:context=".controllers.fragments.Nav_cerrarS"
     android:orientation="vertical">
 
     <!-- SE AÑADE UN SCROLL PARA QUE SE PUEDA APLICAR AL ACTIVITY
